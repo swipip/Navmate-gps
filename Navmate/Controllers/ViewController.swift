@@ -23,7 +23,16 @@ class ViewController: UIViewController {
         child.delegate = self
         return child
     }()
-    private lazy var selectableArea: UIView = {
+    private lazy var selectableAreaMapVC: UIView = {
+       let view = UIView()
+        view.backgroundColor = .clear
+        
+        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(panHandler(_:)))
+        view.addGestureRecognizer(panGesture)
+        
+        return view
+    }()
+    private lazy var selectableAreaSearchVC: UIView = {
        let view = UIView()
         view.backgroundColor = .clear
         
@@ -46,16 +55,30 @@ class ViewController: UIViewController {
         child.delegate = self
         return child
     }()
-    //
-    private lazy var searchVCTopConstraint = NSLayoutConstraint()
+    
+    //MARK: - Animations Variables
+    private var animators = [UIViewPropertyAnimator]()
     var animationProgressWhenInterrupted:CGFloat = 0
+    
+    
+    //SearchVC animation
+    private lazy var searchVCTopConstraint = NSLayoutConstraint()
     var cardVisible = false
     var nextState: searchVCState {
         return cardVisible ? .collapsed : .expanded
     }
-    private var animators = [UIViewPropertyAnimator]()
+    
     enum searchVCState {
         case expanded, collapsed, hidden
+    }
+    //MapVC
+    private lazy var MapVCTopConstraint = NSLayoutConstraint()
+    var mapVisible = true
+    var nextStateMap: MapVCState {
+        return mapVisible ? .collapsed : .midWay
+    }
+    enum MapVCState {
+        case total, collapsed, midWay
     }
     //MARK: - Loading
     override func viewDidLoad() {
@@ -70,9 +93,11 @@ class ViewController: UIViewController {
         addMapView()
         addSearchVC()
         addSelectableHandle()
+        addSelectableHandleMap()
         addLocationButton()
         
     }
+    //MARK: - UI Construction
     private func addDirectionCard() {
         
         self.addChild(directionCardVC)
@@ -115,7 +140,7 @@ class ViewController: UIViewController {
     }
     private func addSelectableHandle() {
         
-        self.view.addSubview(selectableArea)
+        self.view.addSubview(selectableAreaSearchVC)
         
         func addConstraints(fromView: UIView, toView: UIView) {
                
@@ -126,20 +151,90 @@ class ViewController: UIViewController {
                                         fromView.topAnchor.constraint(equalTo: toView.topAnchor, constant: 0),
                                         fromView.heightAnchor.constraint(equalToConstant: 20)])
         }
-        addConstraints(fromView: selectableArea, toView: self.searchVC.view!)
+        addConstraints(fromView: selectableAreaSearchVC, toView: self.searchVC.view!)
         
     }
+    private func addSelectableHandleMap() {
+        
+        self.view.addSubview(selectableAreaMapVC)
+        
+        func addConstraints(fromView: UIView, toView: UIView) {
+               
+           fromView.translatesAutoresizingMaskIntoConstraints = false
+           
+           NSLayoutConstraint.activate([fromView.leadingAnchor.constraint(equalTo: toView.leadingAnchor, constant: 0),
+                                        fromView.trailingAnchor.constraint(equalTo: toView.trailingAnchor, constant: 0),
+                                        fromView.topAnchor.constraint(equalTo: toView.topAnchor, constant: 0),
+                                        fromView.heightAnchor.constraint(equalToConstant: 20)])
+        }
+        addConstraints(fromView: selectableAreaMapVC, toView: self.mapView.view!)
+        
+    }
+    func addSearchVC() {
+        
+        self.addChild(searchVC)
+        searchVC.willMove(toParent: searchVC)
+        let view = searchVC.view!
+        view.layer.cornerRadius = 12
+        self.view.addSubview(view)
+        
+        
+        func addConstraints(fromView: UIView, toView: UIView) {
+               
+           fromView.translatesAutoresizingMaskIntoConstraints = false
+           
+           NSLayoutConstraint.activate([fromView.leadingAnchor.constraint(equalTo: toView.leadingAnchor, constant: 0),
+                                        fromView.trailingAnchor.constraint(equalTo: toView.trailingAnchor, constant: 0),
+                                        fromView.heightAnchor.constraint(equalToConstant: self.view.frame.size.height)])
+        }
+        addConstraints(fromView: view, toView: self.view)
+        
+        searchVCTopConstraint = NSLayoutConstraint(item: searchVC.view!, attribute: .top, relatedBy: .equal, toItem: self.view, attribute: .bottom, multiplier: 1, constant: -100)
+        self.view.addConstraint(searchVCTopConstraint)
+        
+    }
+    func addMapView() {
+        self.addChild(mapView)
+        mapView.willMove(toParent: self)
+        self.view.addSubview(mapView.view)
+        
+        
+        func addConstraints(fromView: UIView, toView: UIView) {
+               
+           fromView.translatesAutoresizingMaskIntoConstraints = false
+           
+           NSLayoutConstraint.activate([fromView.leadingAnchor.constraint(equalTo: toView.leadingAnchor, constant: 0),
+                                        fromView.trailingAnchor.constraint(equalTo: toView.trailingAnchor, constant: 0),
+                                        fromView.bottomAnchor.constraint(equalTo: toView.bottomAnchor,constant: 0)])
+            
+            MapVCTopConstraint = NSLayoutConstraint(item: fromView, attribute: .top, relatedBy: .equal, toItem: toView, attribute: .top, multiplier: 1, constant: 0)
+            
+            self.view.addConstraint(MapVCTopConstraint)
+            
+        }
+        addConstraints(fromView: mapView.view, toView: self.view)
+        
+    }
+    //MARK: - Animations
     @objc private func panHandler(_ recognizer: UIPanGestureRecognizer) {
         switch recognizer.state {
         case .began:
-            startInteractiveTransition(state: nextState, duration: 0.9)
+            if recognizer.view == selectableAreaSearchVC {
+                startInteractiveTransition(state: nextState, duration: 0.9)
+            }else{
+                startInteractiveTransitionMap(state: nextStateMap, duration: 0.9)
+            }
             
         case .changed:
             let translation = recognizer.translation(in: self.view)
             
             var fractionComplete = translation.y / 340
             
-            fractionComplete = cardVisible ? fractionComplete : -fractionComplete
+            if recognizer.view == selectableAreaSearchVC {
+                fractionComplete = cardVisible ? fractionComplete : -fractionComplete
+            }else{
+                fractionComplete = mapVisible ? fractionComplete : -fractionComplete
+            }
             
             updateInteractiveTransition(fractionCompleted: fractionComplete)
         case .ended:
@@ -148,6 +243,50 @@ class ViewController: UIViewController {
             break
         }
     }
+    
+    func animateTransitionIfNeededMap (state:MapVCState, duration:TimeInterval) {
+        if animators.isEmpty {
+            let animator = UIViewPropertyAnimator(duration: duration, dampingRatio: 1) {
+                switch state {
+                case .total:
+                    self.MapVCTopConstraint.constant = 0
+                    
+                    self.view.layoutIfNeeded()
+                case .collapsed:
+                    self.MapVCTopConstraint.constant = 600
+                    self.mapView.view.layer.cornerRadius = 12
+                    self.view.layoutIfNeeded()
+                case .midWay:
+                    self.MapVCTopConstraint.constant = 500
+                    self.mapView.view.layer.cornerRadius = 12
+                    self.view.layoutIfNeeded()
+                }
+            }
+            animator.addCompletion { (_) in
+                self.mapVisible.toggle()
+                self.animators.removeAll()
+
+            }
+
+            animator.startAnimation()
+            animators.append(animator)
+            
+        }
+        
+    }
+    func startInteractiveTransitionMap(state:MapVCState, duration:TimeInterval) {
+        
+        if animators.isEmpty {
+            animateTransitionIfNeededMap(state: state, duration: duration)
+        }
+        for animator in animators {
+            animator.pauseAnimation()
+            animationProgressWhenInterrupted = animator.fractionComplete
+        }
+
+
+    }
+    
     func animateTransitionIfNeeded (state:searchVCState, duration:TimeInterval) {
         if animators.isEmpty {
             let animator = UIViewPropertyAnimator(duration: duration, dampingRatio: 1) {
@@ -205,47 +344,8 @@ class ViewController: UIViewController {
         }
         
     }
-    func addSearchVC() {
-        
-        self.addChild(searchVC)
-        searchVC.willMove(toParent: searchVC)
-        let view = searchVC.view!
-        view.layer.cornerRadius = 12
-        self.view.addSubview(view)
-        
-        
-        func addConstraints(fromView: UIView, toView: UIView) {
-               
-           fromView.translatesAutoresizingMaskIntoConstraints = false
-           
-           NSLayoutConstraint.activate([fromView.leadingAnchor.constraint(equalTo: toView.leadingAnchor, constant: 0),
-                                        fromView.trailingAnchor.constraint(equalTo: toView.trailingAnchor, constant: 0),
-                                        fromView.heightAnchor.constraint(equalToConstant: self.view.frame.size.height)])
-        }
-        addConstraints(fromView: view, toView: self.view)
-        
-        searchVCTopConstraint = NSLayoutConstraint(item: searchVC.view!, attribute: .top, relatedBy: .equal, toItem: self.view, attribute: .bottom, multiplier: 1, constant: -100)
-        self.view.addConstraint(searchVCTopConstraint)
-        
-    }
-    func addMapView() {
-        self.addChild(mapView)
-        mapView.willMove(toParent: self)
-        self.view.addSubview(mapView.view)
-        
-        
-        func addConstraints(fromView: UIView, toView: UIView) {
-               
-           fromView.translatesAutoresizingMaskIntoConstraints = false
-           
-           NSLayoutConstraint.activate([fromView.leadingAnchor.constraint(equalTo: toView.leadingAnchor, constant: 0),
-                                        fromView.trailingAnchor.constraint(equalTo: toView.trailingAnchor, constant: 0),
-                                        fromView.topAnchor.constraint(equalTo: toView.topAnchor, constant: 0),
-                                        fromView.bottomAnchor.constraint(equalTo: toView.bottomAnchor,constant: 0)])
-        }
-        addConstraints(fromView: mapView.view, toView: self.view)
-        
-    }
+    
+
 }
 extension ViewController: MonumentManagerDelegate {
     
@@ -294,6 +394,16 @@ extension ViewController: MapVCDelegate {
 }
 extension ViewController: DirectionCardDelegate {
     
+    func didEngagedNavigation() {
+        
+        self.removeDirectionCard()
+        self.mapView.animateMapView()
+        self.mapView.view.addShadow(radius: 5, opacity: 0.5, color: .gray)
+        self.mapView.centerOnUserLocation()
+        self.animateTransitionIfNeededMap(state: .collapsed, duration: 0.9)
+        
+    }
+    
     private func removeDirectionCard() {
         
         let view = directionCardVC.view!
@@ -314,4 +424,14 @@ extension ViewController: DirectionCardDelegate {
         self.animateTransitionIfNeeded(state: .collapsed, duration: 0.6)
     }
     
+}
+extension UIView {
+    func addShadow(radius: CGFloat, opacity: Float, color: UIColor) {
+        
+        self.layer.shadowColor = color.cgColor
+        self.layer.shadowOpacity = opacity
+        self.layer.shadowRadius = radius
+        self.layer.shadowOffset = CGSize(width: 0, height: 0)
+        
+    }
 }

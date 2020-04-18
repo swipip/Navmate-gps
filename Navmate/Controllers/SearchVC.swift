@@ -55,6 +55,9 @@ class SearchVC: UIViewController {
         addSearchResultsTable()
         
     }
+    deinit {
+        print("search vc out")
+    }
     func resignKeyboard() {
         self.searchField.resignFirstResponder()
         self.researchTable.alpha = 0.0

@@ -15,7 +15,6 @@ class MapVC: UIViewController {
     
     lazy var mapView: MKMapView = {
         let map = MKMapView()
-        map.frame = self.view.bounds
         map.showsScale = true
         map.showsCompass = true
         map.delegate = self
@@ -32,6 +31,18 @@ class MapVC: UIViewController {
         imageV.contentMode = .scaleAspectFit
         return imageV
     }()
+    private lazy var handle: UIView = {
+        let view = UIView()
+        view.layer.cornerRadius = 3
+        view.backgroundColor = .systemGray4
+        return view
+    }()
+    //MapView Constraints
+    var topConstraint = NSLayoutConstraint()
+    var bottomConstraint = NSLayoutConstraint()
+    var leadingConstraint = NSLayoutConstraint()
+    var trailingConstraint = NSLayoutConstraint()
+    
     //MARK: - Data
     private var previousLocation: CLLocation?
     private let locator = Locator()
@@ -42,7 +53,9 @@ class MapVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        addMapView()
+        self.view.backgroundColor = .white
+        self.addHandle()
+        self.addMapView()
         
         locator.delegate = self
         locator.checkForAuthorization()
@@ -50,6 +63,20 @@ class MapVC: UIViewController {
         //        let visibleRect = mapView.visibleMapRect
         //        if MKMapRect.contains(visibleRect)
         
+    }
+    private func addHandle() {
+        self.view.addSubview(handle)
+        
+        func addConstraints(fromView: UIView, toView: UIView) {
+               
+           fromView.translatesAutoresizingMaskIntoConstraints = false
+           
+           NSLayoutConstraint.activate([fromView.centerXAnchor.constraint(equalTo: toView.centerXAnchor, constant: 0),
+                                        fromView.widthAnchor.constraint(equalToConstant: 100),
+                                        fromView.topAnchor.constraint(equalTo: toView.topAnchor, constant: 10),
+                                        fromView.heightAnchor.constraint(equalToConstant: 6)])
+        }
+        addConstraints(fromView: handle, toView: self.view)
     }
     func getRoute(to placeMark: MKPlacemark) {
         
@@ -95,6 +122,38 @@ class MapVC: UIViewController {
         
         self.view.addSubview(mapView)
         
+        mapView.translatesAutoresizingMaskIntoConstraints = false
+        
+        topConstraint = NSLayoutConstraint(item: mapView, attribute: .top, relatedBy: .equal, toItem: self.view, attribute: .top, multiplier: 1, constant: 0)
+        bottomConstraint = NSLayoutConstraint(item: mapView, attribute: .bottom, relatedBy: .equal, toItem: self.view, attribute: .bottom, multiplier: 1, constant: 0)
+        leadingConstraint = NSLayoutConstraint(item: mapView, attribute: .leading, relatedBy: .equal, toItem: self.view, attribute: .leading, multiplier: 1, constant: 0)
+        trailingConstraint = NSLayoutConstraint(item: mapView, attribute: .trailing, relatedBy: .equal, toItem: self.view, attribute: .trailing, multiplier: 1, constant: 0)
+        
+        self.view.addConstraints([topConstraint,bottomConstraint,leadingConstraint,trailingConstraint])
+        
+    }
+    func centerOnUserLocation() {
+        
+        if let location = locator.getUserLocation() {
+            let region = MKCoordinateRegion(center: location.coordinate, latitudinalMeters: 200, longitudinalMeters: 200)
+            self.mapView.setRegion(region, animated: true)
+            self.mapView.userTrackingMode = .followWithHeading
+        }
+
+    }
+    func animateMapView() {
+        
+        UIView.animate(withDuration: 0.3, animations: {
+            self.topConstraint.constant = 26
+            self.bottomConstraint.constant = -15
+            self.leadingConstraint.constant = 10
+            self.trailingConstraint.constant = -10
+            self.mapView.layer.cornerRadius = 12
+            self.view.layoutIfNeeded()
+        }) { (_) in
+            
+        }
+        
     }
     @objc private func didLongPressOnTheMap(_ recognizer:UILongPressGestureRecognizer!) {
         
@@ -127,6 +186,9 @@ extension MapVC: MKMapViewDelegate {
             self.getRoute(to: placemark)
         }
         
+    }
+    func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
+       
     }
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         

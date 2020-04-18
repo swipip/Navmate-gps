@@ -10,6 +10,7 @@ import UIKit
 import CoreLocation
 protocol DirectionCardDelegate {
     func didDismissNavigation()
+    func didEngagedNavigation()
 }
 class DirectionCard: UIViewController {
 
@@ -190,7 +191,7 @@ class DirectionCard: UIViewController {
     }
     @objc private func goButtonPressed(_ sender:UIButton!) {
         
-        //
+        delegate?.didEngagedNavigation()
         
     }
     private func addDismissButton() {
