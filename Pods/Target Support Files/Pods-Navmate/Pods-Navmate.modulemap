@@ -1,0 +1,6 @@
+framework module Pods_Navmate {
+  umbrella header "Pods-Navmate-umbrella.h"
+
+  export *
+  module * { export * }
+}
