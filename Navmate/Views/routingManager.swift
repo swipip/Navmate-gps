@@ -20,6 +20,7 @@ protocol RoutingManagerDelegate {
 class RoutingManager {
     
     var delegate: RoutingManagerDelegate?
+    var jsonData: Data?
     
     func createRoute(geometry: String ,instructions: [String],steps: [Step],summary: Summary) {
         
@@ -46,6 +47,8 @@ class RoutingManager {
     }
     
     func getDirections(from source: CLLocationCoordinate2D,to destination: CLLocationCoordinate2D) {
+        
+//        jsonData = serializeJSON()
         
         findRoute(from: source, to: destination) { (data) in
             do {
@@ -102,7 +105,30 @@ class RoutingManager {
             }
         }
     }
-    
+    func serializeJSON(from source: CLLocationCoordinate2D, to destination: CLLocationCoordinate2D) -> Data?{
+        
+        let sourceLatitude = source.latitude
+        let sourceLongitude = source.longitude
+        
+        let destinationLatitude = destination.latitude
+        let desitnationLongitude = destination.longitude
+        
+        let avoidFeatures = AvoidFeatures(avoid_features: ["highways"])
+    //    let alternativeRoutes = AlternativeRoutes(share_factor: 0.8, target_count: 2, weight_factor: 1.5)
+        let query = RouteQueryModel(options: avoidFeatures, preference: "shortest", coordinates: [[sourceLongitude,sourceLatitude],[desitnationLongitude,destinationLatitude]])
+        
+        let encoder = JSONEncoder()
+        do {
+            let json = try encoder.encode(query)
+            let jsonString = NSString(data: json as Data, encoding: String.Encoding.utf8.rawValue)! as String
+            
+            print(jsonString)
+            
+            return json
+        }catch{
+            return nil
+        }
+    }
     private func findRoute(from source: CLLocationCoordinate2D,to destination: CLLocationCoordinate2D,completion: @escaping (_ data: Data) -> Void) {
         let url = URL(string: "https://api.openrouteservice.org/v2/directions/driving-car")!
         var request = URLRequest(url: url)
@@ -112,28 +138,11 @@ class RoutingManager {
         request.addValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
         //"options":["avoid_features":["highways","tollways"]
         
-        let jsonObject: [String:Any] = [
-            "coordinates":[
-                [source.longitude,source.latitude], //longitude
-                [destination.longitude,destination.latitude]  //latitude
-            ],
-            "preference":"shortest",//shortest
-            "options":["avoid_features":
-                ["highways"]
-            ]
-        ]
-
-        do {
-            let jsonData = try JSONSerialization.data(withJSONObject: jsonObject)
-            
-//            let jsonString = NSString(data: jsonData as Data, encoding: String.Encoding.utf8.rawValue)! as String
-//
-//            print(jsonString)
-
+        if let jsonData = serializeJSON(from: source, to: destination) {
             request.httpBody = jsonData
-
+            
             let task = URLSession.shared.dataTask(with: request) { data, response, error in
-              if let _ = response, let data = data {
+              if let response = response, let data = data {
             //    print(response)
                 print(String(data: data, encoding: .utf8) ?? "")
                 
@@ -148,10 +157,7 @@ class RoutingManager {
 
             task.resume()
             
-        }catch{
-            
         }
-
     }
     
 }
