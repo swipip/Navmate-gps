@@ -1,19 +1,22 @@
 //
-//  DirectionCard.swift
+//  DirectionGoCell.swift
 //  Navmate
 //
-//  Created by Gautier Billard on 17/04/2020.
+//  Created by Gautier Billard on 18/04/2020.
 //  Copyright © 2020 Gautier Billard. All rights reserved.
 //
 
 import UIKit
 import CoreLocation
-protocol DirectionCardDelegate {
+
+protocol DirectionGoCellDelegate {
     func didDismissNavigation()
     func didEngagedNavigation()
 }
-class DirectionCard: UIViewController {
 
+class DirectionGoCell: UICollectionViewCell {
+    
+    
     private lazy var directionCard: UIVisualEffectView = {
         
         let blur = UIBlurEffect(style: .systemUltraThinMaterialLight)
@@ -72,17 +75,18 @@ class DirectionCard: UIViewController {
         return label
     }()
     //MARK: - Data
-    var delegate: DirectionCardDelegate?
-    
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
+    var delegate: DirectionGoCellDelegate?
+    //MARK: - View loading
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        self.backgroundColor = .clear
+        
         addDirectionCard()
         
     }
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
+    override func layoutSubviews() {
+        super.layoutSubviews()
         addGoButton()
         addDismissButton()
         addCardTitle()
@@ -90,8 +94,11 @@ class DirectionCard: UIViewController {
         addTimeLabel()
         addDistanceLabel()
         addDirectionName()
-        
     }
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    //MARK: - UI Construction
     func secondsToHoursMinutesSeconds (seconds : Int) -> (hours:Int,minutes: Int,seconds: Int) {
       return (seconds / 3600, (seconds % 3600) / 60, (seconds % 3600) % 60)
     }
@@ -118,7 +125,7 @@ class DirectionCard: UIViewController {
         
     }
     private func addDirectionName() {
-        self.view.addSubview(directionName)
+        self.addSubview(directionName)
         
         func addConstraints(fromView: UIView, toView: UIView) {
                
@@ -131,7 +138,7 @@ class DirectionCard: UIViewController {
         addConstraints(fromView: directionName, toView: directionTitle)
     }
     private func addCardTitle() {
-        self.view.addSubview(directionTitle)
+        self.addSubview(directionTitle)
         
         func addConstraints(fromView: UIView, toView: UIView) {
                
@@ -143,7 +150,7 @@ class DirectionCard: UIViewController {
         addConstraints(fromView: directionTitle, toView: directionCard)
     }
     private func addSummaryCard() {
-        self.view.addSubview(summaryCard)
+        self.addSubview(summaryCard)
         
         func addConstraints(fromView: UIView, toView: UIView) {
                
@@ -159,7 +166,7 @@ class DirectionCard: UIViewController {
     
     private func addTimeLabel() {
         
-        self.view.addSubview(timeLabel)
+        self.addSubview(timeLabel)
         
         func addConstraints(fromView: UIView, toView: UIView) {
             
@@ -174,7 +181,7 @@ class DirectionCard: UIViewController {
     }
     private func addDistanceLabel() {
         
-        self.view.addSubview(distanceLabel)
+        self.addSubview(distanceLabel)
         
         func addConstraints(fromView: UIView, toView: UIView) {
             
@@ -195,7 +202,7 @@ class DirectionCard: UIViewController {
         
     }
     private func addDismissButton() {
-        self.view.addSubview(dismissButton)
+        self.addSubview(dismissButton)
         
         func addConstraints(fromView: UIView, toView: UIView) {
               
@@ -212,7 +219,7 @@ class DirectionCard: UIViewController {
     }
     private func addGoButton() {
 
-        self.view.addSubview(goButton)
+        self.addSubview(goButton)
         
         func addConstraints(fromView: UIView, toView: UIView) {
               
@@ -230,20 +237,19 @@ class DirectionCard: UIViewController {
     }
     private func addDirectionCard() {
         
-        self.view.addSubview(directionCard)
+        self.addSubview(directionCard)
         
         func addConstraints(fromView: UIView, toView: UIView) {
                
            fromView.translatesAutoresizingMaskIntoConstraints = false
            
-           NSLayoutConstraint.activate([fromView.leadingAnchor.constraint(equalTo: toView.leadingAnchor, constant: 0),
-                                        fromView.trailingAnchor.constraint(equalTo: toView.trailingAnchor, constant: 0),
+           NSLayoutConstraint.activate([fromView.leadingAnchor.constraint(equalTo: toView.leadingAnchor, constant: 10),
+                                        fromView.trailingAnchor.constraint(equalTo: toView.trailingAnchor, constant: -10),
                                         fromView.topAnchor.constraint(equalTo: toView.topAnchor, constant: 10),
                                         fromView.bottomAnchor.constraint(equalTo: toView.bottomAnchor,constant: -10)])
         }
-        addConstraints(fromView: directionCard, toView: self.view)
+        addConstraints(fromView: directionCard, toView: self)
         
     }
-
-
+    
 }

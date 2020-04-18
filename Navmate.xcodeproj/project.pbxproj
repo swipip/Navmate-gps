@@ -12,8 +12,10 @@
 		4900D2AC2449DE910065752F /* routingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4900D2A92449DE900065752F /* routingManager.swift */; };
 		4900D2AD2449DE910065752F /* Route.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4900D2AA2449DE910065752F /* Route.swift */; };
 		4900D2AE2449DE910065752F /* Locator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4900D2AB2449DE910065752F /* Locator.swift */; };
-		4900D2B02449F9000065752F /* DirectionCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4900D2AF2449F9000065752F /* DirectionCard.swift */; };
 		49355829244B37410023F848 /* Keys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49355828244B37410023F848 /* Keys.swift */; };
+		4935582C244B5BF70023F848 /* DirectionGoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4935582B244B5BF70023F848 /* DirectionGoCell.swift */; };
+		4935582E244B5CF40023F848 /* DirectionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4935582D244B5CF40023F848 /* DirectionVC.swift */; };
+		49355830244B5F0B0023F848 /* DirectionOptionsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4935582F244B5F0B0023F848 /* DirectionOptionsCell.swift */; };
 		493651F02443780100120DAC /* MapVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493651EF2443780100120DAC /* MapVC.swift */; };
 		493652132443AA9000120DAC /* CustomPin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493652122443AA9000120DAC /* CustomPin.swift */; };
 		49A5D2A3244357B6002E7D53 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A5D2A2244357B6002E7D53 /* AppDelegate.swift */; };
@@ -32,8 +34,10 @@
 		4900D2A92449DE900065752F /* routingManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = routingManager.swift; sourceTree = "<group>"; };
 		4900D2AA2449DE910065752F /* Route.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Route.swift; sourceTree = "<group>"; };
 		4900D2AB2449DE910065752F /* Locator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Locator.swift; sourceTree = "<group>"; };
-		4900D2AF2449F9000065752F /* DirectionCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectionCard.swift; sourceTree = "<group>"; };
 		49355828244B37410023F848 /* Keys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keys.swift; sourceTree = "<group>"; };
+		4935582B244B5BF70023F848 /* DirectionGoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectionGoCell.swift; sourceTree = "<group>"; };
+		4935582D244B5CF40023F848 /* DirectionVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectionVC.swift; sourceTree = "<group>"; };
+		4935582F244B5F0B0023F848 /* DirectionOptionsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectionOptionsCell.swift; sourceTree = "<group>"; };
 		493651EF2443780100120DAC /* MapVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapVC.swift; sourceTree = "<group>"; };
 		493652122443AA9000120DAC /* CustomPin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPin.swift; sourceTree = "<group>"; };
 		49A5D29F244357B6002E7D53 /* Navmate.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Navmate.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -60,6 +64,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4935582A244B5BAD0023F848 /* DirectionOptions */ = {
+			isa = PBXGroup;
+			children = (
+				4935582D244B5CF40023F848 /* DirectionVC.swift */,
+				4935582B244B5BF70023F848 /* DirectionGoCell.swift */,
+				4935582F244B5F0B0023F848 /* DirectionOptionsCell.swift */,
+			);
+			path = DirectionOptions;
+			sourceTree = "<group>";
+		};
 		493652112443AA7E00120DAC /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -68,7 +82,7 @@
 				4900D2AA2449DE910065752F /* Route.swift */,
 				4900D2AB2449DE910065752F /* Locator.swift */,
 				4900D2A72449D0C30065752F /* ResearchCell.swift */,
-				4900D2AF2449F9000065752F /* DirectionCard.swift */,
+				4935582A244B5BAD0023F848 /* DirectionOptions */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -257,14 +271,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				4900D284244858F50065752F /* SearchVC.swift in Sources */,
-				4900D2B02449F9000065752F /* DirectionCard.swift in Sources */,
 				49A5D2A7244357B6002E7D53 /* ViewController.swift in Sources */,
 				4900D2AD2449DE910065752F /* Route.swift in Sources */,
 				49355829244B37410023F848 /* Keys.swift in Sources */,
 				493652132443AA9000120DAC /* CustomPin.swift in Sources */,
 				493651F02443780100120DAC /* MapVC.swift in Sources */,
+				49355830244B5F0B0023F848 /* DirectionOptionsCell.swift in Sources */,
+				4935582E244B5CF40023F848 /* DirectionVC.swift in Sources */,
 				4900D2A82449D0C30065752F /* ResearchCell.swift in Sources */,
 				4900D2AC2449DE910065752F /* routingManager.swift in Sources */,
+				4935582C244B5BF70023F848 /* DirectionGoCell.swift in Sources */,
 				4900D2AE2449DE910065752F /* Locator.swift in Sources */,
 				49A5D2A3244357B6002E7D53 /* AppDelegate.swift in Sources */,
 				49C0888224436C3600EBEAE5 /* MonumentManager.swift in Sources */,

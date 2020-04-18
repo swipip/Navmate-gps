@@ -50,8 +50,8 @@ class ViewController: UIViewController {
         button.addTarget(self, action: #selector(locationButtonPressed(_ :)), for: .touchUpInside)
         return button
     }()
-    private lazy var directionCardVC: DirectionCard = {
-        let child = DirectionCard()
+    private lazy var directionCardVC: DirectionVC = {
+        let child = DirectionVC()
         child.delegate = self
         return child
     }()
@@ -110,8 +110,8 @@ class ViewController: UIViewController {
                
            fromView.translatesAutoresizingMaskIntoConstraints = false
            
-           NSLayoutConstraint.activate([fromView.leadingAnchor.constraint(equalTo: toView.leadingAnchor, constant: 10),
-                                        fromView.trailingAnchor.constraint(equalTo: toView.trailingAnchor, constant: -10),
+           NSLayoutConstraint.activate([fromView.leadingAnchor.constraint(equalTo: toView.leadingAnchor, constant: 0),
+                                        fromView.trailingAnchor.constraint(equalTo: toView.trailingAnchor, constant: 0),
                                         fromView.heightAnchor.constraint(equalToConstant: 250),
                                         fromView.bottomAnchor.constraint(equalTo: locationButton.topAnchor,constant: -10)])
         }
@@ -388,11 +388,11 @@ extension ViewController: MapVCDelegate {
     func didDrawRoute(summary: Summary,destination: CLLocation) {
         self.addDirectionCard()
         self.animateTransitionIfNeeded(state: .hidden, duration: 0.6)
-        self.directionCardVC.updateValues(summary: summary, destination: destination)
+//        self.directionCardVC.updateValues(summary: summary, destination: destination)
         
     }
 }
-extension ViewController: DirectionCardDelegate {
+extension ViewController: DirectionVCDelegate {
     
     func didEngagedNavigation() {
         
@@ -404,7 +404,7 @@ extension ViewController: DirectionCardDelegate {
         
     }
     
-    private func removeDirectionCard() {
+    func removeDirectionCard() {
         
         let view = directionCardVC.view!
         
