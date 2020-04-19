@@ -10,7 +10,8 @@ import UIKit
 import MapKit
 protocol SearchVCDelegate {
     func didEnterSearchField()
-    func didSelectAddress(placemark: MKPlacemark)
+    func didSelectAddress(placemark: MKPointAnnotation)
+    func didSelectedPOI(type: String)
 }
 class SearchVC: UIViewController {
     
@@ -28,16 +29,23 @@ class SearchVC: UIViewController {
         view.backgroundColor = .systemGray4
         return view
     }()
-    private lazy var researchTable: UITableView = {
+    lazy var researchTable: UITableView = {
         let table = UITableView()
-        table.register(ResearchCell.self, forCellReuseIdentifier: "cellID")
-        table.alpha = 1.0
+        table.register(ResearchCell.self, forCellReuseIdentifier: Cells.searchCell)
+        table.register(MonumentCell.self, forCellReuseIdentifier: Cells.monumentCell)
+        table.alpha = 0.0
         table.separatorStyle = .none
         table.delegate = self
         table.dataSource = self
         return table
     }()
-    //Data
+    //MARK: - Data
+    
+    struct Cells {
+        static let searchCell = "cellID"
+        static let monumentCell = "cellID2"
+    }
+    
     private var searchCompletionResults:[MKLocalSearchCompletion]?
     private var searchQueryResults:[MKPlacemark]?
     private let searchCompleter = MKLocalSearchCompleter()
@@ -45,7 +53,7 @@ class SearchVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         searchCompleter.delegate = self
         
         self.view.backgroundColor = .white
@@ -73,7 +81,7 @@ class SearchVC: UIViewController {
            NSLayoutConstraint.activate([fromView.leadingAnchor.constraint(equalTo: toView.leadingAnchor, constant: 0),
                                         fromView.trailingAnchor.constraint(equalTo: toView.trailingAnchor, constant: 0),
                                         fromView.topAnchor.constraint(equalTo: searchField.bottomAnchor, constant: 0),
-                                        fromView.heightAnchor.constraint(equalToConstant: 300)])
+                                        fromView.bottomAnchor.constraint(equalTo: toView.bottomAnchor, constant: 0)])
         }
         addConstraints(fromView: researchTable, toView: self.view)
     }
@@ -111,46 +119,121 @@ class SearchVC: UIViewController {
 }
 extension SearchVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
-        if let searchQuery = self.searchCompletionResults {
-            return min(searchQuery.count,5)
+    
+        if section == 0 {
+            return 1
         }else{
-            return 5
+            if let searchQuery = self.searchCompletionResults {
+                return min(searchQuery.count,5)
+            }else{
+                return 5
+            }
         }
 
     }
-    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 2
+    }
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        
+        let titles = ["Intéréssant aux alentours","Recherche"]
+        
+        let headerView = UIView()
+        headerView.backgroundColor = .white
+        
+        let label = UILabel()
+        label.text = titles[section]
+        label.font = UIFont.systemFont(ofSize: 20,weight: .medium)
+
+        headerView.addSubview(label)
+        
+        func addConstraints(fromView: UIView, toView: UIView) {
+               
+           fromView.translatesAutoresizingMaskIntoConstraints = false
+           
+           NSLayoutConstraint.activate([fromView.leadingAnchor.constraint(equalTo: toView.leadingAnchor, constant: 20),
+                                        fromView.centerYAnchor.constraint(equalTo: toView.centerYAnchor, constant: 0)])
+        }
+        addConstraints(fromView: label, toView: headerView)
+        
+        return headerView
+        
+    }
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        
+        return 50
+        
+    }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cellID", for: indexPath) as! ResearchCell
-        
-        if let searchResults = self.searchCompletionResults {
-            let i = indexPath.row
-            cell.passDataToCell(title: searchResults[i].title, subTitle: searchResults[i].subtitle, imageName: "place", searchResult: searchResults[i])
+        if indexPath.section == 0 {
+            
+            let cell = tableView.dequeueReusableCell(withIdentifier: Cells.monumentCell, for: indexPath) as! MonumentCell
+            cell.delegate = self
+            return cell
+            
+        }else{
+            
+            let cell = tableView.dequeueReusableCell(withIdentifier: Cells.searchCell, for: indexPath) as! ResearchCell
+            
+            if let searchResults = self.searchCompletionResults {
+                let i = indexPath.row
+                let title = searchResults[i].title
+                if title == "Restaurants" || title == "Restaurant"{
+                    cell.passDataToCell(title: searchResults[i].title, subTitle: searchResults[i].subtitle, imageName: "restaurant", searchResult: searchResults[i])
+                }else if title == "Aeroport" || title == "Internationnal Airports" || title.contains("Aéroports") || title.contains("Aéroport") || title.contains("Airport"){
+                    cell.passDataToCell(title: searchResults[i].title, subTitle: searchResults[i].subtitle, imageName: "airport", searchResult: searchResults[i])
+                }else if title == "Bars"{
+                    cell.passDataToCell(title: searchResults[i].title, subTitle: searchResults[i].subtitle, imageName: "bar", searchResult: searchResults[i])
+                }else if title.contains("Station service") || title.contains("Gas") || title.contains("Essence") {
+                    cell.passDataToCell(title: searchResults[i].title, subTitle: searchResults[i].subtitle, imageName: "gas", searchResult: searchResults[i])
+                }else {
+                    cell.passDataToCell(title: searchResults[i].title, subTitle: searchResults[i].subtitle, imageName: "place", searchResult: searchResults[i])
+                }
+            }
+            
+            return cell
         }
         
-        return cell
+
         
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        let cell = tableView.cellForRow(at: indexPath) as! ResearchCell
-        let address = "\(cell.searchResult.title) \(cell.searchResult.subtitle)"
-        let geocoder = CLGeocoder()
-        geocoder.geocodeAddressString(address) { (placemarks, error) in
-            if let err = error {
-                print(err)
-            }else if let place = placemarks?.first {
-                let mkPlacemark = MKPlacemark(placemark: place)
-                self.researchTable.alpha = 0.0
-                self.delegate?.didSelectAddress(placemark: mkPlacemark)
-                self.searchField.resignFirstResponder()
+        self.searchField.resignFirstResponder()
+        
+        if let cell = tableView.cellForRow(at: indexPath) as? ResearchCell {
+            if cell.searchResult.subtitle == "Search Nearby" || cell.searchResult.subtitle == "Rechercher à proximité" {
+                
+                delegate?.didSelectedPOI(type: cell.searchResult.title)
+                
+            }else{
+                let address = "\(cell.searchResult.title) \(cell.searchResult.subtitle)"
+                let geocoder = CLGeocoder()
+                geocoder.geocodeAddressString(address) { (placemarks, error) in
+                    if let err = error {
+                        print(err)
+                    }else if let place = placemarks?.first {
+                        let mkPlacemark = MKPlacemark(placemark: place)
+                        
+                        let annotation = MKPointAnnotation()
+                        annotation.title = cell.searchResult.title
+                        annotation.subtitle = cell.searchResult.subtitle
+                        annotation.coordinate = mkPlacemark.coordinate
+                        
+                        self.researchTable.alpha = 0.0
+                        self.delegate?.didSelectAddress(placemark: annotation)
+                    }
+                }
             }
         }
-        
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 70
+        if indexPath.section == 0 {
+            return 100
+        }else {
+            return 70
+        }
     }
     
     
@@ -170,7 +253,26 @@ extension SearchVC: UISearchBarDelegate {
     }
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         delegate?.didEnterSearchField()
+        
     }
+    
+}
+extension SearchVC: MonumentCellDelegate {
+    
+    func didSelectMonument(monument: Monument) {
+ 
+        let placeMark = MKPlacemark(coordinate: CLLocationCoordinate2D(latitude: monument.latitude, longitude: -monument.longitude))
+        
+        let annotation = MKPointAnnotation()
+        annotation.title = monument.name
+        annotation.subtitle = "Monument \(monument.protection.lowercased())"
+        annotation.coordinate = placeMark.coordinate
+        
+        self.researchTable.alpha = 0.0
+        delegate?.didSelectAddress(placemark: annotation)
+        
+    }
+    
     
 }
 extension SearchVC: MKLocalSearchCompleterDelegate {
@@ -193,3 +295,5 @@ extension SearchVC: MKLocalSearchCompleterDelegate {
     }
     
 }
+
+

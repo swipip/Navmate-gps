@@ -18,7 +18,6 @@ class DirectionGoCell: UICollectionViewCell {
     
     
     private lazy var directionCard: UIVisualEffectView = {
-        
         let blur = UIBlurEffect(style: .systemUltraThinMaterialLight)
         let view = UIVisualEffectView(effect: blur)
         view.layer.cornerRadius = 12

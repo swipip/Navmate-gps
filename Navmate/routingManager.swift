@@ -127,9 +127,9 @@ class RoutingManager {
         let encoder = JSONEncoder()
         do {
             let json = try encoder.encode(query)
-            let jsonString = NSString(data: json as Data, encoding: String.Encoding.utf8.rawValue)! as String
-            
-            print(jsonString)
+//            let jsonString = NSString(data: json as Data, encoding: String.Encoding.utf8.rawValue)! as String
+//            
+//            print(jsonString)
             
             return json
         }catch{

@@ -55,7 +55,6 @@ class ViewController: UIViewController {
         child.delegate = self
         return child
     }()
-    
     //MARK: - Animations Variables
     private var animators = [UIViewPropertyAnimator]()
     var animationProgressWhenInterrupted:CGFloat = 0
@@ -86,9 +85,7 @@ class ViewController: UIViewController {
         
         self.navigationController?.navigationBar.isHidden = true
         
-        let monumentManager = MonumentManager()
-        monumentManager.getData()
-        monumentManager.delegate = self
+        WikipediaManager.shared.requestInfo(monument: "Chapelle Notre-Dame-du-Mûrier de Batz-sur-Mer")
         
         addMapView()
         addSearchVC()
@@ -292,8 +289,8 @@ class ViewController: UIViewController {
             let animator = UIViewPropertyAnimator(duration: duration, dampingRatio: 1) {
                 switch state {
                 case .expanded:
-                    self.searchVCTopConstraint.constant = -600
-                    
+                    self.searchVCTopConstraint.constant = -self.view.frame.size.height * 0.8
+                    self.searchVC.researchTable.alpha = 1.0
                     self.view.layoutIfNeeded()
                 case .collapsed:
                     self.searchVCTopConstraint.constant = -100
@@ -359,14 +356,43 @@ extension ViewController: MonumentManagerDelegate {
     
 }
 extension ViewController: SearchVCDelegate {
-    func didSelectAddress(placemark: MKPlacemark) {
+    func didSelectedPOI(type: String) {
         
-        let annotation = MKPointAnnotation()
-        annotation.title = placemark.title
-        annotation.coordinate = placemark.coordinate
-        self.mapView.mapView.addAnnotation(annotation)
+        self.animateTransitionIfNeeded(state: .collapsed, duration: 1)
         
-        let region = MKCoordinateRegion(center: annotation.coordinate, latitudinalMeters: 2000, longitudinalMeters: 2000)
+        if let location = Locator.shared.getUserLocation() {
+            let region = MKCoordinateRegion(center: location.coordinate, latitudinalMeters: 8000, longitudinalMeters: 8000)
+            self.mapView.mapView.setRegion(region, animated: true)
+            
+            let request = MKLocalSearch.Request()
+            request.region = region
+            request.naturalLanguageQuery = type
+            let localSearch = MKLocalSearch(request: request)
+            localSearch.start { (response, error) in
+                if let err = error {
+                    print(err)
+                }else{
+                    
+                    if let places = response?.mapItems {
+                        for place in places {
+                            
+                            let annotation = MKPointAnnotation()
+                            annotation.title = place.name
+                            annotation.coordinate = place.placemark.coordinate
+                            self.mapView.mapView.addAnnotation(annotation)
+                            
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    func didSelectAddress(placemark: MKPointAnnotation) {
+        
+        self.mapView.mapView.addAnnotation(placemark)
+        
+        let region = MKCoordinateRegion(center: placemark.coordinate, latitudinalMeters: 2000, longitudinalMeters: 2000)
         self.mapView.mapView.setRegion(region, animated: true)
         
         self.animateTransitionIfNeeded(state: .collapsed, duration: 1)
@@ -399,6 +425,8 @@ extension ViewController: DirectionVCDelegate {
         self.mapView.updateRoute(mode: mode,preference: preference, avoid: avoid, to: destination)
         self.cleanMapView()
     }
+    
+    
     
     
     func didEngagedNavigation() {

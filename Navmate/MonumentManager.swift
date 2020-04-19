@@ -9,35 +9,50 @@
 import Foundation
 import SwiftyJSON
 import Alamofire
+import MapKit
 
-protocol MonumentManagerDelegate {
+protocol MonumentManagerDelegate: class {
     func didFetchData(monuments: [Monument])
 }
 struct Monument {
     
     var name: String
+    var town: String
+    var address: String
     var latitude: Double
     var longitude: Double
     var protection: String
     
 }
-class MonumentManager {
+class MonumentManager: NSObject {
     
     private var monuments = [Monument]()
     
-    var delegate: MonumentManagerDelegate?
+    weak var delegate: MonumentManagerDelegate?
     
-    func getData() {
+    static let shared = MonumentManager()
+    
+    private override init() {
+        super.init()
+    }
+    
+    func getData(for region: CLCircularRegion) {
         fetchData { (json) in
             for i in 0...json.count {
                 let name = json[i]["Monument"].stringValue
                 let latitude = json[i]["Lattitude"].doubleValue
                 let longitude = json[i]["Longitude"].doubleValue
                 let protection = json[i]["Protection"].stringValue
+                let town = json[i]["Commune"].stringValue
+                let address = json[i]["Adresse"].stringValue
                 
-                let monument = Monument(name: name, latitude: latitude, longitude: longitude, protection: protection)
+                let monument = Monument(name: name, town: town, address: address, latitude: latitude, longitude: longitude, protection: protection)
                 
-                self.monuments.append(monument)
+                let monumentLocation = CLLocation(latitude: latitude, longitude: -longitude)
+                
+                if region.contains(monumentLocation.coordinate) {
+                    self.monuments.append(monument)
+                }
             }
             self.delegate?.didFetchData(monuments: self.monuments)
         }

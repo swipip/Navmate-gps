@@ -189,7 +189,7 @@ class MapVC: UIViewController {
 }
 extension MapVC: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-        
+
         if let destination = view.annotation?.coordinate {
             let placemark = MKPlacemark(coordinate: destination)
             self.getRoute(to: placemark)

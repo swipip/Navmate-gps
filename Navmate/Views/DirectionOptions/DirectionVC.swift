@@ -121,6 +121,7 @@ extension DirectionVC: DirectionOptionsCellDelegate {
         delegate?.didChooseOptions(mode: mode, preference: preference, avoid: avoid, destination: destination!)
     }
 }
+
 class SnappingCollectionViewLayoutWithOffset: UICollectionViewFlowLayout {
 
     override func targetContentOffset(forProposedContentOffset proposedContentOffset: CGPoint, withScrollingVelocity velocity: CGPoint) -> CGPoint {

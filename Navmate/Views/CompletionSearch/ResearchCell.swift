@@ -17,7 +17,7 @@ class ResearchCell: UITableViewCell {
     private lazy var thumbNail: UIImageView = {
         let image = UIImageView()
         image.clipsToBounds = true
-        image.layer.cornerRadius = 12
+        image.layer.cornerRadius = K.shared.cornerRadiusImageThumbNailCell
         return image
     }()
     
@@ -61,7 +61,7 @@ class ResearchCell: UITableViewCell {
     }
     private func addTitleLabel() {
         
-        titleLabel.font = UIFont.systemFont(ofSize: 16)
+        titleLabel.font = UIFont.systemFont(ofSize: K.shared.cellTitleFontSize)
         
         self.addSubview(titleLabel)
         
