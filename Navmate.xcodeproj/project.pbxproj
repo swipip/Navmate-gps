@@ -76,14 +76,19 @@
 			path = DirectionOptions;
 			sourceTree = "<group>";
 		};
+		49355833244B76A90023F848 /* CompletionSearch */ = {
+			isa = PBXGroup;
+			children = (
+				4900D2A72449D0C30065752F /* ResearchCell.swift */,
+			);
+			path = CompletionSearch;
+			sourceTree = "<group>";
+		};
 		493652112443AA7E00120DAC /* Views */ = {
 			isa = PBXGroup;
 			children = (
 				493652122443AA9000120DAC /* CustomPin.swift */,
-				4900D2A92449DE900065752F /* routingManager.swift */,
-				4900D2AA2449DE910065752F /* Route.swift */,
-				4900D2AB2449DE910065752F /* Locator.swift */,
-				4900D2A72449D0C30065752F /* ResearchCell.swift */,
+				49355833244B76A90023F848 /* CompletionSearch */,
 				4935582A244B5BAD0023F848 /* DirectionOptions */,
 			);
 			path = Views;
@@ -94,7 +99,10 @@
 			children = (
 				49C0888124436C3600EBEAE5 /* MonumentManager.swift */,
 				49355831244B71D30023F848 /* RouteQueryModel.swift */,
+				4900D2AA2449DE910065752F /* Route.swift */,
+				4900D2A92449DE900065752F /* routingManager.swift */,
 				49355828244B37410023F848 /* Keys.swift */,
+				4900D2AB2449DE910065752F /* Locator.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";

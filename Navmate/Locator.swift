@@ -9,7 +9,7 @@
 import Foundation
 import MapKit
 import CoreLocation
-protocol LocatorDelegate {
+protocol LocatorDelegate: class {
     func didReceiveNewDirectionInstructions(instruction: String)
     func didFindRoute(polyline: [MKPolyline], summary: Summary)
     func didChangeAuthorizationStatus()
@@ -34,10 +34,13 @@ class Locator: NSObject {
     var currentWPIndex = 0
     var contains = true
     var nextStepInstruction = ""
-    var delegate: LocatorDelegate?
+    
     var existingWP: CLLocation?
     
-    override init() {
+    static let shared = Locator()
+    weak var delegate: LocatorDelegate?
+    
+    private override init() {
         super.init()
         
         if CLLocationManager.locationServicesEnabled() {
@@ -94,17 +97,17 @@ class Locator: NSObject {
         }
         return location
     }
-    func getDirections(from source: CLLocationCoordinate2D, to destination: CLLocationCoordinate2D) {
+    func getDirections(from source: CLLocationCoordinate2D, to destination: CLLocationCoordinate2D,mode: String,preference: String? = "shortest", avoid: [String]? = ["highways"]) {
 
         self.clearVariableFornewRoute()
         
         let routingManager = RoutingManager()
         routingManager.delegate = self
         
-        routingManager.getDirections(from: source, to: destination)
+        routingManager.getDirections(from: source, to: destination,mode: mode, preference: preference!, avoid: avoid!)
         
     }
-    func updateInstructions() {
+    private func updateInstructions() {
         
         guard let steps = self.steps else {return}
         guard let wayPoints = self.wayPoints else {return}

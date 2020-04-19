@@ -10,15 +10,17 @@ import Foundation
 
 struct RouteQueryModel: Codable {
     
-    var options: AvoidFeatures
+    var options: AvoidFeatures?
     var alternative_routes: AlternativeRoutes?
     var preference: String
     var coordinates: [[Double]]
 }
 struct AlternativeRoutes: Codable {
+    
     var share_factor: Double
     var target_count: Double
     var weight_factor: Double
+    
 }
 struct AvoidFeatures: Codable {
     

@@ -388,11 +388,18 @@ extension ViewController: MapVCDelegate {
     func didDrawRoute(summary: Summary,destination: CLLocation) {
         self.addDirectionCard()
         self.animateTransitionIfNeeded(state: .hidden, duration: 0.6)
-//        self.directionCardVC.updateValues(summary: summary, destination: destination)
+        self.directionCardVC.updateValues(summary: summary, destination: destination)
         
     }
 }
 extension ViewController: DirectionVCDelegate {
+    
+    func didChooseOptions(mode: String,preference: String, avoid: [String],destination: CLLocation) {
+        
+        self.mapView.updateRoute(mode: mode,preference: preference, avoid: avoid, to: destination)
+        self.cleanMapView()
+    }
+    
     
     func didEngagedNavigation() {
         

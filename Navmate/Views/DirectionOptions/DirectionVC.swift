@@ -7,9 +7,12 @@
 //
 
 import UIKit
+import CoreLocation
+
 protocol DirectionVCDelegate {
     func didEngagedNavigation()
     func didDismissNavigation()
+    func didChooseOptions(mode: String, preference: String, avoid: [String],destination: CLLocation)
 }
 class DirectionVC: UIViewController {
 
@@ -29,12 +32,22 @@ class DirectionVC: UIViewController {
 
     var delegate: DirectionVCDelegate?
     
+    var summary: Summary?
+    var destination: CLLocation?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         self.view.backgroundColor = .clear
         
         addCollectionView()
+        
+    }
+    func updateValues(summary: Summary, destination: CLLocation) {
+        
+        self.destination = destination
+        self.summary = summary
+        self.collectionView.reloadData()
         
     }
     private func addCollectionView() {
@@ -68,10 +81,16 @@ extension DirectionVC: UICollectionViewDelegate, UICollectionViewDataSource, UIC
         
         if index == 0 {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cellID", for: indexPath) as! DirectionGoCell
+            
+            if let summary = summary, let destination = destination {
+                cell.updateValues(summary: summary, destination: destination)
+            }
+            
             cell.delegate = self
             return cell
         }else{
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cellID2", for: indexPath) as! DirectionOptionsCell
+            cell.delegate = self
             return cell
         }
 
@@ -96,6 +115,11 @@ extension DirectionVC: DirectionGoCellDelegate {
     }
     
     
+}
+extension DirectionVC: DirectionOptionsCellDelegate {
+    func didChooseOptions(mode: String, preference: String, avoid: [String]) {
+        delegate?.didChooseOptions(mode: mode, preference: preference, avoid: avoid, destination: destination!)
+    }
 }
 class SnappingCollectionViewLayoutWithOffset: UICollectionViewFlowLayout {
 

@@ -46,11 +46,11 @@ class RoutingManager {
         }
     }
     
-    func getDirections(from source: CLLocationCoordinate2D,to destination: CLLocationCoordinate2D) {
+    func getDirections(from source: CLLocationCoordinate2D,to destination: CLLocationCoordinate2D,mode: String, preference: String, avoid: [String]) {
         
 //        jsonData = serializeJSON()
         
-        findRoute(from: source, to: destination) { (data) in
+        findRoute(from: source, to: destination,mode: mode,preference: preference, avoid: avoid) { (data) in
             do {
                 let json = try JSON(data: data)
                 
@@ -105,7 +105,7 @@ class RoutingManager {
             }
         }
     }
-    func serializeJSON(from source: CLLocationCoordinate2D, to destination: CLLocationCoordinate2D) -> Data?{
+    func serializeJSON(from source: CLLocationCoordinate2D, to destination: CLLocationCoordinate2D,mode: String, preference: String, avoid: [String]) -> Data?{
         
         let sourceLatitude = source.latitude
         let sourceLongitude = source.longitude
@@ -113,9 +113,16 @@ class RoutingManager {
         let destinationLatitude = destination.latitude
         let desitnationLongitude = destination.longitude
         
-        let avoidFeatures = AvoidFeatures(avoid_features: ["highways"])
-    //    let alternativeRoutes = AlternativeRoutes(share_factor: 0.8, target_count: 2, weight_factor: 1.5)
-        let query = RouteQueryModel(options: avoidFeatures, preference: "shortest", coordinates: [[sourceLongitude,sourceLatitude],[desitnationLongitude,destinationLatitude]])
+        var avoidFeatures: AvoidFeatures?
+        var query: RouteQueryModel!
+        
+        
+        if mode == "driving-car" {
+            avoidFeatures = AvoidFeatures(avoid_features: avoid)
+            query = RouteQueryModel(options: avoidFeatures, preference: preference, coordinates: [[sourceLongitude,sourceLatitude],[desitnationLongitude,destinationLatitude]])
+        }else{
+            query = RouteQueryModel(preference: preference, coordinates: [[sourceLongitude,sourceLatitude],[desitnationLongitude,destinationLatitude]])
+        }
         
         let encoder = JSONEncoder()
         do {
@@ -129,8 +136,8 @@ class RoutingManager {
             return nil
         }
     }
-    private func findRoute(from source: CLLocationCoordinate2D,to destination: CLLocationCoordinate2D,completion: @escaping (_ data: Data) -> Void) {
-        let url = URL(string: "https://api.openrouteservice.org/v2/directions/driving-car")!
+    private func findRoute(from source: CLLocationCoordinate2D,to destination: CLLocationCoordinate2D,mode: String, preference: String, avoid: [String],completion: @escaping (_ data: Data) -> Void) {
+        let url = URL(string: "https://api.openrouteservice.org/v2/directions/\(mode)")!
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.addValue("application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8", forHTTPHeaderField: "Accept")
@@ -138,7 +145,7 @@ class RoutingManager {
         request.addValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
         //"options":["avoid_features":["highways","tollways"]
         
-        if let jsonData = serializeJSON(from: source, to: destination) {
+        if let jsonData = serializeJSON(from: source, to: destination,mode: mode, preference: preference, avoid: avoid) {
             request.httpBody = jsonData
             
             let task = URLSession.shared.dataTask(with: request) { data, response, error in

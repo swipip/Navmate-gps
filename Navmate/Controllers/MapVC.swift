@@ -45,7 +45,7 @@ class MapVC: UIViewController {
     
     //MARK: - Data
     private var previousLocation: CLLocation?
-    private let locator = Locator()
+    private let locator = Locator.shared
     private var destination: CLLocation?
     
     var delegate: MapVCDelegate?
@@ -81,9 +81,18 @@ class MapVC: UIViewController {
     func getRoute(to placeMark: MKPlacemark) {
         
         if let location = locator.getUserLocation(), let destination = placeMark.location?.coordinate {
-            locator.getDirections(from: location.coordinate, to: destination)
+            locator.getDirections(from: location.coordinate, to: destination, mode: "driving-car")
             self.destination = CLLocation(latitude: destination.latitude, longitude: destination.longitude)
         }
+        
+    }
+    func updateRoute(mode: String,preference: String, avoid: [String],to destination: CLLocation) {
+        
+        if let location = self.locator.getUserLocation() {
+            locator.getDirections(from: location.coordinate, to: destination.coordinate,mode: mode, preference: preference, avoid: avoid)
+        }
+        
+        
         
     }
     func showUserLocation() {
