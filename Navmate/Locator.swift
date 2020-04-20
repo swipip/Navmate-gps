@@ -17,6 +17,7 @@ protocol LocatorDelegate: class {
     func didMoveToNextWP(waypointIndex: Int,status: String, location: CLLocation)
     func didFinduserLocation(location: CLLocation)
     func didGetUserSpeed(speed: CLLocationSpeed)
+    func didNotFindRoute()
 }
 extension LocatorDelegate {
     func didFindWayPoints(wayPoints: [CLLocation]) {}
@@ -261,6 +262,11 @@ extension Locator: CLLocationManagerDelegate {
     }
 }
 extension Locator: RoutingManagerDelegate {
+    
+    func didnotFindRoute() {
+        delegate?.didNotFindRoute()
+    }
+    
     func didFindRoute(route: Route) {
         
         self.wayPoints = route.wayPoints

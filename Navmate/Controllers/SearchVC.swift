@@ -263,7 +263,7 @@ extension SearchVC: MonumentCellDelegate {
  
         let placeMark = MKPlacemark(coordinate: CLLocationCoordinate2D(latitude: monument.latitude, longitude: -monument.longitude))
         
-        let annotation = MKPointAnnotation()
+        let annotation = MonumentAnnotation()
         annotation.title = monument.name
         annotation.subtitle = "Monument \(monument.protection.lowercased())"
         annotation.coordinate = placeMark.coordinate

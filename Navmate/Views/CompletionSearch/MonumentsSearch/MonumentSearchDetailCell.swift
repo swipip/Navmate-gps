@@ -19,7 +19,7 @@ class MonumentSearchDetailCell: UICollectionViewCell {
     }()
     private lazy var imageView: UIImageView = {
         let imageV = UIImageView()
-        imageV.image = UIImage(named: "lighthouse")
+        imageV.image = UIImage(named: "historic")
         imageV.layer.cornerRadius = K.shared.cornerRadiusImageThumbNailCell
         imageV.clipsToBounds = true
         return imageV
@@ -68,6 +68,21 @@ class MonumentSearchDetailCell: UICollectionViewCell {
             self.addressLabel.text = "\(monument.town), \(monument.address)"
         }else {
             self.addressLabel.text = "\(monument.town)"
+        }
+        let name = monument.name
+        
+        if name.contains("Eglise") || name.contains("Croix") || name.contains("Chapelle") {
+            
+            self.imageView.image = UIImage(named: "church")
+            
+        }else if name.contains("Phare") {
+            imageView.image = UIImage(named: "lighthouse")
+        }else if name.contains("Château") || name.contains("Remparts")  {
+            imageView.image = UIImage(named: "castel")
+        }else if name.contains("Mosqué") {
+            imageView.image = UIImage(named: "mosque")
+        }else{
+            imageView.image = UIImage(named: "historic")
         }
         
     }

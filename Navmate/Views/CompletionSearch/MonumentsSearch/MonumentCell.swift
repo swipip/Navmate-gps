@@ -72,7 +72,7 @@ class MonumentCell: UITableViewCell {
 }
 extension MonumentCell: MonumentManagerDelegate {
     func didFetchData(monuments: [Monument]) {
-        for monument in monuments {
+        for monument in monuments.shuffled() {
             
             self.monuments.append(monument)
             

@@ -24,10 +24,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let viewController = ViewController()
         viewController.view.backgroundColor = .white
-        let navViewController = UINavigationController(rootViewController: viewController)
-        navViewController.navigationBar.isHidden = true
-        
-        window?.rootViewController = navViewController
+//        let navViewController = UINavigationController(rootViewController: viewController)
+//        navViewController.navigationBar.isHidden = true
+//
+        window?.rootViewController = viewController
         
         //        navViewController.navigationBar.titleTextAttributes              = [NSAttributedString.Key.foregroundColor: UIColor.white ,
         //                                                                            NSAttributedString.Key.font: UIFont(name: "Old London", size: 33)!]

@@ -10,6 +10,7 @@ import UIKit
 import MapKit
 protocol MapVCDelegate {
     func didDrawRoute(summary: Summary, destination: CLLocation)
+    func didRequestAdditionnalInfo(location: CLLocation)
 }
 class MapVC: UIViewController {
     
@@ -18,7 +19,9 @@ class MapVC: UIViewController {
         map.showsScale = true
         map.showsCompass = true
         map.delegate = self
-        
+        map.register(MKAnnotationView.self, forAnnotationViewWithReuseIdentifier: mkViews.plain)
+        map.register(CustomPlainAV.self, forAnnotationViewWithReuseIdentifier: mkViews.customPlain)
+        map.register(MonumentAnnotationView.self, forAnnotationViewWithReuseIdentifier: mkViews.monument)
         let longPress = UILongPressGestureRecognizer(target: self, action: #selector(didLongPressOnTheMap(_:)))
         longPress.minimumPressDuration = 1
         map.addGestureRecognizer(longPress)
@@ -37,6 +40,11 @@ class MapVC: UIViewController {
         view.backgroundColor = .systemGray4
         return view
     }()
+    struct mkViews {
+        static let plain = "plain"
+        static let customPlain = "customPlain"
+        static let monument = "monument"
+    }
     //MapView Constraints
     var topConstraint = NSLayoutConstraint()
     var bottomConstraint = NSLayoutConstraint()
@@ -210,8 +218,44 @@ extension MapVC: MKMapViewDelegate {
         }
         return MKOverlayRenderer()
     }
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        
+        guard !(annotation is MKUserLocation) else {return nil}
+        
+        if let annotation = annotation as? MonumentAnnotation {
+            let annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: mkViews.monument, for: annotation) as! MonumentAnnotationView
+            
+            annotationView.delegate = self
+            annotationView.passCoordinates(annotationData: annotation)
+            
+            return annotationView
+        }
+        
+        if let annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: mkViews.customPlain, for: annotation) as? CustomPlainAV {
+//            annotationView.image = UIImage(named: "pin")
+//            annotationView.centerOffset = CGPoint(x: 0, y: -annotationView.image!.size.height / 2)
+//            annotationView.canShowCallout = true
+            
+            return annotationView
+        }
+        return nil
+    }
+
 }
 extension MapVC: LocatorDelegate {
+    
+    func didNotFindRoute() {
+        let alert = UIAlertController(title: "Ouuups", message: "Navmate n'a pas réussi à trouver de route pour ce lieu", preferredStyle: .alert)
+        let action = UIAlertAction(title: "Continuer", style: .default) { (action) in
+            alert.dismiss(animated: true) {
+                
+            }
+        }
+        alert.addAction(action)
+       
+        self.present(alert, animated: true, completion: nil)
+        
+    }
     
     func didGetUserSpeed(speed: CLLocationSpeed) {
         let kmh = speed * 60 * 60 / 1000
@@ -225,7 +269,7 @@ extension MapVC: LocatorDelegate {
     
     func didFindRoute(polyline: [MKPolyline], summary: Summary) {
 //        mapView.userTrackingMode = .followWithHeading
-        mapView.setVisibleMapRect(polyline[0].boundingMapRect, edgePadding: UIEdgeInsets(top: 30, left: 30, bottom: 300, right: 30), animated: true)
+        mapView.setVisibleMapRect(polyline[0].boundingMapRect, edgePadding: UIEdgeInsets(top: 40, left: 40, bottom: 300, right: 40), animated: true)
         mapView.addOverlays([polyline[0]])
         
         if let destination = self.destination {
@@ -256,4 +300,15 @@ extension MapVC: LocatorDelegate {
 //        mapView.addOverlay(circle)
         
     }
+}
+extension MapVC: MonumentAnnotationViewDelegate {
+    
+    func didPressButton(with detail: MKAnnotation) {
+        
+        let location = CLLocation(latitude: detail.coordinate.latitude, longitude: detail.coordinate.longitude)
+        
+        delegate?.didRequestAdditionnalInfo(location: location)
+        
+    }
+    
 }

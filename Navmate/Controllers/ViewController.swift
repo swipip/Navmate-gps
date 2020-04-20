@@ -85,8 +85,6 @@ class ViewController: UIViewController {
         
         self.navigationController?.navigationBar.isHidden = true
         
-        WikipediaManager.shared.requestInfo(monument: "Chapelle Notre-Dame-du-Mûrier de Batz-sur-Mer")
-        
         addMapView()
         addSearchVC()
         addSelectableHandle()
@@ -376,9 +374,9 @@ extension ViewController: SearchVCDelegate {
                     if let places = response?.mapItems {
                         for place in places {
                             
-                            let annotation = MKPointAnnotation()
-                            annotation.title = place.name
-                            annotation.coordinate = place.placemark.coordinate
+                            let annotation = CustomPin(title: place.name ?? "name", subtitle: type, coordinate: place.placemark.coordinate)
+//                            annotation.title = place.name
+//                            annotation.coordinate = place.placemark.coordinate
                             self.mapView.mapView.addAnnotation(annotation)
                             
                         }
@@ -389,6 +387,8 @@ extension ViewController: SearchVCDelegate {
     }
     
     func didSelectAddress(placemark: MKPointAnnotation) {
+        
+        let pinAnnotation = MKPinAnnotationView(annotation: placemark, reuseIdentifier: "")
         
         self.mapView.mapView.addAnnotation(placemark)
         
@@ -411,6 +411,17 @@ extension ViewController: SearchVCDelegate {
  
 }
 extension ViewController: MapVCDelegate {
+    func didRequestAdditionnalInfo(location: CLLocation) {
+        let vc = WikiMapDetailVC()
+        vc.delegate = self
+        vc.getInfo(monumentLocation: location)
+        vc.modalPresentationStyle = .overCurrentContext
+        self.present(vc, animated: false, completion: nil)
+        
+        self.directionCardVC.view.animateAlpha(on: false)
+        
+    }
+    
     func didDrawRoute(summary: Summary,destination: CLLocation) {
         self.addDirectionCard()
         self.animateTransitionIfNeeded(state: .hidden, duration: 0.6)
@@ -425,9 +436,6 @@ extension ViewController: DirectionVCDelegate {
         self.mapView.updateRoute(mode: mode,preference: preference, avoid: avoid, to: destination)
         self.cleanMapView()
     }
-    
-    
-    
     
     func didEngagedNavigation() {
         
@@ -457,6 +465,16 @@ extension ViewController: DirectionVCDelegate {
         self.cleanMapView()
         self.removeDirectionCard()
         self.animateTransitionIfNeeded(state: .collapsed, duration: 0.6)
+    }
+    
+}
+extension ViewController: WikiMapDetailVCDelegate {
+    func didDismiss() {
+        directionCardVC.view.animateAlpha()
+    }
+    
+    func didRequestMoreInfo() {
+        
     }
     
 }

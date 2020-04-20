@@ -15,6 +15,7 @@ import MapKit
 
 protocol RoutingManagerDelegate {
     func didFindRoute(route: Route)
+    func didnotFindRoute()
 }
 
 class RoutingManager {
@@ -32,7 +33,7 @@ class RoutingManager {
         decodedLocations?.forEach({ (location) in
             coordinates.append(location.coordinate)
         })
-
+        
         let polyline = MKPolyline(coordinates: coordinates, count: coordinates.count)
         coordinates.removeLast()
         let upperLayerPolyline = MKPolyline(coordinates: coordinates, count: coordinates.count - 1)
@@ -98,7 +99,11 @@ class RoutingManager {
                 
                 let summary = Summary(distance: totalDistance ,duration: totalDuration)
                 
-                self.createRoute(geometry: geometry, instructions: instructions, steps: steps,summary: summary)
+                if steps.count == 0 {
+                    self.delegate?.didnotFindRoute()
+                }else{
+                    self.createRoute(geometry: geometry, instructions: instructions, steps: steps,summary: summary)
+                }
                 
             } catch {
                 
@@ -151,7 +156,7 @@ class RoutingManager {
             let task = URLSession.shared.dataTask(with: request) { data, response, error in
               if let response = response, let data = data {
             //    print(response)
-                print(String(data: data, encoding: .utf8) ?? "")
+//                print(String(data: data, encoding: .utf8) ?? "")
                 
                 DispatchQueue.main.async {
                     completion(data)
