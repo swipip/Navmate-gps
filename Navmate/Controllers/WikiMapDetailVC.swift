@@ -25,7 +25,7 @@ class WikiMapDetailVC: UIViewController {
     }()
     private lazy var cardTitle: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 20)
+        label.font = UIFont.systemFont(ofSize: K.shared.cardTitleFontSize)
         label.text = ""
         label.alpha = 0.0
         return label
@@ -44,7 +44,7 @@ class WikiMapDetailVC: UIViewController {
         let textView = UITextView()
         textView.isEditable = false
         textView.backgroundColor = .clear
-        textView.font = UIFont.systemFont(ofSize: 15)
+        textView.font = UIFont.systemFont(ofSize: K.shared.cardContentFontSize)
         textView.alpha = 0
         return textView
     }()
@@ -53,7 +53,7 @@ class WikiMapDetailVC: UIViewController {
         button.setTitle("j'ai vu", for: .normal)
         button.alpha = 0.0
         button.layer.cornerRadius = 8
-        button.backgroundColor = .systemOrange
+        button.backgroundColor = K.shared.orange
         button.addTarget(self, action: #selector(buttonPressed(_:)), for: .touchUpInside)
         return button
     }()
@@ -62,7 +62,7 @@ class WikiMapDetailVC: UIViewController {
         button.setTitle("En savoir plus", for: .normal)
         button.alpha = 0.0
         button.layer.cornerRadius = 8
-        button.backgroundColor = .systemBlue
+        button.backgroundColor = K.shared.blue
         button.addTarget(self, action: #selector(buttonPressed(_:)), for: .touchUpInside)
         return button
     }()

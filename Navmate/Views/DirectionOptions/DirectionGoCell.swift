@@ -20,7 +20,7 @@ class DirectionGoCell: UICollectionViewCell {
     private lazy var directionCard: UIVisualEffectView = {
         let blur = UIBlurEffect(style: .systemUltraThinMaterialLight)
         let view = UIVisualEffectView(effect: blur)
-        view.layer.cornerRadius = 12
+        view.layer.cornerRadius = K.shared.cornerRadiusCard
         view.clipsToBounds = true
         return view
     }()
@@ -28,7 +28,7 @@ class DirectionGoCell: UICollectionViewCell {
         let button = UIButton()
         button.setTitle("C'est Parti !", for: .normal)
         button.setTitleColor(.white, for: .normal)
-        button.backgroundColor = .systemOrange
+        button.backgroundColor = K.shared.blue
         button.layer.cornerRadius = 12
         button.addTarget(self, action: #selector(goButtonPressed(_:)), for: .touchUpInside)
         return button
@@ -37,7 +37,7 @@ class DirectionGoCell: UICollectionViewCell {
         let button = UIButton()
         button.setTitle("Pas Aujourd'hui", for: .normal)
         button.setTitleColor(.white, for: .normal)
-        button.backgroundColor = .systemRed
+        button.backgroundColor = K.shared.orange
         button.layer.cornerRadius = 12
         button.addTarget(self, action: #selector(dismissButtonPressed(_:)), for: .touchUpInside)
         return button
@@ -45,13 +45,13 @@ class DirectionGoCell: UICollectionViewCell {
     private lazy var distanceLabel: UILabel = {
         let label = UILabel()
         label.text = "124 Km"
-        label.font = UIFont.systemFont(ofSize: 15)
+        label.font = UIFont.systemFont(ofSize: K.shared.cardContentFontSize)
         return label
     }()
     private lazy var timeLabel: UILabel = {
         let label = UILabel()
         label.text = "2h03 min"
-        label.font = UIFont.systemFont(ofSize: 22, weight: .medium)
+        label.font = UIFont.systemFont(ofSize: K.shared.cardTitleFontSize, weight: .medium)
         return label
     }()
     private lazy var summaryCard: UIView = {
@@ -64,13 +64,13 @@ class DirectionGoCell: UICollectionViewCell {
     private lazy var directionTitle: UILabel = {
         let label = UILabel()
         label.text = "Itinéraire vers "
-        label.font = UIFont.systemFont(ofSize: 22, weight: .medium)
+        label.font = UIFont.systemFont(ofSize: K.shared.cardTitleFontSize, weight: .medium)
         return label
     }()
     private lazy var directionName: UILabel = {
         let label = UILabel()
         label.text = "Azerty"
-        label.font = UIFont.systemFont(ofSize: 22, weight: .medium)
+        label.font = UIFont.systemFont(ofSize: K.shared.cardTitleFontSize, weight: .medium)
         return label
     }()
     //MARK: - Data

@@ -44,9 +44,9 @@ class ViewController: UIViewController {
     private lazy var locationButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .white
-        button.layer.cornerRadius = 12
+        button.layer.cornerRadius = K.shared.cornerRadiusImageThumbNailCell
         button.setImage(UIImage(systemName: "location.fill"), for: .normal)
-        button.tintColor = .brown
+        button.tintColor = K.shared.brown
         button.addTarget(self, action: #selector(locationButtonPressed(_ :)), for: .touchUpInside)
         return button
     }()
