@@ -256,12 +256,6 @@ extension MapVC: LocatorDelegate {
         self.present(alert, animated: true, completion: nil)
         
     }
-    
-    func didGetUserSpeed(speed: CLLocationSpeed) {
-        let kmh = speed * 60 * 60 / 1000
-//        speedlabel.text = String(kmh)
-    }
-    
     func didFinduserLocation(location: CLLocation) {
 //        let region = MKCoordinateRegion(center: location.coordinate, latitudinalMeters: 1000, longitudinalMeters: 1000)
 //        mapView.setRegion(region, animated: false)
@@ -278,7 +272,9 @@ extension MapVC: LocatorDelegate {
         
     }
     func didReceiveNewDirectionInstructions(instruction: String) {
-//        label.text = instruction
+        
+        
+        
     }
     func didChangeAuthorizationStatus() {
         mapView.showsUserLocation = true

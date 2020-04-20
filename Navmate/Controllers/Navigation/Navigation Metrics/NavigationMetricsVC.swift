@@ -57,14 +57,19 @@ extension NavigationMetricsVC: UICollectionViewDelegate, UICollectionViewDataSou
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
-        let metrics = ["speed","marker","mountain","time","journey"]
-        
+
         let merticValues = ["75 Kmh","47.567903N 2.74893W","123 m","2h03min","158km"]
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cellID", for: indexPath) as! NavigationMetricsCell
         
-        cell.updateMetrics(imageName: metrics[indexPath.row], value: merticValues[indexPath.row])
+        switch indexPath.row {
+        case 0:
+            cell.updateType(type: .speed)
+        case 2:
+            cell.updateType(type: .altitude)
+        default:
+            cell.updateType(type: .location)
+        }
         
         return cell
     }

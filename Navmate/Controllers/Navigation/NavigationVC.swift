@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreLocation
 
 class NavigationVC: UIViewController {
 
@@ -38,16 +39,24 @@ class NavigationVC: UIViewController {
         return navigation
     }()
     
+    
+    //MARK: - Data
+    var steps: [Step]?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
-//        self.view.backgroundColor = UIColor(named: "mainBackground")
+        Locator.shared.delegate = self
         
         self.addIndicationsTableView()
         self.addHeaderBG()
         self.addMetricsCollection()
         self.addPOIsCollection()
         
+    }
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        Locator.shared.startNavigation()
     }
     private func addPOIsCollection() {
         
@@ -58,13 +67,13 @@ class NavigationVC: UIViewController {
         self.view.addSubview(view)
         
         func addConstraints(fromView: UIView, toView: UIView) {
-               
+                
            fromView.translatesAutoresizingMaskIntoConstraints = false
            
            NSLayoutConstraint.activate([fromView.leadingAnchor.constraint(equalTo: toView.leadingAnchor, constant: 0),
                                         fromView.trailingAnchor.constraint(equalTo: toView.trailingAnchor, constant: 0),
                                         fromView.topAnchor.constraint(equalTo: metricsCollection.view.bottomAnchor, constant: 10),
-                                        fromView.heightAnchor.constraint(equalToConstant: 300)])
+                                        fromView.bottomAnchor.constraint(equalTo:toView.bottomAnchor ,constant: -160)])
         }
         addConstraints(fromView: view, toView: self.view)
     }
@@ -125,12 +134,20 @@ class NavigationVC: UIViewController {
 }
 extension NavigationVC: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
-        
+        if let steps = self.steps {
+            return steps.count
+        }else {
+            return 10
+        }
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "cellID", for: indexPath) as! NavigationCell
+        
+        if let steps = self.steps {
+            let i = indexPath.row
+            cell.updateIndications(main: steps[i].name, sub: String(steps[i].distance), type: steps[i].type, step: steps[i])
+        }
         
         return cell
         
@@ -153,4 +170,25 @@ extension NavigationVC: UITableViewDataSource, UITableViewDelegate {
     }
     
     
+}
+extension NavigationVC: LocatorDelegate {
+    
+    func didGetUserSpeed(speed: CLLocationSpeed) {
+        
+    }
+    func didReceiveNewDirectionInstructions(instruction: String) {
+        
+        let currentRow = self.indicationsTableView.indexPathForSelectedRow?.row ?? 0
+        let nextRow = IndexPath(row: currentRow + 1, section: 0)
+        
+        self.indicationsTableView.scrollToRow(at: nextRow, at: .top, animated: true)
+        
+    }
+    func didReceiveAllInstructions(steps: [Step]) {
+        
+        self.steps = steps
+        self.indicationsTableView.reloadData()
+        indicationsTableView.selectRow(at: IndexPath(item: 0, section: 0), animated: true, scrollPosition: .top)
+        
+    }
 }

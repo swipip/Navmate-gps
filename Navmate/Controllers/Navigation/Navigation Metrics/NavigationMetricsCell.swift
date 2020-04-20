@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreLocation
 
 class NavigationMetricsCell: UICollectionViewCell {
     
@@ -20,34 +21,93 @@ class NavigationMetricsCell: UICollectionViewCell {
     private lazy var metricIV: UIImageView = {
         let imageV = UIImageView()
         imageV.image = UIImage()
-        imageV.tintColor = UIColor(named: "accent2")
+        imageV.tintColor = UIColor(named: "orange")
         imageV.contentMode = .scaleAspectFit
         return imageV
     }()
     private lazy var metricValue: UILabel = {
         let label = UILabel()
-        label.text = "75 Kmh"
+        label.text = "-"
         label.font = UIFont.systemFont(ofSize: 27, weight: .medium)
         label.textColor = UIColor(named: "brown")
         label.textAlignment = .right
         label.adjustsFontSizeToFitWidth = true
         return label
     }()
+    
+    var type: metricCellType?
+    var startUpdating = false
+    enum metricCellType {
+        case speed,location,altitude
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.backgroundColor = .white
         self.addCard()
         self.addMetricImage()
         self.addLabel()
+        
+        let speed = NSNotification.Name(K.shared.notificationSpeed)
+        let location = NSNotification.Name(K.shared.notificationLocation)
+        NotificationCenter.default.addObserver(self, selector: #selector(didReceiveNotification), name: speed, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(didReceiveNotification), name: location, object: nil)
+        
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    func updateMetrics(imageName: String,value: String) {
+    
+    @objc private func didReceiveNotification(notification: NSNotification) {
         
-        self.metricValue.text = value
-        self.metricIV.image = UIImage(named: imageName)
+        if startUpdating == true {
+            switch self.type {
+            case .speed:
+                if let speed = notification.userInfo?["speed"] as? Double {
+                    let speedString = String(format: "%.2f",speed)
+                    self.metricValue.text = "\(speedString) Kmh"
+                }
+            case .altitude:
+                
+                if let location = notification.userInfo?["location"] as? CLLocation {
+                 
+                    let altitude = location.altitude
+                    let altitudeString = String(format: "%.2f",altitude)
+                    
+                    self.metricValue.text = "\(altitudeString) m"
+                    
+                }
+            default:
+                if let location = notification.userInfo?["location"] as? CLLocation {
+                    
+                    let latitude = String(format: "%5f",location.coordinate.latitude)
+                    let longitude = location.coordinate.longitude
+                    
+                    let estWest = longitude > 0 ? "E" : "W"
+                    
+                    let longitudeString = String(format: "%.5f",location.coordinate.longitude)
+                    
+                    self.metricValue.text = "\(latitude)N \(longitudeString)\(estWest)"
+                }
+            }
+        }
+        
+    }
+    
+    func updateType(type: metricCellType) {
+
+//        let metrics = ["speed","marker","mountain","time","journey"]
+        
+        self.startUpdating = true
+        
+        self.type = type
+        switch self.type {
+        case .speed:
+            self.metricIV.image = UIImage(named: "speed")
+        default:
+            self.metricIV.image = UIImage(named: "marker")
+        }
         
     }
     private func addLabel() {

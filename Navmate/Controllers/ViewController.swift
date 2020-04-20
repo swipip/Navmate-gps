@@ -59,6 +59,9 @@ class ViewController: UIViewController {
     private var animators = [UIViewPropertyAnimator]()
     var animationProgressWhenInterrupted:CGFloat = 0
     
+    //MARK: - data
+    
+    var steps: [Step]?
     
     //SearchVC animation
     private lazy var searchVCTopConstraint = NSLayoutConstraint()
@@ -84,6 +87,8 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         
         self.navigationController?.navigationBar.isHidden = true
+        
+//        Locator.shared.delegate = self
         
         addMapView()
         addSearchVC()
@@ -248,11 +253,11 @@ class ViewController: UIViewController {
                     
                     self.view.layoutIfNeeded()
                 case .collapsed:
-                    self.MapVCTopConstraint.constant = 600
+                    self.MapVCTopConstraint.constant = self.view.frame.size.height - 150
                     self.mapView.view.layer.cornerRadius = 12
                     self.view.layoutIfNeeded()
                 case .midWay:
-                    self.MapVCTopConstraint.constant = 500
+                    self.MapVCTopConstraint.constant = 340
                     self.mapView.view.layer.cornerRadius = 12
                     self.view.layoutIfNeeded()
                 }
@@ -438,6 +443,16 @@ extension ViewController: DirectionVCDelegate {
     }
     
     func didEngagedNavigation() {
+        
+        let navigationController = NavigationVC()
+        navigationController.willMove(toParent: self)
+        self.addChild(navigationController)
+        
+        let view = navigationController.view!
+        view.frame = self.view.bounds
+        self.view.insertSubview(view, at: 0)
+        
+        self.view.layoutIfNeeded()
         
         self.removeDirectionCard()
         self.mapView.animateMapView()

@@ -29,5 +29,8 @@ class K {
     let orange = UIColor(named: "orange")
     let lightBrown = UIColor(named: "lightBrown")
     let bluegray = UIColor(named: "blueGray")
+    // Notification Keys
+    let notificationSpeed = "speed"
+    let notificationLocation = "location"
     
 }

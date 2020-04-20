@@ -18,11 +18,18 @@ protocol LocatorDelegate: class {
     func didFinduserLocation(location: CLLocation)
     func didGetUserSpeed(speed: CLLocationSpeed)
     func didNotFindRoute()
+    func didReceiveAllInstructions(steps: [Step])
 }
 extension LocatorDelegate {
+    func didReceiveNewDirectionInstructions(instruction: String) {}
+    func didFindRoute(polyline: [MKPolyline], summary: Summary) {}
+    func didChangeAuthorizationStatus() {}
     func didFindWayPoints(wayPoints: [CLLocation]) {}
-    func didMoveToNextWP(waypointIndex: Int,status: String,location: CLLocation) {}
+    func didMoveToNextWP(waypointIndex: Int,status: String, location: CLLocation) {}
     func didFinduserLocation(location: CLLocation) {}
+    func didGetUserSpeed(speed: CLLocationSpeed) {}
+    func didNotFindRoute() {}
+    func didReceiveAllInstructions(steps: [Step]) {}
 }
 class Locator: NSObject {
     
@@ -41,6 +48,11 @@ class Locator: NSObject {
     static let shared = Locator()
     weak var delegate: LocatorDelegate?
     
+    var route: Route?
+    
+    let speedNotification = NSNotification.Name(K.shared.notificationSpeed)
+    let locationNotification = NSNotification.Name(K.shared.notificationLocation)
+    
     private override init() {
         super.init()
         
@@ -52,7 +64,11 @@ class Locator: NSObject {
         }
         
     }
-    
+    private func addNotifications() {
+        
+
+        
+    }
     private func clearVariableFornewRoute() {
         wayPoints?.removeAll()
         tripStepIndex = 0
@@ -61,6 +77,17 @@ class Locator: NSObject {
         locationManager.stopUpdatingLocation()
         self.locationManager.monitoredRegions.forEach({ self.locationManager.stopMonitoring(for: $0) })
         routeIndex = 0
+    }
+    func startNavigation() {
+        
+        if let route = self.route {
+            
+            delegate?.didReceiveAllInstructions(steps: route.steps)
+            
+//            locationManager.startUpdatingLocation()
+            
+        }
+        
     }
     func getUserCurrentSpeed() -> CLLocationSpeed? {
         
@@ -82,6 +109,7 @@ class Locator: NSObject {
         case .denied:
             break
         case .notDetermined:
+            locationManager.requestWhenInUseAuthorization()
             break
         case .restricted:
             break
@@ -195,7 +223,13 @@ extension Locator: CLLocationManagerDelegate {
 
         if let speed = getUserCurrentSpeed() {
             delegate?.didGetUserSpeed(speed: speed)
+            let userInfo = ["speed":speed]
+            NotificationCenter.default.post(name: speedNotification, object: nil, userInfo: userInfo)
+            
         }
+        
+        let userInfo = ["location":locations.last]
+        NotificationCenter.default.post(name: locationNotification, object: nil, userInfo: userInfo as! [AnyHashable : CLLocation])
 
         guard let location = locations.last else {return}
         guard let monitoredWayPoint = self.monitoredWayPoint else {return}
@@ -269,8 +303,11 @@ extension Locator: RoutingManagerDelegate {
     
     func didFindRoute(route: Route) {
         
+        self.route = route
         self.wayPoints = route.wayPoints
         self.steps = route.steps
+        
+        
         
         //        highlightWayPoints()
         
@@ -290,11 +327,12 @@ extension Locator: RoutingManagerDelegate {
 //            }
 //
 //        }
-        
         locationManager.startUpdatingLocation()
+        
         #warning("test distance filter")
         //        locationManager.distanceFilter = 3
         
+        delegate?.didReceiveAllInstructions(steps: route.steps)
         delegate?.didFindRoute(polyline: route.polylines, summary: route.summary)
         delegate?.didFindWayPoints(wayPoints: route.wayPoints)
     }

@@ -20,6 +20,7 @@ class NavigationCell: UITableViewCell {
         let imageV = UIImageView()
         imageV.image = UIImage(systemName: "arrow.turn.up.right")
         imageV.tintColor = .white
+        imageV.contentMode = .scaleAspectFit
         return imageV
     }()
     private var widthAnch: NSLayoutConstraint!
@@ -57,9 +58,55 @@ class NavigationCell: UITableViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    func updateIndications(main: String, sub: String, type: Int) {
+    func updateIndications(main: String, sub: String, type: Int, step: Step) {
         
+        self.nameIndicator.text = main
+        self.subIndicator.text = "\(sub)m"
         
+        switch type {
+        case 0:
+            self.roadSignIV.image = UIImage(named: "left")
+        case 1:
+            self.roadSignIV.image = UIImage(named: "right")
+        case 2:
+            self.roadSignIV.image = UIImage(named: "shardLeft")
+        case 3:
+            self.roadSignIV.image = UIImage(named: "sharpRight")
+        case 4:
+            self.roadSignIV.image = UIImage(named: "slightLeft")
+        case 5:
+            self.roadSignIV.image = UIImage(named: "slightRight")
+        case 6:
+            self.roadSignIV.image = UIImage(named: "continue")
+        case 7:
+            switch step.exitNumber {
+            case 1:
+                self.roadSignIV.image = UIImage(named: "round1")
+            case 2:
+                self.roadSignIV.image = UIImage(named: "round2")
+            case 3:
+                self.roadSignIV.image = UIImage(named: "round3")
+            default:
+                self.roadSignIV.image = UIImage(named: "round3")
+            }
+        case 8:
+            switch step.exitNumber {
+            case 1:
+                self.roadSignIV.image = UIImage(named: "round1")
+            case 2:
+                self.roadSignIV.image = UIImage(named: "round2")
+            case 3:
+                self.roadSignIV.image = UIImage(named: "round3")
+            default:
+                self.roadSignIV.image = UIImage(named: "round3")
+            }
+        case 12:
+            self.roadSignIV.image = UIImage(named: "keepLeft")
+        case 13:
+            self.roadSignIV.image = UIImage(named: "keepRight")
+        default:
+            self.roadSignIV.image = UIImage(named: "continue")
+        }
         
     }
     private func addSubIndicator(){
