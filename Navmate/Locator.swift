@@ -18,7 +18,7 @@ protocol LocatorDelegate: class {
     func didFinduserLocation(location: CLLocation)
     func didGetUserSpeed(speed: CLLocationSpeed)
     func didNotFindRoute()
-    func didReceiveAllInstructions(steps: [Step])
+    func didStartNavigation()
 }
 extension LocatorDelegate {
     func didReceiveNewDirectionInstructions(instruction: String) {}
@@ -29,7 +29,7 @@ extension LocatorDelegate {
     func didFinduserLocation(location: CLLocation) {}
     func didGetUserSpeed(speed: CLLocationSpeed) {}
     func didNotFindRoute() {}
-    func didReceiveAllInstructions(steps: [Step]) {}
+    func didStartNavigation() {}
 }
 class Locator: NSObject {
     
@@ -81,7 +81,7 @@ class Locator: NSObject {
         
         if let route = self.route {
             
-//            delegate?.didReceiveAllInstructions(steps: route.steps)
+            delegate?.didStartNavigation()
             
             let userInfo = ["steps":route.steps]
             NotificationCenter.default.post(name: routeNotification, object: nil, userInfo: userInfo)

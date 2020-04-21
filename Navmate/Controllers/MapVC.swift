@@ -106,9 +106,23 @@ class MapVC: UIViewController {
         
         
     }
-    func showUserLocation() {
+    enum userLocationPrecision {
+        case large,medium,close
+    }
+    func showUserLocation(state: userLocationPrecision) {
+        
+        var precision:Double = 0
+        switch state {
+        case .large:
+            precision = 5000
+        case .medium:
+            precision = 500
+        case .close:
+            precision = 100
+        }
+        
         if let location = locator.getUserLocation() {
-            let region = MKCoordinateRegion(center: location.coordinate, latitudinalMeters: 5000, longitudinalMeters: 5000)
+            let region = MKCoordinateRegion(center: location.coordinate, latitudinalMeters: precision, longitudinalMeters: precision)
             self.mapView.setRegion(region, animated: true)
             self.mapView.showsUserLocation = true
         }
@@ -300,13 +314,22 @@ extension MapVC: LocatorDelegate {
         self.present(alert, animated: true, completion: nil)
         
     }
-    func didFinduserLocation(location: CLLocation) {
-//        let region = MKCoordinateRegion(center: location.coordinate, latitudinalMeters: 1000, longitudinalMeters: 1000)
-//        mapView.setRegion(region, animated: false)
+    func didStartNavigation() {
+        
+        if let location = locator.getUserLocation() {
+            let region = MKCoordinateRegion(center: location.coordinate, latitudinalMeters: 500, longitudinalMeters: 500)
+            self.mapView.setRegion(region, animated: true)
+            self.mapView.userTrackingMode = .followWithHeading
+        }
+        
     }
-    
+    func didFinduserLocation(location: CLLocation) {
+        
+        
+        
+    }
     func didFindRoute(polyline: [MKPolyline], summary: Summary) {
-//        mapView.userTrackingMode = .followWithHeading
+
         mapView.setVisibleMapRect(polyline[0].boundingMapRect, edgePadding: UIEdgeInsets(top: 40, left: 40, bottom: 300, right: 40), animated: true)
         mapView.addOverlays([polyline[0]])
         
@@ -315,14 +338,9 @@ extension MapVC: LocatorDelegate {
         }
         
     }
-    func didReceiveNewDirectionInstructions(instruction: String) {
-        
-        
-        
-    }
     func didChangeAuthorizationStatus() {
         mapView.showsUserLocation = true
-        self.showUserLocation()
+        self.showUserLocation(state: .medium)
     }
     #warning("implementation")
     func didFindWayPoints(wayPoints: [CLLocation]) {

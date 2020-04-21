@@ -71,6 +71,10 @@ class NavigationVC: UIViewController {
         let nextRow = IndexPath(row: currentRow + 1, section: 0)
         self.indicationsTableView.scrollToRow(at: nextRow, at: .top, animated: true)
         
+        let cell = indicationsTableView.cellForRow(at: nextRow) as! NavigationCell
+        cell.magnify(on: true)
+        
+        
     }
     @objc private func didReceiveRouteInformation(_ notification:Notification) {
         

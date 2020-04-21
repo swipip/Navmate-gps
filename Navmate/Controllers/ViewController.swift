@@ -73,6 +73,7 @@ class ViewController: UIViewController {
     
     //MARK: - data
     
+    var locationTapCount = 0
     var steps: [Step]?
     
     //SearchVC animation
@@ -166,7 +167,17 @@ class ViewController: UIViewController {
     }
     @objc private func locationButtonPressed(_ sender: UIButton!) {
         
-        mapView.showUserLocation()
+        if locationTapCount == 0 {
+            mapView.showUserLocation(state: .large)
+            self.locationTapCount += 1
+        }else if locationTapCount == 1{
+            mapView.showUserLocation(state: .medium)
+            self.locationTapCount += 1
+        }else if locationTapCount == 2{
+            mapView.showUserLocation(state: .close)
+            self.mapView.mapView.userTrackingMode = .followWithHeading
+            self.locationTapCount = 0
+        }
         
     }
     private func addLocationButton() {
@@ -178,7 +189,7 @@ class ViewController: UIViewController {
            fromView.translatesAutoresizingMaskIntoConstraints = false
            
            NSLayoutConstraint.activate([fromView.widthAnchor.constraint(equalToConstant: 40),
-                                        fromView.trailingAnchor.constraint(equalTo: toView.trailingAnchor, constant: -10),
+                                        fromView.trailingAnchor.constraint(equalTo: toView.trailingAnchor, constant: -20),
                                         fromView.heightAnchor.constraint(equalToConstant: 40),
                                         fromView.bottomAnchor.constraint(equalTo: toView.topAnchor,constant: -20)])
         }
@@ -508,6 +519,11 @@ extension ViewController: DirectionVCDelegate {
         self.mapView.view.addShadow(radius: 5, opacity: 0.5, color: .gray)
         self.mapView.centerOnUserLocation()
         self.animateTransitionIfNeededMap(state: .collapsed, duration: 0.9)
+        
+//        self.searchVC.view.removeFromSuperview()
+//        self.searchVC.removeFromParent()
+//        self.searchVC.willMove(toParent: nil)
+//        self.selectableAreaSearchVC.removeFromSuperview()
         
     }
     

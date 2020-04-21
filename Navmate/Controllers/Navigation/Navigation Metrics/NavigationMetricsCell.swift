@@ -67,7 +67,8 @@ class NavigationMetricsCell: UICollectionViewCell {
             switch self.type {
             case .speed:
                 if let speed = notification.userInfo?["speed"] as? Double {
-                    let speedString = String(format: "%.2f",speed)
+                    let kmhSpeed = speed * 3.6
+                    let speedString = String(format: "%.2f",kmhSpeed)
                     self.metricValue.text = "\(speedString) Kmh"
                 }
             case .altitude:

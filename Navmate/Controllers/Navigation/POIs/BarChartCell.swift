@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreLocation
 
 class BarChartCell: UICollectionViewCell {
     
@@ -25,6 +26,8 @@ class BarChartCell: UICollectionViewCell {
         return label
     }()
     
+    private var altitudeRecord:[Double] = [25,36,26,56,25,23,26,25,21,20]
+    
     private var barBacks: [UIView] = []
     private var bars: [UIView] = []
     private var barHeights:[NSLayoutConstraint] = []
@@ -32,28 +35,81 @@ class BarChartCell: UICollectionViewCell {
     private var maximumHeight:CGFloat = 0
     
     private var barQty = 10
+    private var allowUpdate = true
+    private var timer = Timer()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
         self.addCard()
         self.addLabel()
+        self.addObservers()
+        
+        self.addBarBacks()
+        maximumHeight = 100
+        self.addBars()
+        
+        timer = Timer.scheduledTimer(withTimeInterval: 5, repeats: true, block: { (timer) in
+            self.allowUpdate = true
+        })
+        
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    override func layoutSubviews() {
-        super.layoutSubviews()
+    
+    private func addObservers() {
         
-        self.addBarBacks()
+        let altitudeNotif = Notification.Name(rawValue: K.shared.notificationLocation)
+        NotificationCenter.default.addObserver(self, selector: #selector(didReceiveAltitudeInformation(_:)), name: altitudeNotif, object: nil)
         
-        maximumHeight = 100
+    }
+    @objc private func didReceiveAltitudeInformation(_ notification:Notification) {
+        print(allowUpdate)
+        if allowUpdate {
+            if let location = notification.userInfo?["location"] as? CLLocation {
+
+                let altitude = location.altitude
+
+                altitudeRecord.append(altitude)
+
+                if altitudeRecord.count >= barQty {
+                    altitudeRecord.removeFirst()
+                }
+
+                self.updateChart()
+
+                self.allowUpdate = false
+
+            }
+        }
         
-        self.addBars()
+    }
+    private func updateChart() {
+        
+        let maxAltitude = altitudeRecord.max() ?? 10
+        let maxHeight = barBacks[0].frame.size.height * 0.9
+        let coeficient = maxHeight / CGFloat(maxAltitude)
+        
+        var delay = 1.0
+        
+        for (i,altitude) in altitudeRecord.enumerated() {
+            
+            UIView.animate(withDuration: 0.2, delay: delay, options: .curveEaseInOut, animations: {
+                self.barHeights[i].constant = CGFloat(altitude) * coeficient
+                self.layoutIfNeeded()
+            }) { (_) in
+                
+            }
+            
+            delay -= 1 / 10
+
+        }
         
     }
     private func addBars() {
-        let barWidth = (self.cardBG.frame.size.width - CGFloat(5 * (barQty-1)) - 20)/CGFloat(barQty)
+        let barWidth = (self.contentView.frame.size.width - 40 - CGFloat(5 * (barQty-1)) - 20)/CGFloat(barQty)
         
         var leadingAch:CGFloat = 10
         
@@ -88,7 +144,7 @@ class BarChartCell: UICollectionViewCell {
     }
     private func addBarBacks() {
         
-        let barWidth = (self.cardBG.frame.size.width - CGFloat(5 * (barQty-1)) - 20)/CGFloat(barQty)
+        let barWidth = (self.contentView.frame.size.width - 40 - CGFloat(5 * (barQty-1)) - 20)/CGFloat(barQty)
         
         var leadingAch:CGFloat = 10
         
