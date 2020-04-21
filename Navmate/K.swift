@@ -32,5 +32,6 @@ class K {
     // Notification Keys
     let notificationSpeed = "speed"
     let notificationLocation = "location"
+    let notificationHeading = "heading"
     
 }

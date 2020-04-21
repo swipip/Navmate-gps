@@ -38,7 +38,7 @@ class NavigationMetricsCell: UICollectionViewCell {
     var type: metricCellType?
     var startUpdating = false
     enum metricCellType {
-        case speed,location,altitude
+        case speed,location,altitude,course
     }
     
     override init(frame: CGRect) {
@@ -50,8 +50,10 @@ class NavigationMetricsCell: UICollectionViewCell {
         
         let speed = NSNotification.Name(K.shared.notificationSpeed)
         let location = NSNotification.Name(K.shared.notificationLocation)
+        let heading = NSNotification.Name(K.shared.notificationHeading)
         NotificationCenter.default.addObserver(self, selector: #selector(didReceiveNotification), name: speed, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(didReceiveNotification), name: location, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(didReceiveNotification), name: heading, object: nil)
         
     }
     
@@ -76,6 +78,27 @@ class NavigationMetricsCell: UICollectionViewCell {
                     let altitudeString = String(format: "%.2f",altitude)
                     
                     self.metricValue.text = "\(altitudeString) m"
+                    
+                }
+            case .course:
+                if let heading = notification.userInfo?["heading"] as? CLHeading {
+                 
+                    var quadrant = ""
+                    
+//                    let quadrantVar = heading.magneticHeading / 4
+                    
+                    if heading.magneticHeading >= 315 || heading.magneticHeading <= 45 {
+                        quadrant = "N"
+                    }else if heading.magneticHeading > 45 && heading.magneticHeading <= 135 {
+                        quadrant = "E"
+                    }else if heading.magneticHeading > 135 && heading.magneticHeading <= 225 {
+                        quadrant = "S"
+                    }else{
+                        quadrant = "W"
+                    }
+                    
+                    let courseString = String(format: "%.2f",heading.magneticHeading)
+                    self.metricValue.text = "\(courseString)° \(quadrant)"
                     
                 }
             default:
@@ -105,6 +128,12 @@ class NavigationMetricsCell: UICollectionViewCell {
         switch self.type {
         case .speed:
             self.metricIV.image = UIImage(named: "speed")
+        case .altitude:
+            self.metricIV.image = UIImage(named: "altitude")
+        case .location:
+            self.metricIV.image = UIImage(named: "location")
+        case .course:
+            self.metricIV.image = UIImage(named: "compass")
         default:
             self.metricIV.image = UIImage(named: "marker")
         }

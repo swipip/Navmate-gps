@@ -52,6 +52,7 @@ class Locator: NSObject {
     
     let speedNotification = NSNotification.Name(K.shared.notificationSpeed)
     let locationNotification = NSNotification.Name(K.shared.notificationLocation)
+    let headingNotification = NSNotification.Name(K.shared.notificationHeading)
     
     private override init() {
         super.init()
@@ -84,10 +85,16 @@ class Locator: NSObject {
             
             delegate?.didReceiveAllInstructions(steps: route.steps)
             
-//            locationManager.startUpdatingLocation()
+            locationManager.startUpdatingLocation()
+            
+            locationManager.startUpdatingHeading()
             
         }
         
+    }
+    func stopNavigation() {
+        locationManager.stopUpdatingHeading()
+        locationManager.stopUpdatingLocation()
     }
     func getUserCurrentSpeed() -> CLLocationSpeed? {
         
@@ -293,6 +300,12 @@ extension Locator: CLLocationManagerDelegate {
     }
     func locationManager(_ manager: CLLocationManager, monitoringDidFailFor region: CLRegion?, withError error: Error) {
         print(error)
+    }
+    func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
+        
+        let userInfo = ["heading":newHeading]
+        NotificationCenter.default.post(name: headingNotification, object: nil, userInfo: userInfo as [AnyHashable:CLHeading])
+        
     }
 }
 extension Locator: RoutingManagerDelegate {

@@ -65,10 +65,14 @@ extension NavigationMetricsVC: UICollectionViewDelegate, UICollectionViewDataSou
         switch indexPath.row {
         case 0:
             cell.updateType(type: .speed)
+        case 1:
+            cell.updateType(type: .location)
         case 2:
             cell.updateType(type: .altitude)
+        case 3:
+            cell.updateType(type: .course)
         default:
-            cell.updateType(type: .location)
+            cell.updateType(type: .course)
         }
         
         return cell

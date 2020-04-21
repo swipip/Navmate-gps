@@ -180,7 +180,7 @@ class NavigationCell: UITableViewCell {
         
         let cellWidth = self.frame.size.width
         let width:CGFloat = on ? cellWidth : cellWidth * 0.9
-        let height:CGFloat = on ? 100 : 85
+        let height:CGFloat = on ? 90 : 85
         let color:UIColor = on ? UIColor(named: "blueGray")! : UIColor(named: "lightBrown")!
 //        let scale:CGFloat = on ? 1.1 : 1.0
         let mainFont:UIFont = on ? UIFont.systemFont(ofSize: 30, weight: UIFont.Weight.bold) : UIFont.systemFont(ofSize: 20, weight: UIFont.Weight.regular)

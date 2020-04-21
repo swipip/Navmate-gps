@@ -18,6 +18,7 @@ struct WikiObject {
     var title: String
     var description: String
     var image: UIImage?
+    var url: String
 }
 class WikiManager: NSObject {
     
@@ -84,10 +85,21 @@ class WikiManager: NSObject {
                 DispatchQueue.main.async {
                     let _ = self.fetchImage(completion: { (image) in
                         if let image = image {
-                            wikiObject = WikiObject(title: monument, description: description,image: image)
+                            
+                            let encodedName = monument.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
+                            print(encodedName!)
+                            
+//                            let url = "https://fr.wikipedia.org/wiki/\(monument.replacingOccurrences(of: " ", with: "_"))"
+                             let url = "https://fr.wikipedia.org/wiki/\(encodedName!)"
+                            
+                            wikiObject = WikiObject(title: monument, description: description,image: image, url: url)
                             self.delegate?.didFindData(wiki: wikiObject)
                         }else{
-                            wikiObject = WikiObject(title: monument, description: description)
+                            let encodedName = monument.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
+                            print(encodedName!)
+//                            let url = "https://fr.wikipedia.org/wiki/\(monument.replacingOccurrences(of: " ", with: "_"))"
+                            let url = "https://fr.wikipedia.org/wiki/\(encodedName!)"
+                            wikiObject = WikiObject(title: monument, description: description, url: url)
                             self.delegate?.didFindData(wiki: wikiObject)
                         }
                     })

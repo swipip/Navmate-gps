@@ -50,11 +50,23 @@ class ViewController: UIViewController {
         button.addTarget(self, action: #selector(locationButtonPressed(_ :)), for: .touchUpInside)
         return button
     }()
+    private lazy var dismissNavButton: UIButton = {
+        let button = UIButton()
+        button.backgroundColor = .systemRed
+        button.layer.cornerRadius = K.shared.cornerRadiusImageThumbNailCell
+        button.setImage(UIImage(systemName: "xmark"), for: .normal)
+        button.tintColor = .white
+        button.alpha = 0.0
+        button.isEnabled = false
+        button.addTarget(self, action: #selector(dismissNavPressed(_:)), for: .touchUpInside)
+        return button
+    }()
     private lazy var directionCardVC: DirectionVC = {
         let child = DirectionVC()
         child.delegate = self
         return child
     }()
+    private var navigationVC: NavigationVC!
     //MARK: - Animations Variables
     private var animators = [UIViewPropertyAnimator]()
     var animationProgressWhenInterrupted:CGFloat = 0
@@ -95,9 +107,45 @@ class ViewController: UIViewController {
         addSelectableHandle()
         addSelectableHandleMap()
         addLocationButton()
+        addDismissNavButton()
         
     }
     //MARK: - UI Construction
+    private func addDismissNavButton() {
+        self.view.addSubview(dismissNavButton)
+        
+        func addConstraints(fromView: UIView, toView: UIView) {
+               
+           fromView.translatesAutoresizingMaskIntoConstraints = false
+           
+           NSLayoutConstraint.activate([fromView.leadingAnchor.constraint(equalTo: toView.leadingAnchor, constant: 0),
+                                        fromView.widthAnchor.constraint(equalToConstant: 40),
+                                        fromView.bottomAnchor.constraint(equalTo: toView.topAnchor, constant: -10),
+                                        fromView.heightAnchor.constraint(equalToConstant: 40)])
+        }
+        addConstraints(fromView: dismissNavButton, toView: locationButton)
+    }
+    @objc private func dismissNavPressed(_ sender:UIButton!){
+        
+        self.animateTransitionIfNeededMap(state: .total, duration: 1)
+        
+        self.addSearchVC()
+        self.addSelectableHandle()
+        
+        self.mapView.mapView.removeOverlays(self.mapView.mapView.overlays)
+        self.mapView.animateMapView(on: false)
+        
+        Locator.shared.stopNavigation()
+        
+        self.navigationVC.view.animateAlpha(on: false)
+        self.navigationVC.view.removeFromSuperview()
+        self.navigationVC.removeFromParent()
+        self.navigationVC.willMove(toParent: nil)
+        
+        self.dismissNavButton.isEnabled = false
+        self.dismissNavButton.animateAlpha(on: false)
+        
+    }
     private func addDirectionCard() {
         
         self.addChild(directionCardVC)
@@ -444,16 +492,18 @@ extension ViewController: DirectionVCDelegate {
     
     func didEngagedNavigation() {
         
-        let navigationController = NavigationVC()
-        navigationController.willMove(toParent: self)
-        self.addChild(navigationController)
+        navigationVC = NavigationVC()
+        navigationVC.willMove(toParent: self)
+        self.addChild(navigationVC)
         
-        let view = navigationController.view!
+        let view = navigationVC.view!
         view.frame = self.view.bounds
         self.view.insertSubview(view, at: 0)
         
         self.view.layoutIfNeeded()
         
+        self.dismissNavButton.animateAlpha()
+        self.dismissNavButton.isEnabled = true
         self.removeDirectionCard()
         self.mapView.animateMapView()
         self.mapView.view.addShadow(radius: 5, opacity: 0.5, color: .gray)
@@ -488,7 +538,14 @@ extension ViewController: WikiMapDetailVCDelegate {
         directionCardVC.view.animateAlpha()
     }
     
-    func didRequestMoreInfo() {
+    func didRequestMoreInfo(urlString: String) {
+        
+        let wikiDetail = WikiDetailVC()
+        self.present(wikiDetail, animated: true, completion: nil)
+        
+        wikiDetail.urlToOpen(urlString: urlString)
+        
+        directionCardVC.view.animateAlpha()
         
     }
     

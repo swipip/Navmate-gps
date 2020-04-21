@@ -158,32 +158,73 @@ class MapVC: UIViewController {
         }
 
     }
-    func animateMapView() {
+    func animateMapView(on: Bool? = true) {
         
-        UIView.animate(withDuration: 0.3, animations: {
-            self.topConstraint.constant = 26
-            self.bottomConstraint.constant = -15
-            self.leadingConstraint.constant = 10
-            self.trailingConstraint.constant = -10
-            self.mapView.layer.cornerRadius = 12
-            self.view.layoutIfNeeded()
-        }) { (_) in
-            
+        if on! {
+            UIView.animate(withDuration: 0.3, animations: {
+                self.topConstraint.constant = 26
+                self.bottomConstraint.constant = -15
+                self.leadingConstraint.constant = 10
+                self.trailingConstraint.constant = -10
+                self.mapView.layer.cornerRadius = 12
+                self.view.layoutIfNeeded()
+            }) { (_) in
+                
+            }
+        }else{
+            UIView.animate(withDuration: 0.3, animations: {
+                self.topConstraint.constant = 0
+                self.bottomConstraint.constant = 0
+                self.leadingConstraint.constant = 0
+                self.trailingConstraint.constant = 0
+                self.mapView.layer.cornerRadius = 0
+                self.view.layoutIfNeeded()
+            }) { (_) in
+                
+            }
         }
+        
+
         
     }
     @objc private func didLongPressOnTheMap(_ recognizer:UILongPressGestureRecognizer!) {
         
-//        let point = recognizer.location(in: mapView)
-//        let coordinate = mapView.convert(point, toCoordinateFrom: mapView)
-        
-//        let location = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
-//
-//        updatePosition(with: location, name: "")
-//
-//        getAddress(with: location)
-//
-        
+        if recognizer.state == .began {
+            
+            let notification = UIImpactFeedbackGenerator(style: .heavy)
+            notification.prepare()
+            notification.impactOccurred()
+            
+            let point = recognizer.location(in: mapView)
+            let coordinate = mapView.convert(point, toCoordinateFrom: mapView)
+            
+            let location = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
+            
+            let geocoder = CLGeocoder()
+            geocoder.reverseGeocodeLocation(location) { (placemarks, error) in
+                if let err = error {
+                    print(err)
+                }else{
+                    if let placemark = placemarks?.first {
+                        let annotation = MKPointAnnotation()
+                        annotation.coordinate = location.coordinate
+                        annotation.title = placemark.name
+                        annotation.subtitle = placemark.locality ?? ""
+                        self.mapView.addAnnotation(annotation)
+                    }else{
+                        let annotation = MKPointAnnotation()
+                        annotation.coordinate = location.coordinate
+                        
+                        self.mapView.addAnnotation(annotation)
+                    }
+                }
+            }
+            
+
+        }else if recognizer.state == .ended {
+            
+        }
+
         
     }
     func setPinUsingMKPlacemark(location: CLLocationCoordinate2D,name: String) {

@@ -8,10 +8,11 @@
 
 import UIKit
 import CoreLocation
+import SafariServices
 
 protocol WikiMapDetailVCDelegate {
     func didDismiss()
-    func didRequestMoreInfo()
+    func didRequestMoreInfo(urlString: String)
 }
 
 class WikiMapDetailVC: UIViewController {
@@ -72,7 +73,7 @@ class WikiMapDetailVC: UIViewController {
     var blurHeight: NSLayoutConstraint!
     
     var location: CLLocationCoordinate2D?
-    
+    var urlString: String?
     var delegate: WikiMapDetailVCDelegate?
     
     override func viewDidLoad() {
@@ -112,7 +113,10 @@ class WikiMapDetailVC: UIViewController {
             }
             delegate?.didDismiss()
         }else{
-            delegate?.didRequestMoreInfo()
+            
+            self.dismiss(animated: true, completion: nil)
+            delegate?.didRequestMoreInfo(urlString: self.urlString ?? "https://fr.wikipedia.org")
+            
         }
         
     }
@@ -227,6 +231,7 @@ extension WikiMapDetailVC: WikiManagerDelegate {
         }
         self.cardTitle.text = wiki.title
         self.extract.text = wiki.description
+        self.urlString = wiki.url
     }
 }
 extension UIView {

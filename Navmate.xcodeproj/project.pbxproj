@@ -12,6 +12,7 @@
 		4900D2AC2449DE910065752F /* routingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4900D2A92449DE900065752F /* routingManager.swift */; };
 		4900D2AD2449DE910065752F /* Route.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4900D2AA2449DE910065752F /* Route.swift */; };
 		4900D2AE2449DE910065752F /* Locator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4900D2AB2449DE910065752F /* Locator.swift */; };
+		4906C821244ED2CD00D23F3E /* WikiDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4906C820244ED2CD00D23F3E /* WikiDetailVC.swift */; };
 		49355829244B37410023F848 /* Keys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49355828244B37410023F848 /* Keys.swift */; };
 		4935582C244B5BF70023F848 /* DirectionGoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4935582B244B5BF70023F848 /* DirectionGoCell.swift */; };
 		4935582E244B5CF40023F848 /* DirectionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4935582D244B5CF40023F848 /* DirectionVC.swift */; };
@@ -51,6 +52,7 @@
 		4900D2A92449DE900065752F /* routingManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = routingManager.swift; sourceTree = "<group>"; };
 		4900D2AA2449DE910065752F /* Route.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Route.swift; sourceTree = "<group>"; };
 		4900D2AB2449DE910065752F /* Locator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Locator.swift; sourceTree = "<group>"; };
+		4906C820244ED2CD00D23F3E /* WikiDetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WikiDetailVC.swift; sourceTree = "<group>"; };
 		49355828244B37410023F848 /* Keys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keys.swift; sourceTree = "<group>"; };
 		4935582B244B5BF70023F848 /* DirectionGoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectionGoCell.swift; sourceTree = "<group>"; };
 		4935582D244B5CF40023F848 /* DirectionVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectionVC.swift; sourceTree = "<group>"; };
@@ -98,6 +100,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4906C822244ED2D700D23F3E /* Wikipédia */ = {
+			isa = PBXGroup;
+			children = (
+				49E9D070244DD07F00E79D5F /* WikiMapDetailVC.swift */,
+				4906C820244ED2CD00D23F3E /* WikiDetailVC.swift */,
+			);
+			name = "Wikipédia";
+			path = "Wikipédia";
+			sourceTree = "<group>";
+		};
 		4935582A244B5BAD0023F848 /* DirectionOptions */ = {
 			isa = PBXGroup;
 			children = (
@@ -192,7 +204,7 @@
 			children = (
 				49A5D2A6244357B6002E7D53 /* ViewController.swift */,
 				49E9D083244DECFA00E79D5F /* Navigation */,
-				49E9D070244DD07F00E79D5F /* WikiMapDetailVC.swift */,
+				4906C822244ED2D700D23F3E /* Wikipédia */,
 				4900D283244858F50065752F /* SearchVC.swift */,
 				493651EF2443780100120DAC /* MapVC.swift */,
 			);
@@ -407,6 +419,7 @@
 				49A5D2A3244357B6002E7D53 /* AppDelegate.swift in Sources */,
 				49C0888224436C3600EBEAE5 /* MonumentManager.swift in Sources */,
 				49A5D2A5244357B6002E7D53 /* SceneDelegate.swift in Sources */,
+				4906C821244ED2CD00D23F3E /* WikiDetailVC.swift in Sources */,
 				49E9D06C244DC5C200E79D5F /* MonumentAnnotation.swift in Sources */,
 				49355837244C88DA0023F848 /* MonumentSearchDetailCell.swift in Sources */,
 			);
