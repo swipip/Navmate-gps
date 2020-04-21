@@ -72,6 +72,9 @@ class MapVC: UIViewController {
         //        if MKMapRect.contains(visibleRect)
         
     }
+    func setUpDelegate() {
+        locator.delegate = self
+    }
     private func addHandle() {
         self.view.addSubview(handle)
         

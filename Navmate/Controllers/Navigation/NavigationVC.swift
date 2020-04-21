@@ -45,18 +45,44 @@ class NavigationVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        Locator.shared.delegate = self
         
         self.addIndicationsTableView()
         self.addHeaderBG()
         self.addMetricsCollection()
         self.addPOIsCollection()
+        self.addObserver()
         
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         Locator.shared.startNavigation()
+    }
+    private func addObserver() {
+        
+        let route = Notification.Name(K.shared.notificationRoute)
+        NotificationCenter.default.addObserver(self, selector: #selector(didReceiveRouteInformation(_:)), name: route, object: nil)
+        let newStep = Notification.Name(K.shared.notificationNewStep)
+        NotificationCenter.default.addObserver(self, selector: #selector(didReceiveNewInstruction(_:)), name: newStep, object: nil)
+        
+    }
+    @objc private func didReceiveNewInstruction(_ notification:Notification) {
+        
+        let currentRow = self.indicationsTableView.indexPathForSelectedRow?.row ?? 0
+        let nextRow = IndexPath(row: currentRow + 1, section: 0)
+        self.indicationsTableView.scrollToRow(at: nextRow, at: .top, animated: true)
+        
+    }
+    @objc private func didReceiveRouteInformation(_ notification:Notification) {
+        
+        if let steps = notification.userInfo?["steps"] as? [Step] {
+            
+            self.steps = steps
+            self.indicationsTableView.reloadData()
+            indicationsTableView.selectRow(at: IndexPath(item: 0, section: 0), animated: true, scrollPosition: .top)
+            
+            
+        }
+        
     }
     private func addPOIsCollection() {
         
@@ -170,25 +196,4 @@ extension NavigationVC: UITableViewDataSource, UITableViewDelegate {
     }
     
     
-}
-extension NavigationVC: LocatorDelegate {
-    
-    func didGetUserSpeed(speed: CLLocationSpeed) {
-        
-    }
-    func didReceiveNewDirectionInstructions(instruction: String) {
-        
-        let currentRow = self.indicationsTableView.indexPathForSelectedRow?.row ?? 0
-        let nextRow = IndexPath(row: currentRow + 1, section: 0)
-        
-        self.indicationsTableView.scrollToRow(at: nextRow, at: .top, animated: true)
-        
-    }
-    func didReceiveAllInstructions(steps: [Step]) {
-        
-        self.steps = steps
-        self.indicationsTableView.reloadData()
-        indicationsTableView.selectRow(at: IndexPath(item: 0, section: 0), animated: true, scrollPosition: .top)
-        
-    }
 }

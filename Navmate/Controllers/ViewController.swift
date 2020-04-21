@@ -100,8 +100,6 @@ class ViewController: UIViewController {
         
         self.navigationController?.navigationBar.isHidden = true
         
-//        Locator.shared.delegate = self
-        
         addMapView()
         addSearchVC()
         addSelectableHandle()
@@ -134,6 +132,7 @@ class ViewController: UIViewController {
         
         self.mapView.mapView.removeOverlays(self.mapView.mapView.overlays)
         self.mapView.animateMapView(on: false)
+        self.mapView.setUpDelegate()
         
         Locator.shared.stopNavigation()
         
@@ -441,7 +440,7 @@ extension ViewController: SearchVCDelegate {
     
     func didSelectAddress(placemark: MKPointAnnotation) {
         
-        let pinAnnotation = MKPinAnnotationView(annotation: placemark, reuseIdentifier: "")
+//        let pinAnnotation = MKPinAnnotationView(annotation: placemark, reuseIdentifier: "")
         
         self.mapView.mapView.addAnnotation(placemark)
         

@@ -33,5 +33,7 @@ class K {
     let notificationSpeed = "speed"
     let notificationLocation = "location"
     let notificationHeading = "heading"
+    let notificationRoute = "route"
+    let notificationNewStep = "newStep"
     
 }
