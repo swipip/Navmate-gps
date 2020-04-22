@@ -32,16 +32,18 @@ class ResearchCell: UITableViewCell {
     
     private func commonInit() {
         
+        self.selectionStyle = .none
+        
         addThumbNail()
         addTitleLabel()
         addsubTitleLabel()
         
     }
-    func passDataToCell(title: String ,subTitle: String ,imageName: String, searchResult: MKLocalSearchCompletion) {
+    func passDataToCell(title: String ,subTitle: String ,imageName: String, searchResult: MKLocalSearchCompletion? = nil) {
         self.thumbNail.image = UIImage(named: imageName)
         self.titleLabel.text = title
         self.subTitleLabel.text = subTitle
-        self.searchResult = searchResult
+        self.searchResult = searchResult ?? MKLocalSearchCompletion()
     }
     private func addThumbNail() {
         

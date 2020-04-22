@@ -29,7 +29,7 @@ class DirectionGoCell: UICollectionViewCell {
         button.setTitle("C'est Parti !", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.backgroundColor = K.shared.blue
-        button.layer.cornerRadius = 12
+        button.layer.cornerRadius = 8
         button.addTarget(self, action: #selector(goButtonPressed(_:)), for: .touchUpInside)
         return button
     }()
@@ -38,19 +38,19 @@ class DirectionGoCell: UICollectionViewCell {
         button.setTitle("Pas Aujourd'hui", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.backgroundColor = K.shared.orange
-        button.layer.cornerRadius = 12
+        button.layer.cornerRadius = 8
         button.addTarget(self, action: #selector(dismissButtonPressed(_:)), for: .touchUpInside)
         return button
     }()
     private lazy var distanceLabel: UILabel = {
         let label = UILabel()
-        label.text = "124 Km"
+        label.text = "- Km"
         label.font = UIFont.systemFont(ofSize: K.shared.cardContentFontSize)
         return label
     }()
     private lazy var timeLabel: UILabel = {
         let label = UILabel()
-        label.text = "2h03 min"
+        label.text = "- min"
         label.font = UIFont.systemFont(ofSize: K.shared.cardTitleFontSize, weight: .medium)
         return label
     }()
@@ -69,7 +69,7 @@ class DirectionGoCell: UICollectionViewCell {
     }()
     private lazy var directionName: UILabel = {
         let label = UILabel()
-        label.text = "Azerty"
+        label.text = "-"
         label.font = UIFont.systemFont(ofSize: K.shared.cardTitleFontSize, weight: .medium)
         return label
     }()

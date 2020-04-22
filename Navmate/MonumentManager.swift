@@ -10,6 +10,7 @@ import Foundation
 import SwiftyJSON
 import Alamofire
 import MapKit
+import CoreLocation
 
 protocol MonumentManagerDelegate: class {
     func didFetchData(monuments: [Monument])
@@ -27,6 +28,7 @@ struct Monument {
 class MonumentManager: NSObject {
     
     private var monuments = [Monument]()
+    private var notificationMonument = Notification.Name(rawValue: K.shared.notificationMonuments)
     
     weak var delegate: MonumentManagerDelegate?
     
@@ -37,6 +39,9 @@ class MonumentManager: NSObject {
     }
     
     func getData(for region: CLCircularRegion) {
+        
+        self.monuments.removeAll()
+        
         fetchData { (json) in
             for i in 0...json.count {
                 let name = json[i]["Monument"].stringValue
@@ -54,6 +59,10 @@ class MonumentManager: NSObject {
                     self.monuments.append(monument)
                 }
             }
+            
+            let userInfo = ["monuments":self.monuments]
+            NotificationCenter.default.post(name: self.notificationMonument, object: nil, userInfo: userInfo)
+            
             self.delegate?.didFetchData(monuments: self.monuments)
         }
     }

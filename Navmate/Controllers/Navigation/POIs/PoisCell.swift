@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreLocation
 
 class POIsCell: UICollectionViewCell {
     
@@ -22,29 +23,63 @@ class POIsCell: UICollectionViewCell {
         table.showsVerticalScrollIndicator = false
         table.dataSource = self
         table.delegate = self
-        table.register(UITableViewCell.self, forCellReuseIdentifier: "cellID")
+        table.register(ResearchCell.self, forCellReuseIdentifier: "cellID")
         return table
     }()
     private lazy var cardTitle: UILabel = {
         let label = UILabel()
-        label.text = "Lieux Interessants"
+        label.text = "A découvrir aux alentours"
         label.textColor = .black
-        label.font = UIFont.systemFont(ofSize: 25,weight: .medium)
+        label.font = UIFont.systemFont(ofSize: K.shared.cardTitleFontSize,weight: .medium)
         return label
     }()
+    private var monuments: [Monument]?
+    private var allowReload = true
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         self.addCard()
         self.addLabel()
         self.addTableView()
+        self.addObservers()
         
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    private func addObservers() {
+        
+        let notificationMonuments = Notification.Name(K.shared.notificationMonuments)
+        NotificationCenter.default.addObserver(self, selector: #selector(didReceiveMonuments(_:)), name: notificationMonuments, object: nil)
+        
+        let locationNotification = Notification.Name(K.shared.notificationLocation)
+        NotificationCenter.default.addObserver(self, selector: #selector(didReceiveLocationInfo(_:)), name: locationNotification, object: nil)
+        
+    }
+    @objc private func didReceiveMonuments(_ notification:Notification) {
+        
+        if let monuments = notification.userInfo?["monuments"] as? [Monument] {
+            self.monuments = [Monument]()
+            self.monuments = monuments
+            self.tableView.reloadData()
+        }
+        
+    }
+    @objc private func didReceiveLocationInfo(_ notification:Notification) {
+        
+        if allowReload {
+            if let location = notification.userInfo?["location"] as? CLLocation {
+                
+                let region = CLCircularRegion(center: location.coordinate, radius: 20000, identifier: "")
+                
+                MonumentManager.shared.getData(for: region)
+                
+                allowReload = false
+            }
+        }
+        
+    }
     private func addTableView(){
         self.addSubview(tableView)
         
@@ -54,8 +89,8 @@ class POIsCell: UICollectionViewCell {
            
            NSLayoutConstraint.activate([fromView.leadingAnchor.constraint(equalTo: toView.leadingAnchor, constant: 0),
                                         fromView.trailingAnchor.constraint(equalTo: toView.trailingAnchor, constant: -0),
-                                        fromView.topAnchor.constraint(equalTo: cardTitle.bottomAnchor, constant: 5),
-                                        fromView.bottomAnchor.constraint(equalTo: toView.bottomAnchor,constant: -5)])
+                                        fromView.topAnchor.constraint(equalTo: cardTitle.bottomAnchor, constant: 10),
+                                        fromView.bottomAnchor.constraint(equalTo: toView.bottomAnchor,constant: -10)])
         }
         addConstraints(fromView: tableView, toView: self.cardBG)
     }
@@ -93,12 +128,23 @@ extension POIsCell: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cellID", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cellID", for: indexPath) as! ResearchCell
         
-        cell.textLabel?.text = "Point of Interest"
+        let i = indexPath.row
+        
+        if let monuments = self.monuments {
+            
+            cell.passDataToCell(title: monuments[i].name, subTitle: monuments[i].town, imageName: "historic")
+            
+        }
+
         
         return cell
+    }
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 70
     }
     
     
 }
+

@@ -51,7 +51,7 @@ class WikiMapDetailVC: UIViewController {
     }()
     private lazy var dismissButton: UIButton = {
         let button = UIButton()
-        button.setTitle("j'ai vu", for: .normal)
+        button.setTitle("J'ai vu", for: .normal)
         button.alpha = 0.0
         button.layer.cornerRadius = 8
         button.backgroundColor = K.shared.orange

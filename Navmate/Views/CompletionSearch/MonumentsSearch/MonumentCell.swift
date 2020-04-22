@@ -76,8 +76,6 @@ extension MonumentCell: MonumentManagerDelegate {
             
             self.monuments.append(monument)
             
-            print("Monument : \(monument.name)")
-            
         }
         self.collectionView.reloadData()
     }

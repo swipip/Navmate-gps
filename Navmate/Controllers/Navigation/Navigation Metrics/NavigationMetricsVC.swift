@@ -57,8 +57,6 @@ extension NavigationMetricsVC: UICollectionViewDelegate, UICollectionViewDataSou
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-
-        let merticValues = ["75 Kmh","47.567903N 2.74893W","123 m","2h03min","158km"]
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cellID", for: indexPath) as! NavigationMetricsCell
         
@@ -71,6 +69,8 @@ extension NavigationMetricsVC: UICollectionViewDelegate, UICollectionViewDataSou
             cell.updateType(type: .altitude)
         case 3:
             cell.updateType(type: .course)
+        case 4:
+            cell.updateType(type: .timeLeft)
         default:
             cell.updateType(type: .course)
         }

@@ -286,6 +286,11 @@ extension MapVC: MKMapViewDelegate {
             annotationView.delegate = self
             annotationView.passCoordinates(annotationData: annotation)
             
+            if #available(iOS 11.0, *) {
+                let view = mapView.view(for: annotation)
+                view?.prepareForDisplay()
+            }
+            
             return annotationView
         }
         

@@ -35,5 +35,7 @@ class K {
     let notificationHeading = "heading"
     let notificationRoute = "route"
     let notificationNewStep = "newStep"
+    let notificationMonuments = "monument"
+    let notificationDurationTracking = "durationTracking"
     
 }

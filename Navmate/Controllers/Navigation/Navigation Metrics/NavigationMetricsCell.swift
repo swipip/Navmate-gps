@@ -38,7 +38,7 @@ class NavigationMetricsCell: UICollectionViewCell {
     var type: metricCellType?
     var startUpdating = false
     enum metricCellType {
-        case speed,location,altitude,course
+        case speed,location,altitude,course,timeLeft
     }
     
     override init(frame: CGRect) {
@@ -51,14 +51,37 @@ class NavigationMetricsCell: UICollectionViewCell {
         let speed = NSNotification.Name(K.shared.notificationSpeed)
         let location = NSNotification.Name(K.shared.notificationLocation)
         let heading = NSNotification.Name(K.shared.notificationHeading)
+        let duration = NSNotification.Name(K.shared.notificationDurationTracking)
         NotificationCenter.default.addObserver(self, selector: #selector(didReceiveNotification), name: speed, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(didReceiveNotification), name: location, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(didReceiveNotification), name: heading, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(didReceiveNotification), name: duration, object: nil)
         
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    deinit {
+        
+        NotificationCenter.default.removeObserver(self)
+        
+    }
+    
+    fileprivate func getTimeString(_ duration: Double) {
+        let time = secondsToHoursMinutesSeconds(seconds: Int(duration))
+        let minutes = time.minutes
+        var minutesString = ""
+        if minutes < 10 {
+            minutesString = "0\(minutes)"
+        }else{
+            minutesString = "\(minutes)"
+        }
+        if time.hours < 1 {
+            self.metricValue.text = "\(minutesString) minutes"
+        }else{
+            self.metricValue.text = "\(time.hours):\(minutesString) heures"
+        }
     }
     
     @objc private func didReceiveNotification(notification: NSNotification) {
@@ -102,6 +125,13 @@ class NavigationMetricsCell: UICollectionViewCell {
                     self.metricValue.text = "\(courseString)° \(quadrant)"
                     
                 }
+            case .timeLeft:
+                if let duration = notification.userInfo?["duration"] as? Double {
+                 
+                    getTimeString(duration)
+                    
+                    
+                }
             default:
                 if let location = notification.userInfo?["location"] as? CLLocation {
                     
@@ -118,7 +148,9 @@ class NavigationMetricsCell: UICollectionViewCell {
         }
         
     }
-    
+    func secondsToHoursMinutesSeconds (seconds : Int) -> (hours:Int,minutes: Int,seconds: Int) {
+      return (seconds / 3600, (seconds % 3600) / 60, (seconds % 3600) % 60)
+    }
     func updateType(type: metricCellType) {
 
 //        let metrics = ["speed","marker","mountain","time","journey"]
@@ -135,6 +167,12 @@ class NavigationMetricsCell: UICollectionViewCell {
             self.metricIV.image = UIImage(named: "location")
         case .course:
             self.metricIV.image = UIImage(named: "compass")
+        case .timeLeft:
+            self.metricIV.image = UIImage(named: "time")
+            
+            let duration = Locator.shared.getTotalTripDuration()
+            getTimeString(duration)
+            
         default:
             self.metricIV.image = UIImage(named: "marker")
         }

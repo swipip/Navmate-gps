@@ -9,24 +9,17 @@
 import UIKit
 import CoreLocation
 
-class BarChartCell: UICollectionViewCell {
+class BarChartCell: CommonPoisCell {
     
-    private lazy var cardBG: UIView = {
-        let view = UIView()
-        view.backgroundColor = .white
-        view.addShadow(radius: 5, opacity: 0.5, color: .gray)
-        view.layer.cornerRadius = 8
-        return view
-    }()
     private lazy var cardTitle: UILabel = {
         let label = UILabel()
         label.text = "Dénivelé"
         label.textColor = .black
-        label.font = UIFont.systemFont(ofSize: 22,weight: .medium)
+        label.font = UIFont.systemFont(ofSize: K.shared.cardTitleFontSize,weight: .medium)
         return label
     }()
     
-    private var altitudeRecord:[Double] = [25,36,26,56,25,23,26,25,21,20]
+    private var altitudeRecord:[Double] = []
     
     private var barBacks: [UIView] = []
     private var bars: [UIView] = []
@@ -58,7 +51,11 @@ class BarChartCell: UICollectionViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+    deinit {
+        
+        NotificationCenter.default.removeObserver(self)
+        
+    }
     private func addObservers() {
         
         let altitudeNotif = Notification.Name(rawValue: K.shared.notificationLocation)
@@ -66,7 +63,7 @@ class BarChartCell: UICollectionViewCell {
         
     }
     @objc private func didReceiveAltitudeInformation(_ notification:Notification) {
-        print(allowUpdate)
+        
         if allowUpdate {
             if let location = notification.userInfo?["location"] as? CLLocation {
 
@@ -74,7 +71,7 @@ class BarChartCell: UICollectionViewCell {
 
                 altitudeRecord.append(altitude)
 
-                if altitudeRecord.count >= barQty {
+                if altitudeRecord.count > barQty {
                     altitudeRecord.removeFirst()
                 }
 
@@ -88,7 +85,7 @@ class BarChartCell: UICollectionViewCell {
     }
     private func updateChart() {
         
-        let maxAltitude = altitudeRecord.max() ?? 10
+        let maxAltitude = (altitudeRecord.max() == 0 ? 10.0 : altitudeRecord.max())!
         let maxHeight = barBacks[0].frame.size.height * 0.9
         let coeficient = maxHeight / CGFloat(maxAltitude)
         
@@ -129,7 +126,7 @@ class BarChartCell: UICollectionViewCell {
                                             fromView.widthAnchor.constraint(equalToConstant: barWidth),
                                             fromView.bottomAnchor.constraint(equalTo: toView.bottomAnchor,constant: -30)])
             }
-            addConstraints(fromView: bar, toView: cardBG)
+            addConstraints(fromView: bar, toView: self.cardBG)
             
             let constraint = NSLayoutConstraint(item: bar, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 1, constant: maximumHeight/2)
             
@@ -165,7 +162,7 @@ class BarChartCell: UICollectionViewCell {
                                             fromView.topAnchor.constraint(equalTo: cardTitle.bottomAnchor, constant: 5),
                                             fromView.bottomAnchor.constraint(equalTo: toView.bottomAnchor,constant: -30)])
             }
-            addConstraints(fromView: barBack, toView: cardBG)
+            addConstraints(fromView: barBack, toView: self.cardBG)
             
             leadingAch += barWidth + 5
             
@@ -186,20 +183,6 @@ class BarChartCell: UICollectionViewCell {
                                         fromView.topAnchor.constraint(equalTo: toView.topAnchor, constant: 5)])
         }
         addConstraints(fromView: cardTitle, toView: self.cardBG)
-    }
-    private func addCard() {
-        self.addSubview(cardBG)
-        
-        func addConstraints(fromView: UIView, toView: UIView) {
-               
-           fromView.translatesAutoresizingMaskIntoConstraints = false
-           
-           NSLayoutConstraint.activate([fromView.leadingAnchor.constraint(equalTo: toView.leadingAnchor, constant: 20),
-                                        fromView.trailingAnchor.constraint(equalTo: toView.trailingAnchor, constant: -20),
-                                        fromView.topAnchor.constraint(equalTo: toView.topAnchor, constant: 10),
-                                        fromView.bottomAnchor.constraint(equalTo: toView.bottomAnchor,constant: -10)])
-        }
-        addConstraints(fromView: cardBG, toView: self)
     }
     
 }

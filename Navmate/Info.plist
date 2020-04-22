@@ -3,9 +3,11 @@
 <plist version="1.0">
 <dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>In order to guide  you, the application requieres your location</string>
+	<string>Afin de pouvoir vous guider, l&apos;application à besoin de votre localisation</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string></string>
+	<string>Afin de pouvoir vous guider, l&apos;application à besoin de votre localisation</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Afin de pouvoir vous guider, l&apos;application à besoin de votre localisation</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>

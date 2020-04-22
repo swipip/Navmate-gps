@@ -21,6 +21,7 @@ class PointOfInterestVC: UIViewController {
         collection.showsHorizontalScrollIndicator = false
         collection.register(POIsCell.self, forCellWithReuseIdentifier: "cellID")
         collection.register(BarChartCell.self, forCellWithReuseIdentifier: "cellID2")
+        collection.register(TripAverageMetricsCell.self, forCellWithReuseIdentifier: "cellID3")
         return collection
     }()
     
@@ -61,15 +62,14 @@ extension PointOfInterestVC: UICollectionViewDelegate, UICollectionViewDataSourc
         if indexPath.row == 0 {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cellID2", for: indexPath) as! BarChartCell
             return cell
+        }else if indexPath.row == 1 {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cellID3", for: indexPath) as! TripAverageMetricsCell
+            return cell
         }else{
-            let metrics = ["speedometer","location.fill","cloud.sun.fill"]
-            
-            let merticValues = ["75 Kmh","47.567903N 2.74893W",""]
-            
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cellID", for: indexPath) as! POIsCell
             return cell
         }
-
+        
         
         
     }

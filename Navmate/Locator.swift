@@ -49,13 +49,14 @@ class Locator: NSObject {
     weak var delegate: LocatorDelegate?
     
     var route: Route?
+    private var durationTracking:Double = 0
     
     let speedNotification = NSNotification.Name(K.shared.notificationSpeed)
     let locationNotification = NSNotification.Name(K.shared.notificationLocation)
     let headingNotification = NSNotification.Name(K.shared.notificationHeading)
     let routeNotification = NSNotification.Name(K.shared.notificationRoute)
     let newStepNotification = NSNotification.Name(K.shared.notificationNewStep)
-    
+    let durationTrackingNotification = Notification.Name(K.shared.notificationDurationTracking)
     
     private override init() {
         super.init()
@@ -77,11 +78,23 @@ class Locator: NSObject {
         self.locationManager.monitoredRegions.forEach({ self.locationManager.stopMonitoring(for: $0) })
         routeIndex = 0
     }
+    func getTotalTripDuration() -> Double{
+        if let duration = self.route?.summary.duration {
+            return duration
+        }else{
+            return 0.0
+        }
+        
+    }
     func startNavigation() {
         
         if let route = self.route {
             
             delegate?.didStartNavigation()
+            
+            if let duration = self.route?.summary.duration {
+                durationTracking = duration
+            }
             
             let userInfo = ["steps":route.steps]
             NotificationCenter.default.post(name: routeNotification, object: nil, userInfo: userInfo)
@@ -144,6 +157,12 @@ class Locator: NSObject {
         routingManager.getDirections(from: source, to: destination,mode: mode, preference: preference!, avoid: avoid!)
         
     }
+    fileprivate func sendDurationUpdateNotification(_ durationToNextWayPoint: Double) {
+        durationTracking -= durationToNextWayPoint
+        let userInfo = ["duration":durationTracking]
+        NotificationCenter.default.post(name: durationTrackingNotification, object: nil, userInfo: userInfo)
+    }
+    
     private func updateInstructions() {
         
         guard let steps = self.steps else {return}
@@ -164,6 +183,8 @@ class Locator: NSObject {
             let exit = step.wayPoints.last!
             let dif = exit - entry
             
+            let durationToNextWayPoint = step.duration / Double(dif)
+                  
             let nextIndex = min(i+1,steps.count-1)
             
             let nextEntry = steps[nextIndex].wayPoints.first!
@@ -179,12 +200,17 @@ class Locator: NSObject {
                     
                     NotificationCenter.default.post(name: newStepNotification, object: nil)
                     
+                    sendDurationUpdateNotification(durationToNextWayPoint)
+                    
                     delegate?.didMoveToNextWP(waypointIndex: currentWPIndex, status: "enter", location: monitoredWayPoint!)
+                    
                 }else if entry == 0 {
                     let instruction = "\(step.instruction)"
                     delegate?.didReceiveNewDirectionInstructions(instruction: instruction)
                     
                     NotificationCenter.default.post(name: newStepNotification, object: nil)
+                    
+                    sendDurationUpdateNotification(durationToNextWayPoint)
                     
                     delegate?.didMoveToNextWP(waypointIndex: currentWPIndex, status: "enter", location: monitoredWayPoint!)
                 }else{
@@ -192,6 +218,8 @@ class Locator: NSObject {
                     delegate?.didReceiveNewDirectionInstructions(instruction: instruction)
                     
                     NotificationCenter.default.post(name: newStepNotification, object: nil)
+                    
+                    sendDurationUpdateNotification(durationToNextWayPoint)
                     
                     delegate?.didMoveToNextWP(waypointIndex: currentWPIndex, status: "enter", location: monitoredWayPoint!)
                 }
@@ -209,6 +237,8 @@ class Locator: NSObject {
                     delegate?.didReceiveNewDirectionInstructions(instruction: instruction)
                     
                     NotificationCenter.default.post(name: newStepNotification, object: nil)
+                    
+                    sendDurationUpdateNotification(durationToNextWayPoint)
                     
                     delegate?.didMoveToNextWP(waypointIndex: currentWPIndex, status: "exit", location: monitoredWayPoint!)
                     
@@ -229,6 +259,8 @@ class Locator: NSObject {
                     delegate?.didReceiveNewDirectionInstructions(instruction: instruction)
                     
                     NotificationCenter.default.post(name: newStepNotification, object: nil)
+                    
+                    sendDurationUpdateNotification(durationToNextWayPoint)
                     
                     delegate?.didMoveToNextWP(waypointIndex: currentWPIndex, status: "default", location: monitoredWayPoint!)
                     currentWPIndex += 1
@@ -288,32 +320,32 @@ extension Locator: CLLocationManagerDelegate {
     }
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
         
-        guard let wayPoints = self.wayPoints else {return}
-        guard let steps = self.steps else {return}
-        
-        locationManager.stopMonitoring(for: region)
-        
-        var message = ""
-        for (i,step) in steps.enumerated() {
-            if step.wayPoints.first == currentWPIndex {
-                message = step.instruction
-            }else if step.wayPoints.last == currentWPIndex {
-                message = steps[i+1].instruction
-            }else if step.wayPoints.first! < currentWPIndex && step.wayPoints.last! > currentWPIndex {
-                message = "Prepare to \(steps[i+1].instruction)"
-            }
-        }
-        
-        delegate?.didReceiveNewDirectionInstructions(instruction: message)
-        
-        NotificationCenter.default.post(name: newStepNotification, object: nil)
-        
-        
-        currentWPIndex += 1
-        let coordinate = wayPoints[currentWPIndex]
-        let region = CLCircularRegion(center: coordinate.coordinate, radius: 30, identifier: "monitoredWP")
-
-        locationManager.startMonitoring(for: region)
+//        guard let wayPoints = self.wayPoints else {return}
+//        guard let steps = self.steps else {return}
+//
+//        locationManager.stopMonitoring(for: region)
+//
+//        var message = ""
+//        for (i,step) in steps.enumerated() {
+//            if step.wayPoints.first == currentWPIndex {
+//                message = step.instruction
+//            }else if step.wayPoints.last == currentWPIndex {
+//                message = steps[i+1].instruction
+//            }else if step.wayPoints.first! < currentWPIndex && step.wayPoints.last! > currentWPIndex {
+//                message = "Prepare to \(steps[i+1].instruction)"
+//            }
+//        }
+//
+//        delegate?.didReceiveNewDirectionInstructions(instruction: message)
+//
+//        NotificationCenter.default.post(name: newStepNotification, object: nil)
+//
+//
+//        currentWPIndex += 1
+//        let coordinate = wayPoints[currentWPIndex]
+//        let region = CLCircularRegion(center: coordinate.coordinate, radius: 30, identifier: "monitoredWP")
+//
+//        locationManager.startMonitoring(for: region)
         
         
     }
@@ -350,7 +382,7 @@ extension Locator: RoutingManagerDelegate {
         if let monitoredWayPoint = wayPoints!.first {
             self.monitoredWayPoint = monitoredWayPoint
             #warning("set back to zero")
-            self.currentWPIndex = 1
+            self.currentWPIndex = 0
 //            let region = CLCircularRegion(center: monitoredWayPoint.coordinate, radius: 30, identifier: "firstWayPoint")
 //            locationManager.startMonitoring(for: region)
         }
@@ -366,7 +398,7 @@ extension Locator: RoutingManagerDelegate {
 //        locationManager.startUpdatingLocation()
         
         #warning("test distance filter")
-        //        locationManager.distanceFilter = 3
+//                locationManager.distanceFilter = 3
         
 //        delegate?.didReceiveAllInstructions(steps: route.steps)
 

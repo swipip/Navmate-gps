@@ -57,7 +57,6 @@ class RoutingManager {
                 
                 //Geometry
                 let geometry = json["routes"][0]["geometry"].stringValue
-                print(geometry)
                 //Summary
                 let totalDistance = json["routes"][0]["summary"]["distance"].doubleValue
                 let totalDuration = json["routes"][0]["summary"]["duration"].doubleValue
@@ -82,7 +81,6 @@ class RoutingManager {
                     if type == 7 || type == 8 {
                         let exit = json["routes"][0]["segments"][0]["steps"][i]["exit_number"].intValue
                         exitNumber.append(exit)
-                        print(exit)
                     }else{
                         exitNumber.append(0)
                     }
@@ -132,8 +130,9 @@ class RoutingManager {
         let encoder = JSONEncoder()
         do {
             let json = try encoder.encode(query)
+
 //            let jsonString = NSString(data: json as Data, encoding: String.Encoding.utf8.rawValue)! as String
-//            
+//
 //            print(jsonString)
             
             return json
@@ -156,7 +155,7 @@ class RoutingManager {
             let task = URLSession.shared.dataTask(with: request) { data, response, error in
               if let response = response, let data = data {
             //    print(response)
-//                print(String(data: data, encoding: .utf8) ?? "")
+                print(String(data: data, encoding: .utf8) ?? "")
                 
                 DispatchQueue.main.async {
                     completion(data)

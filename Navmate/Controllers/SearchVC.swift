@@ -280,7 +280,7 @@ extension SearchVC: MKLocalSearchCompleterDelegate {
     
     
     func completerDidUpdateResults(_ completer: MKLocalSearchCompleter) {
-        print(completer.results)
+//        print(completer.results)
         searchCompletionResults = [MKLocalSearchCompletion]()
         
         completer.results.forEach { (result) in
