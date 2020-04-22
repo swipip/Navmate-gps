@@ -256,6 +256,8 @@ class MapVC: UIViewController {
 extension MapVC: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
 
+        guard !(view.annotation is MKUserLocation) else {return}
+        
         if let destination = view.annotation?.coordinate {
             let placemark = MKPlacemark(coordinate: destination)
             self.getRoute(to: placemark)
@@ -359,8 +361,8 @@ extension MapVC: LocatorDelegate {
     func didMoveToNextWP(waypointIndex: Int,status: String,location: CLLocation) {
 //        self.regionMonitored.text = String("\(waypointIndex) & status: \(status)")
 
-//        let circle = MKCircle(center: location.coordinate, radius: 50)
-//        mapView.addOverlay(circle)
+        let circle = MKCircle(center: location.coordinate, radius: 50)
+        mapView.addOverlay(circle)
         
     }
 }

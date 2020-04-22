@@ -78,7 +78,11 @@ class NavigationMetricsCell: UICollectionViewCell {
             minutesString = "\(minutes)"
         }
         if time.hours < 1 {
-            self.metricValue.text = "\(minutesString) minutes"
+            if minutes == 1 {
+                self.metricValue.text = "\(minutesString) minute"
+            }else{
+                self.metricValue.text = "\(minutesString) minutes"
+            }
         }else{
             self.metricValue.text = "\(time.hours):\(minutesString) heures"
         }

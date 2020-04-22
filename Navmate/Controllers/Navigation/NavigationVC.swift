@@ -66,14 +66,17 @@ class NavigationVC: UIViewController {
         
     }
     @objc private func didReceiveNewInstruction(_ notification:Notification) {
+        print("\(#function) \(self.indicationsTableView.indexPathForSelectedRow!.row)")
         
         let currentRow = self.indicationsTableView.indexPathForSelectedRow?.row ?? 0
         let nextRow = IndexPath(row: currentRow + 1, section: 0)
-        self.indicationsTableView.scrollToRow(at: nextRow, at: .top, animated: true)
         
-        let cell = indicationsTableView.cellForRow(at: nextRow) as! NavigationCell
-        cell.magnify(on: true)
-        
+        if nextRow.row < indicationsTableView.numberOfRows(inSection: 0) - 1{
+            
+            self.indicationsTableView.selectRow(at: nextRow, animated: true, scrollPosition: .top)
+            let cell = indicationsTableView.cellForRow(at: nextRow) as! NavigationCell
+            cell.magnify(on: true)
+        }
         
     }
     @objc private func didReceiveRouteInformation(_ notification:Notification) {
@@ -165,7 +168,9 @@ class NavigationVC: UIViewController {
 extension NavigationVC: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if let steps = self.steps {
-            return steps.count
+//            let step = Step(type: 14, instruction: "-", name: "-", wayPoints: [1,1], distance: 0, exitNumber: 0, duration: 0)
+//            self.steps?.append(step)
+            return steps.count + 1
         }else {
             return 10
         }
@@ -176,7 +181,13 @@ extension NavigationVC: UITableViewDataSource, UITableViewDelegate {
         
         if let steps = self.steps {
             let i = indexPath.row
-            cell.updateIndications(main: steps[i].name, sub: String(steps[i].distance), type: steps[i].type, step: steps[i])
+            if i == steps.count {
+                let step = Step(type: 14, instruction: "-", name: "-", wayPoints: [1,1], distance: 0, exitNumber: 0, duration: 0)
+                cell.updateIndications(main: "-", sub: 0, type: 14, step: step)
+            }else{
+                cell.updateIndications(main: steps[i].name, sub: steps[max(0,i-1)].distance, type: steps[i].type, step: steps[i])
+            }
+            
         }
         
         return cell

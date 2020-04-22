@@ -37,5 +37,6 @@ class K {
     let notificationNewStep = "newStep"
     let notificationMonuments = "monument"
     let notificationDurationTracking = "durationTracking"
+    let notificationDistance = "distance"
     
 }

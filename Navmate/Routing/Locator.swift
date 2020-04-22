@@ -42,7 +42,7 @@ class Locator: NSObject {
     var currentWPIndex = 0
     var contains = true
     var nextStepInstruction = ""
-    
+    var previousLocation: CLLocation?
     var existingWP: CLLocation?
     
     static let shared = Locator()
@@ -50,6 +50,7 @@ class Locator: NSObject {
     
     var route: Route?
     private var durationTracking:Double = 0
+    var radius = 20.0
     
     let speedNotification = NSNotification.Name(K.shared.notificationSpeed)
     let locationNotification = NSNotification.Name(K.shared.notificationLocation)
@@ -57,6 +58,7 @@ class Locator: NSObject {
     let routeNotification = NSNotification.Name(K.shared.notificationRoute)
     let newStepNotification = NSNotification.Name(K.shared.notificationNewStep)
     let durationTrackingNotification = Notification.Name(K.shared.notificationDurationTracking)
+    let distanceNotification = Notification.Name(K.shared.notificationDistance)
     
     private override init() {
         super.init()
@@ -163,6 +165,14 @@ class Locator: NSObject {
         NotificationCenter.default.post(name: durationTrackingNotification, object: nil, userInfo: userInfo)
     }
     
+    fileprivate func sendDistanceUpdateNotification(_ dif: Int, _ step: Step, _ distanceToNextWayPoint: Double) {
+        let portionOfStepDistance = currentWPIndex / dif
+        
+        let remainingDistance = step.distance - distanceToNextWayPoint * Double(portionOfStepDistance)
+        let userInfo = ["distance": remainingDistance]
+        NotificationCenter.default.post(name: distanceNotification, object: nil, userInfo: userInfo)
+    }
+    
     private func updateInstructions() {
         
         guard let steps = self.steps else {return}
@@ -183,7 +193,8 @@ class Locator: NSObject {
             let exit = step.wayPoints.last!
             let dif = exit - entry
             
-            let durationToNextWayPoint = step.duration / Double(dif)
+            let durationToNextWayPoint = step.duration / max(1,Double(dif))
+            let distanceToNextWayPoint = step.distance / max(1,Double(dif))
                   
             let nextIndex = min(i+1,steps.count-1)
             
@@ -255,10 +266,11 @@ class Locator: NSObject {
                 return
             default:
                 if currentWPIndex > entry && currentWPIndex < exit {
+                    
+//                    sendDistanceUpdateNotification(dif, step, distanceToNextWayPoint)
+                    
                     let instruction = "In \(step.distance) meters \(steps[i+1].instruction)"
                     delegate?.didReceiveNewDirectionInstructions(instruction: instruction)
-                    
-                    NotificationCenter.default.post(name: newStepNotification, object: nil)
                     
                     sendDurationUpdateNotification(durationToNextWayPoint)
                     
@@ -279,20 +291,33 @@ extension Locator: CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
 
+        
         if let speed = getUserCurrentSpeed() {
+            
+            radius = max(15,min(speed/5 * 15,100))
+            
             delegate?.didGetUserSpeed(speed: speed)
             let userInfo = ["speed":speed]
             NotificationCenter.default.post(name: speedNotification, object: nil, userInfo: userInfo)
             
         }
+        guard let location = locations.last else {return}
+        
+        if let previousLoc = previousLocation {
+            if previousLoc == location {
+                return
+            }
+        }
+        
+        self.previousLocation = location
         
         let userInfo = ["location":locations.last]
         NotificationCenter.default.post(name: locationNotification, object: nil, userInfo: userInfo as! [AnyHashable : CLLocation])
 
-        guard let location = locations.last else {return}
+        
         guard let monitoredWayPoint = self.monitoredWayPoint else {return}
 
-        let region = CLCircularRegion(center: monitoredWayPoint.coordinate, radius: 55, identifier: "")
+        let region = CLCircularRegion(center: monitoredWayPoint.coordinate, radius: radius, identifier: "")
 
         if region.contains(location.coordinate){
 
@@ -300,7 +325,7 @@ extension Locator: CLLocationManagerDelegate {
 
         }
         if let existingWp = self.existingWP {
-            let exitingRegion = CLCircularRegion(center: existingWp.coordinate, radius: 55, identifier: "")
+            let exitingRegion = CLCircularRegion(center: existingWp.coordinate, radius: radius, identifier: "")
 
             if exitingRegion.contains(location.coordinate) == false {
                 contains = true
@@ -320,32 +345,32 @@ extension Locator: CLLocationManagerDelegate {
     }
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
         
-//        guard let wayPoints = self.wayPoints else {return}
-//        guard let steps = self.steps else {return}
-//
-//        locationManager.stopMonitoring(for: region)
-//
-//        var message = ""
-//        for (i,step) in steps.enumerated() {
-//            if step.wayPoints.first == currentWPIndex {
-//                message = step.instruction
-//            }else if step.wayPoints.last == currentWPIndex {
-//                message = steps[i+1].instruction
-//            }else if step.wayPoints.first! < currentWPIndex && step.wayPoints.last! > currentWPIndex {
-//                message = "Prepare to \(steps[i+1].instruction)"
-//            }
-//        }
-//
-//        delegate?.didReceiveNewDirectionInstructions(instruction: message)
-//
-//        NotificationCenter.default.post(name: newStepNotification, object: nil)
-//
-//
-//        currentWPIndex += 1
-//        let coordinate = wayPoints[currentWPIndex]
-//        let region = CLCircularRegion(center: coordinate.coordinate, radius: 30, identifier: "monitoredWP")
-//
-//        locationManager.startMonitoring(for: region)
+        guard let wayPoints = self.wayPoints else {return}
+        guard let steps = self.steps else {return}
+
+        locationManager.stopMonitoring(for: region)
+
+        var message = ""
+        for (i,step) in steps.enumerated() {
+            if step.wayPoints.first == currentWPIndex {
+                message = step.instruction
+            }else if step.wayPoints.last == currentWPIndex {
+                message = steps[i+1].instruction
+            }else if step.wayPoints.first! < currentWPIndex && step.wayPoints.last! > currentWPIndex {
+                message = "Prepare to \(steps[i+1].instruction)"
+            }
+        }
+
+        delegate?.didReceiveNewDirectionInstructions(instruction: message)
+
+        NotificationCenter.default.post(name: newStepNotification, object: nil)
+
+
+        currentWPIndex += 1
+        let coordinate = wayPoints[currentWPIndex]
+        let region = CLCircularRegion(center: coordinate.coordinate, radius: 30, identifier: "monitoredWP")
+
+        locationManager.startMonitoring(for: region)
         
         
     }
@@ -398,7 +423,7 @@ extension Locator: RoutingManagerDelegate {
 //        locationManager.startUpdatingLocation()
         
         #warning("test distance filter")
-//                locationManager.distanceFilter = 3
+        locationManager.distanceFilter = 3
         
 //        delegate?.didReceiveAllInstructions(steps: route.steps)
 

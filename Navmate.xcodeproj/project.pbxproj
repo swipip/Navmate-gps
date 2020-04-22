@@ -13,6 +13,9 @@
 		4900D2AD2449DE910065752F /* Route.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4900D2AA2449DE910065752F /* Route.swift */; };
 		4900D2AE2449DE910065752F /* Locator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4900D2AB2449DE910065752F /* Locator.swift */; };
 		4906C821244ED2CD00D23F3E /* WikiDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4906C820244ED2CD00D23F3E /* WikiDetailVC.swift */; };
+		4929C01824504F6D00D40931 /* gare.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 4929C01724504F6D00D40931 /* gare.gpx */; };
+		4929C01A245061A100D40931 /* lyonFast.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 4929C019245061A100D40931 /* lyonFast.gpx */; };
+		4929C01C2450772300D40931 /* lyontoAlbatrosWalk.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 4929C01B2450772200D40931 /* lyontoAlbatrosWalk.gpx */; };
 		49355829244B37410023F848 /* Keys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49355828244B37410023F848 /* Keys.swift */; };
 		4935582C244B5BF70023F848 /* DirectionGoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4935582B244B5BF70023F848 /* DirectionGoCell.swift */; };
 		4935582E244B5CF40023F848 /* DirectionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4935582D244B5CF40023F848 /* DirectionVC.swift */; };
@@ -55,6 +58,9 @@
 		4900D2AA2449DE910065752F /* Route.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Route.swift; sourceTree = "<group>"; };
 		4900D2AB2449DE910065752F /* Locator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Locator.swift; sourceTree = "<group>"; };
 		4906C820244ED2CD00D23F3E /* WikiDetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WikiDetailVC.swift; sourceTree = "<group>"; };
+		4929C01724504F6D00D40931 /* gare.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = gare.gpx; sourceTree = "<group>"; };
+		4929C019245061A100D40931 /* lyonFast.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = lyonFast.gpx; sourceTree = "<group>"; };
+		4929C01B2450772200D40931 /* lyontoAlbatrosWalk.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = lyontoAlbatrosWalk.gpx; sourceTree = "<group>"; };
 		49355828244B37410023F848 /* Keys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keys.swift; sourceTree = "<group>"; };
 		4935582B244B5BF70023F848 /* DirectionGoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectionGoCell.swift; sourceTree = "<group>"; };
 		4935582D244B5CF40023F848 /* DirectionVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectionVC.swift; sourceTree = "<group>"; };
@@ -124,13 +130,13 @@
 			path = DirectionOptions;
 			sourceTree = "<group>";
 		};
-		49355833244B76A90023F848 /* CompletionSearch */ = {
+		49355833244B76A90023F848 /* Search */ = {
 			isa = PBXGroup;
 			children = (
 				4900D2A72449D0C30065752F /* ResearchCell.swift */,
 				49355838244C88DE0023F848 /* MonumentsSearch */,
 			);
-			path = CompletionSearch;
+			path = Search;
 			sourceTree = "<group>";
 		};
 		49355838244C88DE0023F848 /* MonumentsSearch */ = {
@@ -145,12 +151,13 @@
 		493652112443AA7E00120DAC /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				493652122443AA9000120DAC /* CustomPin.swift */,
-				49E9D03D244CBFA000E79D5F /* CustomPlainAV.swift */,
+				49F903EA245040D5004B7831 /* Annotations */,
+				49F903E62450407A004B7831 /* Navigation metrics */,
+				49F903E524504063004B7831 /* POIs */,
 				49E9D06F244DC98700E79D5F /* MonumentAnnotations */,
-				49355833244B76A90023F848 /* CompletionSearch */,
+				49355833244B76A90023F848 /* Search */,
 				4935582A244B5BAD0023F848 /* DirectionOptions */,
-				49E9D079244DEC2300E79D5F /* NavigationCell.swift */,
+				49F903E9245040B7004B7831 /* Navigation */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -158,14 +165,11 @@
 		493652142443AF4200120DAC /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				49C0888124436C3600EBEAE5 /* MonumentManager.swift */,
-				49355831244B71D30023F848 /* RouteQueryModel.swift */,
-				49E9D066244DC23900E79D5F /* Wikipedia */,
-				4900D2AA2449DE910065752F /* Route.swift */,
-				4900D2A92449DE900065752F /* routingManager.swift */,
 				49355828244B37410023F848 /* Keys.swift */,
-				4900D2AB2449DE910065752F /* Locator.swift */,
-				49E9D039244C92BC00E79D5F /* K.swift */,
+				49F903E324504021004B7831 /* Monuments */,
+				49E9D066244DC23900E79D5F /* Wikipedia */,
+				49F903E22450400D004B7831 /* Routing */,
+				49F903E424504032004B7831 /* Constants */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -173,6 +177,9 @@
 		49A5D296244357B6002E7D53 = {
 			isa = PBXGroup;
 			children = (
+				4929C01B2450772200D40931 /* lyontoAlbatrosWalk.gpx */,
+				4929C01724504F6D00D40931 /* gare.gpx */,
+				4929C019245061A100D40931 /* lyonFast.gpx */,
 				49A5D2A1244357B6002E7D53 /* Navmate */,
 				49A5D2A0244357B6002E7D53 /* Products */,
 				76EB0CE726034E6F25289FDE /* Pods */,
@@ -209,8 +216,8 @@
 				49A5D2A6244357B6002E7D53 /* ViewController.swift */,
 				49E9D083244DECFA00E79D5F /* Navigation */,
 				4906C822244ED2D700D23F3E /* Wikipédia */,
-				4900D283244858F50065752F /* SearchVC.swift */,
-				493651EF2443780100120DAC /* MapVC.swift */,
+				49F903E72450409C004B7831 /* Search */,
+				49F903E8245040A9004B7831 /* Map */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -237,7 +244,6 @@
 			isa = PBXGroup;
 			children = (
 				49E9D074244DEBAE00E79D5F /* NavigationMetricsVC.swift */,
-				49E9D076244DEBE700E79D5F /* NavigationMetricsCell.swift */,
 			);
 			path = "Navigation Metrics";
 			sourceTree = "<group>";
@@ -246,10 +252,6 @@
 			isa = PBXGroup;
 			children = (
 				49E9D07B244DEC4E00E79D5F /* PointOfInterestVC.swift */,
-				49E9D07D244DEC6700E79D5F /* PoisCell.swift */,
-				49E9D07F244DEC7300E79D5F /* BarChartCell.swift */,
-				49F903DE244F9B0D004B7831 /* TripAverageMetricsCell.swift */,
-				49F903E0244F9B61004B7831 /* CommonPoisCell.swift */,
 			);
 			path = POIs;
 			sourceTree = "<group>";
@@ -262,6 +264,85 @@
 				49E9D082244DEC8500E79D5F /* POIs */,
 			);
 			path = Navigation;
+			sourceTree = "<group>";
+		};
+		49F903E22450400D004B7831 /* Routing */ = {
+			isa = PBXGroup;
+			children = (
+				49355831244B71D30023F848 /* RouteQueryModel.swift */,
+				4900D2AB2449DE910065752F /* Locator.swift */,
+				4900D2AA2449DE910065752F /* Route.swift */,
+				4900D2A92449DE900065752F /* routingManager.swift */,
+			);
+			path = Routing;
+			sourceTree = "<group>";
+		};
+		49F903E324504021004B7831 /* Monuments */ = {
+			isa = PBXGroup;
+			children = (
+				49C0888124436C3600EBEAE5 /* MonumentManager.swift */,
+			);
+			path = Monuments;
+			sourceTree = "<group>";
+		};
+		49F903E424504032004B7831 /* Constants */ = {
+			isa = PBXGroup;
+			children = (
+				49E9D039244C92BC00E79D5F /* K.swift */,
+			);
+			path = Constants;
+			sourceTree = "<group>";
+		};
+		49F903E524504063004B7831 /* POIs */ = {
+			isa = PBXGroup;
+			children = (
+				49E9D07D244DEC6700E79D5F /* PoisCell.swift */,
+				49E9D07F244DEC7300E79D5F /* BarChartCell.swift */,
+				49F903DE244F9B0D004B7831 /* TripAverageMetricsCell.swift */,
+				49F903E0244F9B61004B7831 /* CommonPoisCell.swift */,
+			);
+			path = POIs;
+			sourceTree = "<group>";
+		};
+		49F903E62450407A004B7831 /* Navigation metrics */ = {
+			isa = PBXGroup;
+			children = (
+				49E9D076244DEBE700E79D5F /* NavigationMetricsCell.swift */,
+			);
+			path = "Navigation metrics";
+			sourceTree = "<group>";
+		};
+		49F903E72450409C004B7831 /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				4900D283244858F50065752F /* SearchVC.swift */,
+			);
+			path = Search;
+			sourceTree = "<group>";
+		};
+		49F903E8245040A9004B7831 /* Map */ = {
+			isa = PBXGroup;
+			children = (
+				493651EF2443780100120DAC /* MapVC.swift */,
+			);
+			path = Map;
+			sourceTree = "<group>";
+		};
+		49F903E9245040B7004B7831 /* Navigation */ = {
+			isa = PBXGroup;
+			children = (
+				49E9D079244DEC2300E79D5F /* NavigationCell.swift */,
+			);
+			path = Navigation;
+			sourceTree = "<group>";
+		};
+		49F903EA245040D5004B7831 /* Annotations */ = {
+			isa = PBXGroup;
+			children = (
+				493652122443AA9000120DAC /* CustomPin.swift */,
+				49E9D03D244CBFA000E79D5F /* CustomPlainAV.swift */,
+			);
+			path = Annotations;
 			sourceTree = "<group>";
 		};
 		6240A07AFBDF64D06E6250E4 /* Frameworks */ = {
@@ -341,8 +422,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4929C01C2450772300D40931 /* lyontoAlbatrosWalk.gpx in Resources */,
 				49A5D2AF244357B9002E7D53 /* LaunchScreen.storyboard in Resources */,
+				4929C01A245061A100D40931 /* lyonFast.gpx in Resources */,
 				49A5D2AC244357B9002E7D53 /* Assets.xcassets in Resources */,
+				4929C01824504F6D00D40931 /* gare.gpx in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
