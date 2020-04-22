@@ -16,6 +16,7 @@
 		4929C01824504F6D00D40931 /* gare.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 4929C01724504F6D00D40931 /* gare.gpx */; };
 		4929C01A245061A100D40931 /* lyonFast.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 4929C019245061A100D40931 /* lyonFast.gpx */; };
 		4929C01C2450772300D40931 /* lyontoAlbatrosWalk.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 4929C01B2450772200D40931 /* lyontoAlbatrosWalk.gpx */; };
+		4929C01F2450831F00D40931 /* AvgMetricsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4929C01E2450831F00D40931 /* AvgMetricsCell.swift */; };
 		49355829244B37410023F848 /* Keys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49355828244B37410023F848 /* Keys.swift */; };
 		4935582C244B5BF70023F848 /* DirectionGoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4935582B244B5BF70023F848 /* DirectionGoCell.swift */; };
 		4935582E244B5CF40023F848 /* DirectionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4935582D244B5CF40023F848 /* DirectionVC.swift */; };
@@ -61,6 +62,7 @@
 		4929C01724504F6D00D40931 /* gare.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = gare.gpx; sourceTree = "<group>"; };
 		4929C019245061A100D40931 /* lyonFast.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = lyonFast.gpx; sourceTree = "<group>"; };
 		4929C01B2450772200D40931 /* lyontoAlbatrosWalk.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = lyontoAlbatrosWalk.gpx; sourceTree = "<group>"; };
+		4929C01E2450831F00D40931 /* AvgMetricsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvgMetricsCell.swift; sourceTree = "<group>"; };
 		49355828244B37410023F848 /* Keys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keys.swift; sourceTree = "<group>"; };
 		4935582B244B5BF70023F848 /* DirectionGoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectionGoCell.swift; sourceTree = "<group>"; };
 		4935582D244B5CF40023F848 /* DirectionVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectionVC.swift; sourceTree = "<group>"; };
@@ -118,6 +120,15 @@
 			);
 			name = "Wikipédia";
 			path = "Wikipédia";
+			sourceTree = "<group>";
+		};
+		4929C01D245082F500D40931 /* Stats metrics */ = {
+			isa = PBXGroup;
+			children = (
+				49F903DE244F9B0D004B7831 /* TripAverageMetricsCell.swift */,
+				4929C01E2450831F00D40931 /* AvgMetricsCell.swift */,
+			);
+			path = "Stats metrics";
 			sourceTree = "<group>";
 		};
 		4935582A244B5BAD0023F848 /* DirectionOptions */ = {
@@ -298,7 +309,7 @@
 			children = (
 				49E9D07D244DEC6700E79D5F /* PoisCell.swift */,
 				49E9D07F244DEC7300E79D5F /* BarChartCell.swift */,
-				49F903DE244F9B0D004B7831 /* TripAverageMetricsCell.swift */,
+				4929C01D245082F500D40931 /* Stats metrics */,
 				49F903E0244F9B61004B7831 /* CommonPoisCell.swift */,
 			);
 			path = POIs;
@@ -487,6 +498,7 @@
 				49E9D07E244DEC6700E79D5F /* PoisCell.swift in Sources */,
 				4900D2AD2449DE910065752F /* Route.swift in Sources */,
 				49E9D03E244CBFA000E79D5F /* CustomPlainAV.swift in Sources */,
+				4929C01F2450831F00D40931 /* AvgMetricsCell.swift in Sources */,
 				49E9D075244DEBAE00E79D5F /* NavigationMetricsVC.swift in Sources */,
 				49F903E1244F9B61004B7831 /* CommonPoisCell.swift in Sources */,
 				49355829244B37410023F848 /* Keys.swift in Sources */,

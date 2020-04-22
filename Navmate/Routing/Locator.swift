@@ -59,6 +59,7 @@ class Locator: NSObject {
     let newStepNotification = NSNotification.Name(K.shared.notificationNewStep)
     let durationTrackingNotification = Notification.Name(K.shared.notificationDurationTracking)
     let distanceNotification = Notification.Name(K.shared.notificationDistance)
+    let totalDistanceNotification = Notification.Name(K.shared.notificationTotalDistance)
     
     private override init() {
         super.init()
@@ -66,7 +67,7 @@ class Locator: NSObject {
         if CLLocationManager.locationServicesEnabled() {
             locationManager.requestAlwaysAuthorization()
             locationManager.delegate = self
-            locationManager.desiredAccuracy = kCLLocationAccuracyBest
+            locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
             locationManager.startUpdatingLocation()
         }
         
@@ -255,6 +256,10 @@ class Locator: NSObject {
                     
                     
                 }
+                
+                let userInfo = ["totalDistance": steps[max(0,i-1)].distance]
+                NotificationCenter.default.post(name: totalDistanceNotification, object: nil, userInfo: userInfo)
+                
                 if steps.count != 0 {self.steps?.removeFirst()}
                 currentWPIndex += 1
                 if currentWPIndex >= wayPoints.count-1 {
@@ -423,7 +428,7 @@ extension Locator: RoutingManagerDelegate {
 //        locationManager.startUpdatingLocation()
         
         #warning("test distance filter")
-        locationManager.distanceFilter = 3
+        locationManager.distanceFilter = 1
         
 //        delegate?.didReceiveAllInstructions(steps: route.steps)
 
