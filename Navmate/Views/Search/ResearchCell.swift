@@ -10,11 +10,11 @@ import UIKit
 import MapKit
 
 class ResearchCell: UITableViewCell {
-
-    private(set) var titleLabel = UILabel()
-    private(set) var subTitleLabel = UILabel()
-    private(set) var searchResult = MKLocalSearchCompletion()
-    private lazy var thumbNail: UIImageView = {
+    
+    var titleLabel = UILabel()
+    var subTitleLabel = UILabel()
+    var searchResult = MKLocalSearchCompletion()
+    lazy var thumbNail: UIImageView = {
         let image = UIImageView()
         image.clipsToBounds = true
         image.layer.cornerRadius = K.shared.cornerRadiusImageThumbNailCell
@@ -45,7 +45,7 @@ class ResearchCell: UITableViewCell {
         self.subTitleLabel.text = subTitle
         self.searchResult = searchResult ?? MKLocalSearchCompletion()
     }
-    private func addThumbNail() {
+    func addThumbNail() {
         
         self.addSubview(thumbNail)
         
@@ -61,7 +61,7 @@ class ResearchCell: UITableViewCell {
         addConstraints(fromView: thumbNail, toView: self)
         
     }
-    private func addTitleLabel() {
+    func addTitleLabel() {
         
         titleLabel.font = UIFont.systemFont(ofSize: K.shared.cellTitleFontSize)
         
@@ -78,7 +78,7 @@ class ResearchCell: UITableViewCell {
         addConstraints(fromView: titleLabel, toView: self)
         
     }
-    private func addsubTitleLabel() {
+    func addsubTitleLabel() {
         
         subTitleLabel.font = UIFont.systemFont(ofSize: 12)
         

@@ -12,5 +12,6 @@ import MapKit
 class MonumentAnnotation: MKPointAnnotation {
 
     var type: String?
+//    var destinationType: DestinationType?
     
 }

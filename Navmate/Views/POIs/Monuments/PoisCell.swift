@@ -8,14 +8,19 @@
 
 import UIKit
 import CoreLocation
-
+protocol POIsCellDelgate {
+    
+    func didRequestRouteUpdate(location: CLLocation)
+    func didRequestRerouting()
+    
+}
 class POIsCell: UICollectionViewCell {
     
     private lazy var cardBG: UIView = {
         let view = UIView()
         view.backgroundColor = .white
         view.addShadow(radius: 5, opacity: 0.5, color: .gray)
-        view.layer.cornerRadius = 8
+        view.layer.cornerRadius = K.shared.cornerRadiusCard
         return view
     }()
     private lazy var tableView: UITableView = {
@@ -23,7 +28,8 @@ class POIsCell: UICollectionViewCell {
         table.showsVerticalScrollIndicator = false
         table.dataSource = self
         table.delegate = self
-        table.register(ResearchCell.self, forCellReuseIdentifier: "cellID")
+        table.separatorStyle = .none
+        table.register(MonumentNavigationCell.self, forCellReuseIdentifier: "cellID")
         return table
     }()
     private lazy var cardTitle: UILabel = {
@@ -35,6 +41,9 @@ class POIsCell: UICollectionViewCell {
     }()
     private var monuments: [Monument]?
     private var allowReload = true
+    
+    var delegate: POIsCellDelgate?
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -42,6 +51,15 @@ class POIsCell: UICollectionViewCell {
         self.addLabel()
         self.addTableView()
         self.addObservers()
+        #warning("remove below for last part")
+        if let location = Locator.shared.getUserLocation() {
+            
+            let region = CLCircularRegion(center: location.coordinate, radius: 20000, identifier: "")
+            
+            MonumentManager.shared.getData(for: region)
+            
+            allowReload = false
+        }
         
     }
     
@@ -128,13 +146,15 @@ extension POIsCell: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cellID", for: indexPath) as! ResearchCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cellID", for: indexPath) as! MonumentNavigationCell
         
         let i = indexPath.row
         
         if let monuments = self.monuments {
             
-            cell.passDataToCell(title: monuments[i].name, subTitle: monuments[i].town, imageName: "historic")
+            cell.delegate = self
+            
+            cell.passDataToCell(title: monuments[i].name, subTitle: monuments[i].town, imageName: "historic",monument: monuments[i])
             
         }
 
@@ -148,3 +168,24 @@ extension POIsCell: UITableViewDataSource, UITableViewDelegate {
     
 }
 
+extension POIsCell: MonumentNavigationCellDelegate {
+    
+    func didPressSeeMoreButton(monument: Monument) {
+        
+        let view = MonumentNavigationDetail(frame: CGRect(x: 0, y: 0, width: 0, height: 0), monument: monument)
+        view.frame = self.cardBG.frame
+        view.delegate = self
+        self.addSubview(view)
+        
+        delegate?.didRequestRouteUpdate(location: CLLocation(latitude: monument.latitude, longitude: -monument.longitude))
+        
+    }
+    
+}
+extension POIsCell: MonumentNavigationDetailDelegate {
+    
+    func didRequestRerouting() {
+        self.delegate?.didRequestRerouting()
+    }
+    
+}

@@ -267,6 +267,7 @@ extension SearchVC: MonumentCellDelegate {
         annotation.title = monument.name
         annotation.subtitle = "Monument \(monument.protection.lowercased())"
         annotation.coordinate = placeMark.coordinate
+//        annotation.destinationType = .monument
         
         self.researchTable.alpha = 0.0
         delegate?.didSelectAddress(placemark: annotation)

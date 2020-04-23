@@ -42,7 +42,7 @@ class MonumentAnnotationView: MKAnnotationView {
     }
     
     @objc private func callOUtInfoButtonPressed(_ sender:UIButton!) {
-        guard let button = sender as? AnnotationButton else {return}
+        guard let _ = sender as? AnnotationButton else {return}
         
         if let annotation = annotationData {
             delegate?.didPressButton(with: annotation)

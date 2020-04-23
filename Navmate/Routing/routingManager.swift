@@ -47,7 +47,7 @@ class RoutingManager {
         }
     }
     
-    func getDirections(from source: CLLocationCoordinate2D,to destination: CLLocationCoordinate2D,mode: String, preference: String, avoid: [String]) {
+    func getDirections(from source: CLLocationCoordinate2D,to destination: CLLocationCoordinate2D ,mode: String, preference: String, avoid: [String]) {
         
 //        jsonData = serializeJSON()
         
@@ -95,7 +95,7 @@ class RoutingManager {
                     steps.append(step)
                 }
                 
-                let summary = Summary(distance: totalDistance ,duration: totalDuration)
+                let summary = Summary(distance: totalDistance ,duration: totalDuration, preference: preference,mode: mode, avoid: avoid)
                 
                 if steps.count == 0 {
                     self.delegate?.didnotFindRoute()

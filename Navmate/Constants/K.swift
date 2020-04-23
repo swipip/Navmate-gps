@@ -39,5 +39,6 @@ class K {
     let notificationDurationTracking = "durationTracking"
     let notificationDistance = "distance"
     let notificationTotalDistance = "totalDistance"
+    let notificationWikiPedia = "Wikipedia"
     
 }

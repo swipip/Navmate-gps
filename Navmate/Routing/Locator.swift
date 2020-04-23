@@ -19,6 +19,7 @@ protocol LocatorDelegate: class {
     func didGetUserSpeed(speed: CLLocationSpeed)
     func didNotFindRoute()
     func didStartNavigation()
+    func didFindReroutingRoute(route: Route)
 }
 extension LocatorDelegate {
     func didReceiveNewDirectionInstructions(instruction: String) {}
@@ -30,6 +31,7 @@ extension LocatorDelegate {
     func didGetUserSpeed(speed: CLLocationSpeed) {}
     func didNotFindRoute() {}
     func didStartNavigation() {}
+    func didFindReroutingRoute(route: Route) {}
 }
 class Locator: NSObject {
     
@@ -61,6 +63,14 @@ class Locator: NSObject {
     let distanceNotification = Notification.Name(K.shared.notificationDistance)
     let totalDistanceNotification = Notification.Name(K.shared.notificationTotalDistance)
     
+    enum CalculationMode {
+        case initial,recalculation
+    }
+    
+    private var calculationMode: CalculationMode?
+    
+    private var newRoute: Route?
+    
     private override init() {
         super.init()
         
@@ -89,6 +99,35 @@ class Locator: NSObject {
         }
         
     }
+    func secondsToHoursMinutesSeconds (seconds : Int) -> (timeString: String,hours:Int,minutes: Int,seconds: Int) {
+        
+        let time = (hours: seconds / 3600,minutes: (seconds % 3600) / 60,seconds: (seconds % 3600) % 60)
+        
+        var timeString = ""
+        if seconds <= 60{
+             timeString = "0\(time.minutes) minute"
+        }else if seconds <= 600 {
+            timeString = "0\(time.minutes) minutes"
+        }else if seconds <= 3600 {
+            timeString = "\(time.minutes) minutes"
+        }else{
+            timeString = "\(time.hours):\(time.minutes) heures"
+        }
+        
+        return (timeString,time.hours,time.minutes,time.seconds)
+    }
+    func startRerouting() {
+        
+        guard let newRoute = self.newRoute else {return}
+        
+        delegate?.didFindReroutingRoute(route: newRoute)
+        
+        if let duration = self.route?.summary.duration {
+            durationTracking = duration
+        }
+
+        
+    }
     func startNavigation() {
         
         if let route = self.route {
@@ -99,7 +138,7 @@ class Locator: NSObject {
                 durationTracking = duration
             }
             
-            let userInfo = ["steps":route.steps]
+            let userInfo = ["route":route]
             NotificationCenter.default.post(name: routeNotification, object: nil, userInfo: userInfo)
             
             locationManager.startUpdatingLocation()
@@ -144,15 +183,21 @@ class Locator: NSObject {
     }
     func getUserLocation() -> CLLocation? {
         
+        locationManager.startUpdatingLocation()
+        
         let location = locationManager.location
         if let loc = location {
             delegate?.didFinduserLocation(location: loc)
         }
         return location
     }
-    func getDirections(from source: CLLocationCoordinate2D, to destination: CLLocationCoordinate2D,mode: String,preference: String? = "shortest", avoid: [String]? = ["highways"]) {
+    func getDirections(from source: CLLocationCoordinate2D, to destination: CLLocationCoordinate2D,mode: String,preference: String? = "shortest", avoid: [String]? = ["highways"],calculationMode: CalculationMode? = .initial) {
 
-        self.clearVariableFornewRoute()
+        self.calculationMode = calculationMode
+        
+        if calculationMode == .initial {
+            self.clearVariableFornewRoute()
+        }
         
         let routingManager = RoutingManager()
         routingManager.delegate = self
@@ -403,37 +448,38 @@ extension Locator: RoutingManagerDelegate {
     
     func didFindRoute(route: Route) {
         
-        self.route = route
-        self.wayPoints = route.wayPoints
-        self.steps = route.steps
-        
-        //        highlightWayPoints()
-        
-        if let monitoredWayPoint = wayPoints!.first {
-            self.monitoredWayPoint = monitoredWayPoint
-            #warning("set back to zero")
-            self.currentWPIndex = 0
-//            let region = CLCircularRegion(center: monitoredWayPoint.coordinate, radius: 30, identifier: "firstWayPoint")
-//            locationManager.startMonitoring(for: region)
+        if let calcMode = self.calculationMode {
+            switch calcMode {
+            case .initial:
+                
+                self.route = route
+                self.wayPoints = route.wayPoints
+                self.steps = route.steps
+                
+                //        highlightWayPoints()
+                
+                if let monitoredWayPoint = wayPoints!.first {
+                    self.monitoredWayPoint = monitoredWayPoint
+                    #warning("set back to zero")
+                    self.currentWPIndex = 0
+                }
+                
+                
+                #warning("test distance filter")
+                locationManager.distanceFilter = 1
+                
+                delegate?.didFindRoute(polyline: route.polylines, summary: route.summary)
+                delegate?.didFindWayPoints(wayPoints: route.wayPoints)
+            case .recalculation:
+                
+                self.newRoute = route
+                
+                let userInfo = ["routeNew":route]
+                NotificationCenter.default.post(name: routeNotification, object: nil, userInfo: userInfo)
+                
+            }
         }
         
-//        for i in 0...10 {
-//
-//            if let waypoint = wayPoints?[i] {
-//                let region = CLCircularRegion(center: waypoint.coordinate, radius: 20, identifier: "\(i)")
-//                locationManager.startMonitoring(for: region)
-//            }
-//
-//        }
-//        locationManager.startUpdatingLocation()
         
-        #warning("test distance filter")
-        locationManager.distanceFilter = 1
-        
-//        delegate?.didReceiveAllInstructions(steps: route.steps)
-
-        
-        delegate?.didFindRoute(polyline: route.polylines, summary: route.summary)
-        delegate?.didFindWayPoints(wayPoints: route.wayPoints)
     }
 }

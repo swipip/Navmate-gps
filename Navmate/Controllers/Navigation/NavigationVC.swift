@@ -8,7 +8,11 @@
 
 import UIKit
 import CoreLocation
+import MapKit
 
+protocol NavigationVCDelegate {
+    func didStartNewRoute(destination: MKAnnotation)
+}
 class NavigationVC: UIViewController {
 
     private lazy var headerBackGround: UIView = {
@@ -42,6 +46,11 @@ class NavigationVC: UIViewController {
     
     //MARK: - Data
     var steps: [Step]?
+    var route: Route?
+    
+    var newRoute: Route?
+    
+    var delegate: NavigationVCDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -66,7 +75,7 @@ class NavigationVC: UIViewController {
         
     }
     @objc private func didReceiveNewInstruction(_ notification:Notification) {
-        print("\(#function) \(self.indicationsTableView.indexPathForSelectedRow!.row)")
+//        print("\(#function) \(self.indicationsTableView.indexPathForSelectedRow!.row)")
         
         let currentRow = self.indicationsTableView.indexPathForSelectedRow?.row ?? 0
         let nextRow = IndexPath(row: currentRow + 1, section: 0)
@@ -81,19 +90,26 @@ class NavigationVC: UIViewController {
     }
     @objc private func didReceiveRouteInformation(_ notification:Notification) {
         
-        if let steps = notification.userInfo?["steps"] as? [Step] {
+        if let route = notification.userInfo?["route"] as? Route {
             
-            self.steps = steps
+            self.route = route
+            self.steps = route.steps
             self.indicationsTableView.reloadData()
             indicationsTableView.selectRow(at: IndexPath(item: 0, section: 0), animated: true, scrollPosition: .top)
             
+        }
+        if let route = notification.userInfo?["routeNew"] as? Route {
+            
+            self.newRoute = route
             
         }
         
     }
+     
     private func addPOIsCollection() {
         
         self.addChild(poisCollection)
+        poisCollection.delegate = self
         poisCollection.willMove(toParent: self)
         
         let view = poisCollection.view!
@@ -105,7 +121,7 @@ class NavigationVC: UIViewController {
            
            NSLayoutConstraint.activate([fromView.leadingAnchor.constraint(equalTo: toView.leadingAnchor, constant: 0),
                                         fromView.trailingAnchor.constraint(equalTo: toView.trailingAnchor, constant: 0),
-                                        fromView.topAnchor.constraint(equalTo: metricsCollection.view.bottomAnchor, constant: 10),
+                                        fromView.topAnchor.constraint(equalTo: metricsCollection.view.bottomAnchor, constant: 5),
                                         fromView.bottomAnchor.constraint(equalTo:toView.bottomAnchor ,constant: -160)])
         }
         addConstraints(fromView: view, toView: self.view)
@@ -138,7 +154,7 @@ class NavigationVC: UIViewController {
            
            NSLayoutConstraint.activate([fromView.leadingAnchor.constraint(equalTo: toView.leadingAnchor, constant: 0),
                                         fromView.trailingAnchor.constraint(equalTo: toView.trailingAnchor, constant: -0),
-                                        fromView.topAnchor.constraint(equalTo: toView.topAnchor, constant: 50),
+                                        fromView.topAnchor.constraint(equalTo: toView.safeAreaLayoutGuide.topAnchor, constant: 0),
                                         fromView.heightAnchor.constraint(equalToConstant: 170)])
         }
         addConstraints(fromView: indicationsTableView, toView: self.view)
@@ -157,7 +173,7 @@ class NavigationVC: UIViewController {
            NSLayoutConstraint.activate([fromView.leadingAnchor.constraint(equalTo: toView.leadingAnchor, constant: 0),
                                         fromView.trailingAnchor.constraint(equalTo: toView.trailingAnchor, constant: 0),
                                         fromView.topAnchor.constraint(equalTo: toView.topAnchor, constant: 0),
-                                        fromView.bottomAnchor.constraint(equalTo: toView.topAnchor,constant: 60)])
+                                        fromView.bottomAnchor.constraint(equalTo: toView.layoutMarginsGuide.topAnchor,constant: 15)])
         }
         addConstraints(fromView: headerBackGround, toView: self.view)
         
@@ -210,5 +226,57 @@ extension NavigationVC: UITableViewDataSource, UITableViewDelegate {
 
     }
     
+    
+}
+extension NavigationVC: PointOfInterestVCDelegate {
+    func didRequestRouteUpdate(destination: CLLocation) {
+        if let userLocation = Locator.shared.getUserLocation() {
+            
+            if let summary = self.route?.summary {
+                Locator.shared.getDirections(from: userLocation.coordinate, to: destination.coordinate, mode: summary.mode , preference: summary.preference, avoid: summary.avoid, calculationMode: .recalculation)
+            }
+            
+        }
+    }
+    
+    
+    func didRequestRerouting() {
+        if let route = self.newRoute {
+            
+            
+//            switch route.summary.destinationType {
+//            case .regular:
+//                
+////                let annotation = MKAnnotation()
+////                annotation.title = "Destination"
+////
+////                delegate?.didStartNewRoute(destination: annotation)
+//                break
+//            case .monument:
+//                
+//                let annotation = MonumentAnnotation()
+//                annotation.destinationType = .monument
+//                annotation.title = newRoute?.summary.destination ?? "Destination"
+//                
+//                delegate?.didStartNewRoute(destination: annotation)
+//            
+//            case .pointOfInterest:
+//                break
+//            }
+            
+//            let annotation = CustomPin(title: "Destination", subtitle: "", coordinate: route.wayPoints.last?.coordinate)
+            
+            Locator.shared.startRerouting()
+            
+            self.route = route
+            
+            self.steps = route.steps
+            indicationsTableView.reloadData()
+            indicationsTableView.selectRow(at: IndexPath(item: 0, section: 0), animated: true, scrollPosition: .top)
+            
+            
+            
+        }
+    }
     
 }

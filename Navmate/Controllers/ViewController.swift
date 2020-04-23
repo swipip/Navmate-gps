@@ -265,7 +265,7 @@ class ViewController: UIViewController {
                                         fromView.trailingAnchor.constraint(equalTo: toView.trailingAnchor, constant: 0),
                                         fromView.bottomAnchor.constraint(equalTo: toView.bottomAnchor,constant: 0)])
             
-            MapVCTopConstraint = NSLayoutConstraint(item: fromView, attribute: .top, relatedBy: .equal, toItem: toView, attribute: .top, multiplier: 1, constant: 0)
+            MapVCTopConstraint = NSLayoutConstraint(item: fromView, attribute: .top, relatedBy: .equal, toItem: toView, attribute: .topMargin, multiplier: 1, constant: -45)
             
             self.view.addConstraint(MapVCTopConstraint)
             
@@ -307,15 +307,15 @@ class ViewController: UIViewController {
             let animator = UIViewPropertyAnimator(duration: duration, dampingRatio: 1) {
                 switch state {
                 case .total:
-                    self.MapVCTopConstraint.constant = 0
+                    self.MapVCTopConstraint.constant = -45
                     
                     self.view.layoutIfNeeded()
                 case .collapsed:
-                    self.MapVCTopConstraint.constant = self.view.frame.size.height - 150
+                    self.MapVCTopConstraint.constant = self.view.frame.size.height - 190
                     self.mapView.view.layer.cornerRadius = 12
                     self.view.layoutIfNeeded()
                 case .midWay:
-                    self.MapVCTopConstraint.constant = 340
+                    self.MapVCTopConstraint.constant = 290
                     self.mapView.view.layer.cornerRadius = 12
                     self.view.layoutIfNeeded()
                 }
@@ -474,6 +474,12 @@ extension ViewController: SearchVCDelegate {
  
 }
 extension ViewController: MapVCDelegate {
+    func didDrawRerouting() {
+        
+        self.animateTransitionIfNeededMap(state: .midWay, duration: 0.3)
+        
+    }
+    
     func didRequestAdditionnalInfo(location: CLLocation) {
         let vc = WikiMapDetailVC()
         vc.delegate = self

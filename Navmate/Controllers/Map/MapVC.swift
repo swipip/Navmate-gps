@@ -11,6 +11,7 @@ import MapKit
 protocol MapVCDelegate {
     func didDrawRoute(summary: Summary, destination: CLLocation)
     func didRequestAdditionnalInfo(location: CLLocation)
+    func didDrawRerouting()
 }
 class MapVC: UIViewController {
     
@@ -89,11 +90,20 @@ class MapVC: UIViewController {
         }
         addConstraints(fromView: handle, toView: self.view)
     }
-    func getRoute(to placeMark: MKPlacemark) {
+    func getRoute(to view: MKAnnotationView) {
         
-        if let location = locator.getUserLocation(), let destination = placeMark.location?.coordinate {
+        guard let destination = view.annotation?.coordinate else {return}
+        
+        if let location = locator.getUserLocation() {
+            
+            if let annotation = view.annotation as? MonumentAnnotation {
+                locator.getDirections(from: location.coordinate, to: destination, mode: "driving-car")
+                self.destination = CLLocation(latitude: destination.latitude, longitude: destination.longitude)
+            }
+            
             locator.getDirections(from: location.coordinate, to: destination, mode: "driving-car")
             self.destination = CLLocation(latitude: destination.latitude, longitude: destination.longitude)
+
         }
         
     }
@@ -255,17 +265,14 @@ class MapVC: UIViewController {
 }
 extension MapVC: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-
+        
         guard !(view.annotation is MKUserLocation) else {return}
         
-        if let destination = view.annotation?.coordinate {
-            let placemark = MKPlacemark(coordinate: destination)
-            self.getRoute(to: placemark)
-        }
+        self.getRoute(to: view)
         
     }
     func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
-       
+        
     }
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         
@@ -330,8 +337,33 @@ extension MapVC: LocatorDelegate {
         }
         
     }
-    func didFinduserLocation(location: CLLocation) {
+    func didFindReroutingRoute(route: Route) {
         
+        for overlay in mapView.overlays {
+            
+            mapView.removeOverlay(overlay)
+            
+        }
+        
+        delegate?.didDrawRerouting()
+        mapView.addOverlay(route.polylines[0])
+        mapView.userTrackingMode = .followWithHeading
+        
+//        switch route.summary.destinationType {
+//        case .monument:
+//            
+//            let annotation = MonumentAnnotation()
+//            annotation.title = route.summary.destination
+//            annotation.coordinate = route.wayPoints[0].coordinate
+//            
+//            self.mapView.addAnnotation(annotation)
+//            
+//            break
+//        case .regular:
+//            break
+//        case .pointOfInterest:
+//            break
+//        }
         
         
     }

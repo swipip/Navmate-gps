@@ -94,6 +94,11 @@ class WikiManager: NSObject {
                             
                             wikiObject = WikiObject(title: monument, description: description,image: image, url: url)
                             self.delegate?.didFindData(wiki: wikiObject)
+                            
+                            let name = Notification.Name(K.shared.notificationWikiPedia)
+                            let userInfo = ["wikipedia":wikiObject]
+                            NotificationCenter.default.post(name: name, object: nil, userInfo: userInfo as! [AnyHashable : WikiObject])
+                            
                         }else{
                             let encodedName = monument.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
                             print(encodedName!)

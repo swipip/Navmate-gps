@@ -31,7 +31,15 @@ struct Step {
 }
 struct Summary {
     
+//    var destination: String
+//    var destinationType: DestinationType
     var distance: Double
     var duration: Double
+    var preference: String
+    var mode: String
+    var avoid: [String]
     
 }
+//enum DestinationType {
+//    case regular,monument,pointOfInterest
+//}

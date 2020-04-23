@@ -32,6 +32,9 @@
 		49A5D2AC244357B9002E7D53 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 49A5D2AB244357B9002E7D53 /* Assets.xcassets */; };
 		49A5D2AF244357B9002E7D53 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 49A5D2AD244357B9002E7D53 /* LaunchScreen.storyboard */; };
 		49C0888224436C3600EBEAE5 /* MonumentManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C0888124436C3600EBEAE5 /* MonumentManager.swift */; };
+		49C0F41A2450AB450016212D /* MonumentNavigationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C0F4192450AB450016212D /* MonumentNavigationCell.swift */; };
+		49C1B0A42450B713007B5808 /* MonumentNavigationDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C1B0A32450B713007B5808 /* MonumentNavigationDetail.swift */; };
+		49C1B0A62451B00D007B5808 /* RouteRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C1B0A52451B00D007B5808 /* RouteRequest.swift */; };
 		49E9D03A244C92BC00E79D5F /* K.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E9D039244C92BC00E79D5F /* K.swift */; };
 		49E9D03C244CB03E00E79D5F /* WikipediaManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E9D03B244CB03E00E79D5F /* WikipediaManager.swift */; };
 		49E9D03E244CBFA000E79D5F /* CustomPlainAV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E9D03D244CBFA000E79D5F /* CustomPlainAV.swift */; };
@@ -80,6 +83,9 @@
 		49A5D2AE244357B9002E7D53 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		49A5D2B0244357B9002E7D53 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		49C0888124436C3600EBEAE5 /* MonumentManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonumentManager.swift; sourceTree = "<group>"; };
+		49C0F4192450AB450016212D /* MonumentNavigationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonumentNavigationCell.swift; sourceTree = "<group>"; };
+		49C1B0A32450B713007B5808 /* MonumentNavigationDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonumentNavigationDetail.swift; sourceTree = "<group>"; };
+		49C1B0A52451B00D007B5808 /* RouteRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteRequest.swift; sourceTree = "<group>"; };
 		49E9D039244C92BC00E79D5F /* K.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = K.swift; sourceTree = "<group>"; };
 		49E9D03B244CB03E00E79D5F /* WikipediaManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WikipediaManager.swift; sourceTree = "<group>"; };
 		49E9D03D244CBFA000E79D5F /* CustomPlainAV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPlainAV.swift; sourceTree = "<group>"; };
@@ -233,6 +239,16 @@
 			path = Controllers;
 			sourceTree = "<group>";
 		};
+		49C0F4182450AB290016212D /* Monuments */ = {
+			isa = PBXGroup;
+			children = (
+				49E9D07D244DEC6700E79D5F /* PoisCell.swift */,
+				49C0F4192450AB450016212D /* MonumentNavigationCell.swift */,
+				49C1B0A32450B713007B5808 /* MonumentNavigationDetail.swift */,
+			);
+			path = Monuments;
+			sourceTree = "<group>";
+		};
 		49E9D066244DC23900E79D5F /* Wikipedia */ = {
 			isa = PBXGroup;
 			children = (
@@ -282,6 +298,7 @@
 			children = (
 				49355831244B71D30023F848 /* RouteQueryModel.swift */,
 				4900D2AB2449DE910065752F /* Locator.swift */,
+				49C1B0A52451B00D007B5808 /* RouteRequest.swift */,
 				4900D2AA2449DE910065752F /* Route.swift */,
 				4900D2A92449DE900065752F /* routingManager.swift */,
 			);
@@ -307,10 +324,10 @@
 		49F903E524504063004B7831 /* POIs */ = {
 			isa = PBXGroup;
 			children = (
-				49E9D07D244DEC6700E79D5F /* PoisCell.swift */,
+				49F903E0244F9B61004B7831 /* CommonPoisCell.swift */,
 				49E9D07F244DEC7300E79D5F /* BarChartCell.swift */,
 				4929C01D245082F500D40931 /* Stats metrics */,
-				49F903E0244F9B61004B7831 /* CommonPoisCell.swift */,
+				49C0F4182450AB290016212D /* Monuments */,
 			);
 			path = POIs;
 			sourceTree = "<group>";
@@ -491,6 +508,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				49355832244B71D30023F848 /* RouteQueryModel.swift in Sources */,
+				49C1B0A42450B713007B5808 /* MonumentNavigationDetail.swift in Sources */,
 				49E9D077244DEBE700E79D5F /* NavigationMetricsCell.swift in Sources */,
 				4900D284244858F50065752F /* SearchVC.swift in Sources */,
 				49A5D2A7244357B6002E7D53 /* ViewController.swift in Sources */,
@@ -500,6 +518,7 @@
 				49E9D03E244CBFA000E79D5F /* CustomPlainAV.swift in Sources */,
 				4929C01F2450831F00D40931 /* AvgMetricsCell.swift in Sources */,
 				49E9D075244DEBAE00E79D5F /* NavigationMetricsVC.swift in Sources */,
+				49C0F41A2450AB450016212D /* MonumentNavigationCell.swift in Sources */,
 				49F903E1244F9B61004B7831 /* CommonPoisCell.swift in Sources */,
 				49355829244B37410023F848 /* Keys.swift in Sources */,
 				49F903DF244F9B0D004B7831 /* TripAverageMetricsCell.swift in Sources */,
@@ -516,6 +535,7 @@
 				49E9D080244DEC7300E79D5F /* BarChartCell.swift in Sources */,
 				4935582C244B5BF70023F848 /* DirectionGoCell.swift in Sources */,
 				49E9D073244DEB4200E79D5F /* NavigationVC.swift in Sources */,
+				49C1B0A62451B00D007B5808 /* RouteRequest.swift in Sources */,
 				49E9D06E244DC93100E79D5F /* MonumentAnnotationView.swift in Sources */,
 				49E9D03A244C92BC00E79D5F /* K.swift in Sources */,
 				4900D2AE2449DE910065752F /* Locator.swift in Sources */,

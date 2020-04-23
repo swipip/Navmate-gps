@@ -111,7 +111,7 @@ class AvgMetricsCell: UITableViewCell {
                 
                 self.avgSpeed = (avgSpeed / Double(totalTime)) + (speed * 3.6 * Double(timeElpased) / Double(totalTime))
                 
-                print("total: \(totalTime) elapsed: \(timeElpased)")
+//                print("total: \(totalTime) elapsed: \(timeElpased)")
                 
                 self.metricValue.text = "\(String(format: "%.0f", self.avgSpeed ?? 0)) Kmh"
                 

@@ -7,7 +7,12 @@
 //
 
 import UIKit
+import CoreLocation
 
+protocol PointOfInterestVCDelegate {
+    func didRequestRouteUpdate(destination: CLLocation)
+    func didRequestRerouting()
+}
 class PointOfInterestVC: UIViewController {
 
     private lazy var collectionView: UICollectionView = {
@@ -24,6 +29,8 @@ class PointOfInterestVC: UIViewController {
         collection.register(TripAverageMetricsCell.self, forCellWithReuseIdentifier: "cellID3")
         return collection
     }()
+    
+    var delegate: PointOfInterestVCDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -67,6 +74,7 @@ extension PointOfInterestVC: UICollectionViewDelegate, UICollectionViewDataSourc
             return cell
         }else{
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cellID", for: indexPath) as! POIsCell
+            cell.delegate = self
             return cell
         }
         
@@ -82,5 +90,15 @@ extension PointOfInterestVC: UICollectionViewDelegate, UICollectionViewDataSourc
     }
     
     
+}
+extension PointOfInterestVC: POIsCellDelgate {
+    func didRequestRerouting() {
+        collectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: .centeredHorizontally, animated: true)
+        delegate?.didRequestRerouting()
+    }
+    
+    func didRequestRouteUpdate(location: CLLocation) {
+        delegate?.didRequestRouteUpdate(destination: location)
+    }
 }
 
