@@ -12,11 +12,11 @@ import CoreLocation
 struct RouteRequest {
     
     var destinationName: String
-    var destination: CLLocation
+    var destination: CLLocationCoordinate2D
     var destinationType: DestinationType
     var mode: String
     var preference: String?
-    var avoir: [String]?
+    var avoid: [String]?
     var calculationMode: CalculationMode?
     
     enum DestinationType {

@@ -57,6 +57,8 @@ class MapVC: UIViewController {
     private let locator = Locator.shared
     private var destination: CLLocation?
     
+    private var route: Route?
+    
     var delegate: MapVCDelegate?
     
     override func viewDidLoad() {
@@ -90,28 +92,48 @@ class MapVC: UIViewController {
         }
         addConstraints(fromView: handle, toView: self.view)
     }
-    func getRoute(to view: MKAnnotationView) {
+    func getRoute(to annotation: MKAnnotation) {
         
-        guard let destination = view.annotation?.coordinate else {return}
         
-        if let location = locator.getUserLocation() {
+        let destination = annotation.coordinate
+        
+        
             
-            if let annotation = view.annotation as? MonumentAnnotation {
-                locator.getDirections(from: location.coordinate, to: destination, mode: "driving-car")
-                self.destination = CLLocation(latitude: destination.latitude, longitude: destination.longitude)
-            }
+//            if let annotation = annotation as? MonumentAnnotation {
+//                locator.getDirections(from: location.coordinate, to: destination, mode: "driving-car")
+//                self.destination = CLLocation(latitude: destination.latitude, longitude: destination.longitude)
+//            }
+
+
             
-            locator.getDirections(from: location.coordinate, to: destination, mode: "driving-car")
+            let request = RouteRequest(destinationName: "Destination",
+                                           destination: destination,
+                                           destinationType: .regular,
+                                           mode: "driving-car",
+                                           preference: "shortest",
+                                           avoid: ["highways","tollways"],
+                                           calculationMode: .initial)
+            
+            locator.getRoute(request: request)
+            
+//            locator.getDirections(from: location.coordinate, to: destination, mode: "driving-car")
             self.destination = CLLocation(latitude: destination.latitude, longitude: destination.longitude)
 
-        }
+        
         
     }
     func updateRoute(mode: String,preference: String, avoid: [String],to destination: CLLocation) {
         
-        if let location = self.locator.getUserLocation() {
-            locator.getDirections(from: location.coordinate, to: destination.coordinate,mode: mode, preference: preference, avoid: avoid)
-        }
+        
+        
+        let request = RouteRequest(destinationName: "Destination", destination: destination.coordinate, destinationType: .regular, mode: mode, preference: preference, avoid: avoid, calculationMode: .initial)
+        
+        
+        locator.getRoute(request: request)
+        
+//        if let location = self.locator.getUserLocation() {
+////            locator.getDirections(from: location.coordinate, to: destination.coordinate,mode: mode, preference: preference, avoid: avoid)
+//        }
         
         
         
@@ -267,8 +289,9 @@ extension MapVC: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         
         guard !(view.annotation is MKUserLocation) else {return}
+        guard let annotation = view.annotation else {return}
         
-        self.getRoute(to: view)
+        self.getRoute(to: annotation)
         
     }
     func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
@@ -409,3 +432,4 @@ extension MapVC: MonumentAnnotationViewDelegate {
     }
     
 }
+

@@ -72,6 +72,23 @@ class NavigationVC: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(didReceiveRouteInformation(_:)), name: route, object: nil)
         let newStep = Notification.Name(K.shared.notificationNewStep)
         NotificationCenter.default.addObserver(self, selector: #selector(didReceiveNewInstruction(_:)), name: newStep, object: nil)
+        let reroutingStarted = Notification.Name(K.shared.notificationStartRerouting)
+        NotificationCenter.default.addObserver(self, selector: #selector(didStartRerouting(_:)), name: reroutingStarted, object: nil)
+    }
+    @objc private func didStartRerouting(_ notification:Notification) {
+        
+        if let route = self.newRoute {
+            self.route = route
+            
+            self.steps = route.steps
+            
+            self.indicationsTableView.selectRow(at: IndexPath(item: 0, section: 0), animated: true, scrollPosition: .top)
+            
+            indicationsTableView.reloadData()
+            
+            Locator.shared.startRerouting() 
+            
+        }
         
     }
     @objc private func didReceiveNewInstruction(_ notification:Notification) {
@@ -109,7 +126,6 @@ class NavigationVC: UIViewController {
     private func addPOIsCollection() {
         
         self.addChild(poisCollection)
-        poisCollection.delegate = self
         poisCollection.willMove(toParent: self)
         
         let view = poisCollection.view!
@@ -228,55 +244,4 @@ extension NavigationVC: UITableViewDataSource, UITableViewDelegate {
     
     
 }
-extension NavigationVC: PointOfInterestVCDelegate {
-    func didRequestRouteUpdate(destination: CLLocation) {
-        if let userLocation = Locator.shared.getUserLocation() {
-            
-            if let summary = self.route?.summary {
-                Locator.shared.getDirections(from: userLocation.coordinate, to: destination.coordinate, mode: summary.mode , preference: summary.preference, avoid: summary.avoid, calculationMode: .recalculation)
-            }
-            
-        }
-    }
-    
-    
-    func didRequestRerouting() {
-        if let route = self.newRoute {
-            
-            
-//            switch route.summary.destinationType {
-//            case .regular:
-//                
-////                let annotation = MKAnnotation()
-////                annotation.title = "Destination"
-////
-////                delegate?.didStartNewRoute(destination: annotation)
-//                break
-//            case .monument:
-//                
-//                let annotation = MonumentAnnotation()
-//                annotation.destinationType = .monument
-//                annotation.title = newRoute?.summary.destination ?? "Destination"
-//                
-//                delegate?.didStartNewRoute(destination: annotation)
-//            
-//            case .pointOfInterest:
-//                break
-//            }
-            
-//            let annotation = CustomPin(title: "Destination", subtitle: "", coordinate: route.wayPoints.last?.coordinate)
-            
-            Locator.shared.startRerouting()
-            
-            self.route = route
-            
-            self.steps = route.steps
-            indicationsTableView.reloadData()
-            indicationsTableView.selectRow(at: IndexPath(item: 0, section: 0), animated: true, scrollPosition: .top)
-            
-            
-            
-        }
-    }
-    
-}
+

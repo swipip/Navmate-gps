@@ -9,7 +9,7 @@
 import UIKit
 import CoreLocation
 protocol MonumentNavigationCellDelegate {
-    func didPressSeeMoreButton(monument: Monument)
+    func didPressSeeMore(monument: Monument)
 }
 class MonumentNavigationCell: ResearchCell {
 
@@ -18,7 +18,7 @@ class MonumentNavigationCell: ResearchCell {
         effect.layer.cornerRadius = 8
         return effect
     }()
-    private lazy var goButton: UIButton = {
+    private lazy var seeMorebutton: UIButton = {
         let button = UIButton()
         button.backgroundColor = K.shared.blue
         button.setTitle("Voir", for: .normal)
@@ -61,9 +61,17 @@ class MonumentNavigationCell: ResearchCell {
     }
     @objc private func goButtonPressed(_ sender:UIButton!) {
         
-        if let monument = self.monument {
+        if let monument = self.monument, let currentRequest = Locator.shared.getCurrentRouteRequestInfo() {
+            
+            let destination = CLLocation(latitude: monument.latitude, longitude: -monument.longitude).coordinate
+            
+            let request = RouteRequest(destinationName: monument.name, destination: destination, destinationType: .monument, mode: currentRequest.mode, preference: currentRequest.preference, avoid: currentRequest.avoid, calculationMode: .recalculation)
+            
+            Locator.shared.getRoute(request: request)
+            
+            delegate?.didPressSeeMore(monument: monument)
+            
             self.isSelected = false
-            delegate?.didPressSeeMoreButton(monument: monument)
         }
         
     }
@@ -91,7 +99,7 @@ class MonumentNavigationCell: ResearchCell {
            fromView.translatesAutoresizingMaskIntoConstraints = false
            
             NSLayoutConstraint.activate([fromView.leadingAnchor.constraint(equalTo: toView.leadingAnchor, constant: 20),
-                                         fromView.trailingAnchor.constraint(equalTo: self.goButton.leadingAnchor ,constant: -10),
+                                         fromView.trailingAnchor.constraint(equalTo: self.seeMorebutton.leadingAnchor ,constant: -10),
                                         fromView.topAnchor.constraint(equalTo: toView.topAnchor, constant: 10)])
         }
         addConstraints(fromView: nameLabel, toView: self)
@@ -99,7 +107,7 @@ class MonumentNavigationCell: ResearchCell {
     }
     private func addGoButton() {
         
-        self.addSubview(goButton)
+        self.addSubview(seeMorebutton)
         
         func addConstraints(fromView: UIView, toView: UIView) {
                
@@ -110,7 +118,7 @@ class MonumentNavigationCell: ResearchCell {
                                         fromView.centerYAnchor.constraint(equalTo: toView.centerYAnchor, constant: 0),
                                         fromView.heightAnchor.constraint(equalToConstant: 50)])
         }
-        addConstraints(fromView: goButton, toView: self)
+        addConstraints(fromView: seeMorebutton, toView: self)
         
     }
     private func addEffectView() {
@@ -160,14 +168,14 @@ class MonumentNavigationCell: ResearchCell {
         if selected {
             UIView.animate(withDuration: 0.4) {
                 self.effectView.effect = UIBlurEffect(style: .light)
-                self.goButton.alpha = 1.0
+                self.seeMorebutton.alpha = 1.0
                 self.nameLabel.alpha = 1.0
                 self.distanceLabel.alpha = 1.0
             }
         }else{
             UIView.animate(withDuration: 0.4) {
                 self.effectView.effect = nil
-                self.goButton.alpha = 0.0
+                self.seeMorebutton.alpha = 0.0
                 self.nameLabel.alpha = 0.0
                 self.distanceLabel.alpha = 0.0
             }

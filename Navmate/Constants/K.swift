@@ -40,5 +40,7 @@ class K {
     let notificationDistance = "distance"
     let notificationTotalDistance = "totalDistance"
     let notificationWikiPedia = "Wikipedia"
+    let notificationRerouting = "reRouting"
+    let notificationStartRerouting = "startRerouting"
     
 }

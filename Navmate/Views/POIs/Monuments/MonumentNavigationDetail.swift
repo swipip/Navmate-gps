@@ -8,9 +8,7 @@
 
 import UIKit
 import CoreLocation
-protocol MonumentNavigationDetailDelegate {
-    func didRequestRerouting()
-}
+
 class MonumentNavigationDetail: UIView {
 
     private lazy var effectView: UIVisualEffectView = {
@@ -69,7 +67,7 @@ class MonumentNavigationDetail: UIView {
         return label
     }()
     
-    var delegate: MonumentNavigationDetailDelegate?
+    let startReroutingNotification = Notification.Name(K.shared.notificationStartRerouting)
     
     convenience init(frame: CGRect, monument: Monument) {
         self.init(frame: frame)
@@ -94,7 +92,7 @@ class MonumentNavigationDetail: UIView {
         
         dismissDetailView()
         
-        delegate?.didRequestRerouting()
+        NotificationCenter.default.post(name: startReroutingNotification, object: nil, userInfo: nil)
         
     }
     fileprivate func dismissDetailView() {

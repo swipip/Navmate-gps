@@ -9,6 +9,11 @@
 import Foundation
 import MapKit
 import CoreLocation
+
+enum CalculationMode {
+    case initial,recalculation
+}
+
 protocol LocatorDelegate: class {
     func didReceiveNewDirectionInstructions(instruction: String)
     func didFindRoute(polyline: [MKPolyline], summary: Summary)
@@ -51,6 +56,7 @@ class Locator: NSObject {
     weak var delegate: LocatorDelegate?
     
     var route: Route?
+    var currentRequest: RouteRequest?
     private var durationTracking:Double = 0
     var radius = 20.0
     
@@ -62,10 +68,6 @@ class Locator: NSObject {
     let durationTrackingNotification = Notification.Name(K.shared.notificationDurationTracking)
     let distanceNotification = Notification.Name(K.shared.notificationDistance)
     let totalDistanceNotification = Notification.Name(K.shared.notificationTotalDistance)
-    
-    enum CalculationMode {
-        case initial,recalculation
-    }
     
     private var calculationMode: CalculationMode?
     
@@ -191,20 +193,50 @@ class Locator: NSObject {
         }
         return location
     }
-    func getDirections(from source: CLLocationCoordinate2D, to destination: CLLocationCoordinate2D,mode: String,preference: String? = "shortest", avoid: [String]? = ["highways"],calculationMode: CalculationMode? = .initial) {
-
-        self.calculationMode = calculationMode
-        
-        if calculationMode == .initial {
-            self.clearVariableFornewRoute()
+    func getCurrentRouteRequestInfo() -> RouteRequest? {
+        if let request = self.currentRequest {
+            return request
+        }else{
+            return nil
         }
+    }
+    func getRoute(request: RouteRequest) {
         
-        let routingManager = RoutingManager()
-        routingManager.delegate = self
+        self.currentRequest = request
         
-        routingManager.getDirections(from: source, to: destination,mode: mode, preference: preference!, avoid: avoid!)
+        if let location = self.getUserLocation() {
+            
+            self.calculationMode = request.calculationMode
+            
+            if calculationMode == .initial {
+                self.clearVariableFornewRoute()
+            }
+            
+            let routingManager = RoutingManager()
+            routingManager.delegate = self
+            
+            routingManager.getDirections(from: location.coordinate, to: request.destination,mode: request.mode, preference: request.preference ?? "shortest", avoid: request.avoid ?? ["highways","tollways"])
+            
+            
+        }
+
+        
         
     }
+//    func getDirections(from source: CLLocationCoordinate2D, to destination: CLLocationCoordinate2D,mode: String,preference: String? = "shortest", avoid: [String]? = ["highways"],calculationMode: CalculationMode? = .initial) {
+//
+//        self.calculationMode = calculationMode
+//        
+//        if calculationMode == .initial {
+//            self.clearVariableFornewRoute()
+//        }
+//        
+//        let routingManager = RoutingManager()
+//        routingManager.delegate = self
+//        
+//        routingManager.getDirections(from: source, to: destination,mode: mode, preference: preference!, avoid: avoid!)
+//        
+//    }
     fileprivate func sendDurationUpdateNotification(_ durationToNextWayPoint: Double) {
         durationTracking -= durationToNextWayPoint
         let userInfo = ["duration":durationTracking]

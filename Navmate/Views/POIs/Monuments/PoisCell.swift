@@ -8,12 +8,7 @@
 
 import UIKit
 import CoreLocation
-protocol POIsCellDelgate {
-    
-    func didRequestRouteUpdate(location: CLLocation)
-    func didRequestRerouting()
-    
-}
+
 class POIsCell: UICollectionViewCell {
     
     private lazy var cardBG: UIView = {
@@ -41,8 +36,6 @@ class POIsCell: UICollectionViewCell {
     }()
     private var monuments: [Monument]?
     private var allowReload = true
-    
-    var delegate: POIsCellDelgate?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -151,9 +144,7 @@ extension POIsCell: UITableViewDataSource, UITableViewDelegate {
         let i = indexPath.row
         
         if let monuments = self.monuments {
-            
             cell.delegate = self
-            
             cell.passDataToCell(title: monuments[i].name, subTitle: monuments[i].town, imageName: "historic",monument: monuments[i])
             
         }
@@ -167,25 +158,15 @@ extension POIsCell: UITableViewDataSource, UITableViewDelegate {
     
     
 }
-
 extension POIsCell: MonumentNavigationCellDelegate {
     
-    func didPressSeeMoreButton(monument: Monument) {
+    func didPressSeeMore(monument: Monument) {
         
         let view = MonumentNavigationDetail(frame: CGRect(x: 0, y: 0, width: 0, height: 0), monument: monument)
-        view.frame = self.cardBG.frame
-        view.delegate = self
+        view.layer.cornerRadius = K.shared.cornerRadiusCard
+        view.frame = cardBG.frame
         self.addSubview(view)
         
-        delegate?.didRequestRouteUpdate(location: CLLocation(latitude: monument.latitude, longitude: -monument.longitude))
-        
     }
-    
-}
-extension POIsCell: MonumentNavigationDetailDelegate {
-    
-    func didRequestRerouting() {
-        self.delegate?.didRequestRerouting()
-    }
-    
+
 }
