@@ -59,6 +59,8 @@ class MapVC: UIViewController {
     
     private var route: Route?
     
+    var circleColor = UIColor.red
+    
     var delegate: MapVCDelegate?
     
     override func viewDidLoad() {
@@ -305,6 +307,11 @@ extension MapVC: MKMapViewDelegate {
             route.lineWidth = 10
             route.miterLimit = 8
             return route
+        }else if overlay is MKCircle {
+            let circle = MKCircleRenderer(circle: overlay as! MKCircle)
+            circle.strokeColor = circleColor
+            circle.lineWidth = 2
+            return circle
         }
         return MKOverlayRenderer()
     }
@@ -406,17 +413,18 @@ extension MapVC: LocatorDelegate {
     }
     #warning("implementation")
     func didFindWayPoints(wayPoints: [CLLocation]) {
-//        for waypoint in wayPoints {
-//
-//            let circle = MKCircle(center: waypoint.coordinate, radius: 20)
-//            mapView.addOverlay(circle)
-//
-//        }
+        for waypoint in wayPoints {
+
+            let circle = MKCircle(center: waypoint.coordinate, radius: 30)
+            mapView.addOverlay(circle)
+
+        }
     }
     func didMoveToNextWP(waypointIndex: Int,status: String,location: CLLocation) {
 //        self.regionMonitored.text = String("\(waypointIndex) & status: \(status)")
 
-        let circle = MKCircle(center: location.coordinate, radius: 50)
+        circleColor = UIColor.blue
+        let circle = MKCircle(center: location.coordinate, radius: 30)
         mapView.addOverlay(circle)
         
     }

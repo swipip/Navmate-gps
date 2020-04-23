@@ -46,7 +46,7 @@ class Locator: NSObject {
     var steps: [Step]?
     var tripStepIndex = 0
     var monitoredWayPoint: CLLocation?
-    var currentWPIndex = 0
+    var currentWPIndex: Int?
     var contains = true
     var nextStepInstruction = ""
     var previousLocation: CLLocation?
@@ -58,7 +58,10 @@ class Locator: NSObject {
     var route: Route?
     var currentRequest: RouteRequest?
     private var durationTracking:Double = 0
-    var radius = 20.0
+    var radius = 30.0
+    var entered = false
+    var left = true
+    var currentStep: (index: Int,step: Step)?
     
     let speedNotification = NSNotification.Name(K.shared.notificationSpeed)
     let locationNotification = NSNotification.Name(K.shared.notificationLocation)
@@ -88,7 +91,7 @@ class Locator: NSObject {
         wayPoints?.removeAll()
         tripStepIndex = 0
         steps?.removeAll()
-        currentWPIndex = 0
+        currentWPIndex = nil
         locationManager.stopUpdatingLocation()
         self.locationManager.monitoredRegions.forEach({ self.locationManager.stopMonitoring(for: $0) })
         routeIndex = 0
@@ -127,6 +130,11 @@ class Locator: NSObject {
         if let duration = self.route?.summary.duration {
             durationTracking = duration
         }
+        
+        if let monitoredWayPoint = wayPoints!.first {
+            self.monitoredWayPoint = monitoredWayPoint
+            self.currentWPIndex = 0
+        }
 
         
     }
@@ -145,6 +153,11 @@ class Locator: NSObject {
             
             locationManager.startUpdatingLocation()
             locationManager.startUpdatingHeading()
+            
+            if let monitoredWayPoint = wayPoints!.first {
+                self.monitoredWayPoint = monitoredWayPoint
+                self.currentWPIndex = 0
+            }
             
         }
         
@@ -219,24 +232,7 @@ class Locator: NSObject {
             
             
         }
-
-        
-        
     }
-//    func getDirections(from source: CLLocationCoordinate2D, to destination: CLLocationCoordinate2D,mode: String,preference: String? = "shortest", avoid: [String]? = ["highways"],calculationMode: CalculationMode? = .initial) {
-//
-//        self.calculationMode = calculationMode
-//        
-//        if calculationMode == .initial {
-//            self.clearVariableFornewRoute()
-//        }
-//        
-//        let routingManager = RoutingManager()
-//        routingManager.delegate = self
-//        
-//        routingManager.getDirections(from: source, to: destination,mode: mode, preference: preference!, avoid: avoid!)
-//        
-//    }
     fileprivate func sendDurationUpdateNotification(_ durationToNextWayPoint: Double) {
         durationTracking -= durationToNextWayPoint
         let userInfo = ["duration":durationTracking]
@@ -244,6 +240,9 @@ class Locator: NSObject {
     }
     
     fileprivate func sendDistanceUpdateNotification(_ dif: Int, _ step: Step, _ distanceToNextWayPoint: Double) {
+        
+        guard let currentWPIndex = currentWPIndex else {return}
+        
         let portionOfStepDistance = currentWPIndex / dif
         
         let remainingDistance = step.distance - distanceToNextWayPoint * Double(portionOfStepDistance)
@@ -251,219 +250,245 @@ class Locator: NSObject {
         NotificationCenter.default.post(name: distanceNotification, object: nil, userInfo: userInfo)
     }
     
-    private func updateInstructions() {
-        
-        guard let steps = self.steps else {return}
-        guard let wayPoints = self.wayPoints else {return}
-        
-        if currentWPIndex == wayPoints.count {
-            let instruction = "Vous êtes arrivé"
-            locationManager.stopUpdatingLocation()
-            delegate?.didReceiveNewDirectionInstructions(instruction: instruction)
-            
-            NotificationCenter.default.post(name: newStepNotification, object: nil)
-            
-        }
-        
-        for (i,step) in steps.enumerated() {
-            
-            let entry = step.wayPoints.first!
-            let exit = step.wayPoints.last!
-            let dif = exit - entry
-            
-            let durationToNextWayPoint = step.duration / max(1,Double(dif))
-            let distanceToNextWayPoint = step.distance / max(1,Double(dif))
-                  
-            let nextIndex = min(i+1,steps.count-1)
-            
-            let nextEntry = steps[nextIndex].wayPoints.first!
-            let nextExit = steps[nextIndex].wayPoints.last!
-            let nextDif = nextExit-nextEntry
-            
-            switch currentWPIndex {
-            case entry:
-                if dif == 1 {
-                    //entry and exit very close
-                    let instruction = "\(step.instruction) then in \(step.distance) \(steps[i+1].instruction) "
-                    delegate?.didReceiveNewDirectionInstructions(instruction: instruction)
-                    
-                    NotificationCenter.default.post(name: newStepNotification, object: nil)
-                    
-                    sendDurationUpdateNotification(durationToNextWayPoint)
-                    
-                    delegate?.didMoveToNextWP(waypointIndex: currentWPIndex, status: "enter", location: monitoredWayPoint!)
-                    
-                }else if entry == 0 {
-                    let instruction = "\(step.instruction)"
-                    delegate?.didReceiveNewDirectionInstructions(instruction: instruction)
-                    
-                    NotificationCenter.default.post(name: newStepNotification, object: nil)
-                    
-                    sendDurationUpdateNotification(durationToNextWayPoint)
-                    
-                    delegate?.didMoveToNextWP(waypointIndex: currentWPIndex, status: "enter", location: monitoredWayPoint!)
-                }else{
-                    let instruction = "\(step.instruction)"
-                    delegate?.didReceiveNewDirectionInstructions(instruction: instruction)
-                    
-                    NotificationCenter.default.post(name: newStepNotification, object: nil)
-                    
-                    sendDurationUpdateNotification(durationToNextWayPoint)
-                    
-                    delegate?.didMoveToNextWP(waypointIndex: currentWPIndex, status: "enter", location: monitoredWayPoint!)
-                }
-                currentWPIndex += 1
-                self.monitoredWayPoint = wayPoints[currentWPIndex]
-                return
-            case exit:
-                if i <= steps.count - 2 {
-                    let instruction =  "\(steps[nextIndex].instruction)"
-                    if nextDif == 1 {
-                        nextStepInstruction = "\(steps[i+2].instruction)"
-                        existingWP = monitoredWayPoint
-                        contains = false
-                    }
-                    delegate?.didReceiveNewDirectionInstructions(instruction: instruction)
-                    
-                    NotificationCenter.default.post(name: newStepNotification, object: nil)
-                    
-                    sendDurationUpdateNotification(durationToNextWayPoint)
-                    
-                    delegate?.didMoveToNextWP(waypointIndex: currentWPIndex, status: "exit", location: monitoredWayPoint!)
-                    
-                    
-                }
-                
-                let userInfo = ["totalDistance": steps[max(0,i-1)].distance]
-                NotificationCenter.default.post(name: totalDistanceNotification, object: nil, userInfo: userInfo)
-                
-                if steps.count != 0 {self.steps?.removeFirst()}
-                currentWPIndex += 1
-                if currentWPIndex >= wayPoints.count-1 {
-                    
-                }else{
-                    self.monitoredWayPoint = wayPoints[currentWPIndex]
-                }
-                
-                return
-            default:
-                if currentWPIndex > entry && currentWPIndex < exit {
-                    
-//                    sendDistanceUpdateNotification(dif, step, distanceToNextWayPoint)
-                    
-                    let instruction = "In \(step.distance) meters \(steps[i+1].instruction)"
-                    delegate?.didReceiveNewDirectionInstructions(instruction: instruction)
-                    
-                    sendDurationUpdateNotification(durationToNextWayPoint)
-                    
-                    delegate?.didMoveToNextWP(waypointIndex: currentWPIndex, status: "default", location: monitoredWayPoint!)
-                    currentWPIndex += 1
-                    self.monitoredWayPoint = wayPoints[currentWPIndex]
-                    return
-                }
-                break
-            }
-            
-        }
-        
-    }
+//    private func updateInstructions() {
+//
+//        guard let steps = self.steps else {return}
+//        guard let wayPoints = self.wayPoints else {return}
+//
+//        if currentWPIndex == wayPoints.count {
+//            let instruction = "Vous êtes arrivé"
+//            locationManager.stopUpdatingLocation()
+//            delegate?.didReceiveNewDirectionInstructions(instruction: instruction)
+//
+//            NotificationCenter.default.post(name: newStepNotification, object: nil)
+//
+//        }
+//
+//        for (i,step) in steps.enumerated() {
+//
+//            let entry = step.wayPoints.first!
+//            let exit = step.wayPoints.last!
+//            let dif = exit - entry
+//
+//            let durationToNextWayPoint = step.duration / max(1,Double(dif))
+//            let distanceToNextWayPoint = step.distance / max(1,Double(dif))
+//
+//            let nextIndex = min(i+1,steps.count-1)
+//
+//            let nextEntry = steps[nextIndex].wayPoints.first!
+//            let nextExit = steps[nextIndex].wayPoints.last!
+//            let nextDif = nextExit-nextEntry
+//
+//            switch currentWPIndex {
+//            case entry:
+//                if dif == 1 {
+//                    //entry and exit very close
+//                    let instruction = "\(step.instruction) then in \(step.distance) \(steps[i+1].instruction) "
+//                    delegate?.didReceiveNewDirectionInstructions(instruction: instruction)
+//
+//                    NotificationCenter.default.post(name: newStepNotification, object: nil)
+//
+//                    sendDurationUpdateNotification(durationToNextWayPoint)
+//
+//                    delegate?.didMoveToNextWP(waypointIndex: currentWPIndex, status: "enter", location: monitoredWayPoint!)
+//
+//                }else if entry == 0 {
+//                    let instruction = "\(step.instruction)"
+//                    delegate?.didReceiveNewDirectionInstructions(instruction: instruction)
+//
+//                    NotificationCenter.default.post(name: newStepNotification, object: nil)
+//
+//                    sendDurationUpdateNotification(durationToNextWayPoint)
+//
+//                    delegate?.didMoveToNextWP(waypointIndex: currentWPIndex, status: "enter", location: monitoredWayPoint!)
+//                }else{
+//                    let instruction = "\(step.instruction)"
+//                    delegate?.didReceiveNewDirectionInstructions(instruction: instruction)
+//
+//                    NotificationCenter.default.post(name: newStepNotification, object: nil)
+//
+//                    sendDurationUpdateNotification(durationToNextWayPoint)
+//
+//                    delegate?.didMoveToNextWP(waypointIndex: currentWPIndex, status: "enter", location: monitoredWayPoint!)
+//                }
+//                currentWPIndex += 1
+//                self.monitoredWayPoint = wayPoints[currentWPIndex]
+//                return
+//            case exit:
+//                if i <= steps.count - 2 {
+//                    let instruction =  "\(steps[nextIndex].instruction)"
+//                    if nextDif == 1 {
+//                        nextStepInstruction = "\(steps[i+2].instruction)"
+//                        existingWP = monitoredWayPoint
+//                        contains = false
+//                    }
+//                    delegate?.didReceiveNewDirectionInstructions(instruction: instruction)
+//
+//                    NotificationCenter.default.post(name: newStepNotification, object: nil)
+//
+//                    sendDurationUpdateNotification(durationToNextWayPoint)
+//
+//                    delegate?.didMoveToNextWP(waypointIndex: currentWPIndex, status: "exit", location: monitoredWayPoint!)
+//
+//
+//                }
+//
+//                let userInfo = ["totalDistance": steps[max(0,i-1)].distance]
+//                NotificationCenter.default.post(name: totalDistanceNotification, object: nil, userInfo: userInfo)
+//
+//                if steps.count != 0 {self.steps?.removeFirst()}
+//                currentWPIndex += 1
+//                if currentWPIndex >= wayPoints.count-1 {
+//
+//                }else{
+//                    self.monitoredWayPoint = wayPoints[currentWPIndex]
+//                }
+//
+//                return
+//            default:
+//                if currentWPIndex > entry && currentWPIndex < exit {
+//
+////                    sendDistanceUpdateNotification(dif, step, distanceToNextWayPoint)
+//
+//                    let instruction = "In \(step.distance) meters \(steps[i+1].instruction)"
+//                    delegate?.didReceiveNewDirectionInstructions(instruction: instruction)
+//
+//                    sendDurationUpdateNotification(durationToNextWayPoint)
+//
+//                    delegate?.didMoveToNextWP(waypointIndex: currentWPIndex, status: "default", location: monitoredWayPoint!)
+//                    currentWPIndex += 1
+//                    self.monitoredWayPoint = wayPoints[currentWPIndex]
+//                    return
+//                }
+//                break
+//            }
+//
+//        }
+//
+//    }
     
 }
 extension Locator: CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
 
+        guard let route = self.route else {return}
+        guard let currentWPIndex = currentWPIndex else {return}
         
-        if let speed = getUserCurrentSpeed() {
+        let wayPoints = route.wayPoints
+        
+        if let location = locations.last {
             
-            radius = max(15,min(speed/5 * 15,100))
-            
-            delegate?.didGetUserSpeed(speed: speed)
-            let userInfo = ["speed":speed]
-            NotificationCenter.default.post(name: speedNotification, object: nil, userInfo: userInfo)
-            
-        }
-        guard let location = locations.last else {return}
+            let region = CLCircularRegion(center: wayPoints[currentWPIndex].coordinate, radius: radius, identifier: "")
         
-        if let previousLoc = previousLocation {
-            if previousLoc == location {
-                return
-            }
-        }
-        
-        self.previousLocation = location
-        
-        let userInfo = ["location":locations.last]
-        NotificationCenter.default.post(name: locationNotification, object: nil, userInfo: userInfo as! [AnyHashable : CLLocation])
+            if region.contains(location.coordinate) {
+                //user entering
+                if entered == false {
+                    print("entered")
+                    
+                    for (i,step) in route.steps.enumerated() {
+                        let wayPointRange = step.wayPoints
+                        let enterWP = wayPointRange.first
+                        let dif = wayPointRange.last! - wayPointRange.first!
+                        print("dif: \(dif)")
+                        delegate?.didMoveToNextWP(waypointIndex: currentWPIndex, status: "entered", location: wayPoints[currentWPIndex])
+                        
+                        if currentWPIndex == enterWP {
+                            self.currentStep = (i,step)
+                            if currentWPIndex == 0 {
+                                //                                self.currentWPIndex! += 1
+                            }else{
+                                if dif != 1 {
+                                    if step.type == 7 || step.type == 8{
 
-        
-        guard let monitoredWayPoint = self.monitoredWayPoint else {return}
-
-        let region = CLCircularRegion(center: monitoredWayPoint.coordinate, radius: radius, identifier: "")
-
-        if region.contains(location.coordinate){
-
-            updateInstructions()
-
-        }
-        if let existingWp = self.existingWP {
-            let exitingRegion = CLCircularRegion(center: existingWp.coordinate, radius: radius, identifier: "")
-
-            if exitingRegion.contains(location.coordinate) == false {
-                contains = true
-                let message = nextStepInstruction
+                                    }else{
+                                        print("entered \(currentWPIndex) \(wayPointRange)")
+                                                                           NotificationCenter.default.post(name: newStepNotification, object: nil, userInfo: nil)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    
+                    entered = true
+                    left = false
+                }
                 
-                NotificationCenter.default.post(name: newStepNotification, object: nil)
                 
-                delegate?.didReceiveNewDirectionInstructions(instruction: message)
-                self.existingWP = nil
-            }
-        }
+            }else{
+                // user leaving
+                if left == false {
+                    print("left \(currentWPIndex)")
+                    
+//                    delegate?.didMoveToNextWP(waypointIndex: currentWPIndex, status: "entered", location: wayPoints[currentWPIndex])
+                    
+                    for (i,step) in route.steps.enumerated() {
+                        let wayPointRange = step.wayPoints
+                        let exitWP = wayPointRange.last
+                         let dif = wayPointRange.last! - wayPointRange.first!
+                        
+                        if currentWPIndex == 0 {
+//                            print("left\(currentWPIndex) \(wayPointRange)")
+//                            NotificationCenter.default.post(name: newStepNotification, object: nil, userInfo: nil)
+                        }
+                        if dif == 1 {
+                            print("left\(currentWPIndex) \(wayPointRange)")
+                            NotificationCenter.default.post(name: newStepNotification, object: nil, userInfo: nil)
+                        }else {
+                            if currentWPIndex == exitWP {
+                                self.currentStep = (i,route.steps[i+1])
+                                
+                                print("left\(currentWPIndex) \(wayPointRange)")
+                                NotificationCenter.default.post(name: newStepNotification, object: nil, userInfo: nil)
+                                
+                                
+                                //                            delegate?.didMoveToNextWP(waypointIndex: currentWPIndex, status: "entered", location: wayPoints[currentWPIndex])
+                                
+                            }
+                        }
 
-        
+                    }
+                    
+                    left = true
+                    entered = false
+                    self.currentWPIndex! = currentStep!.step.wayPoints.last!
+                    print("\(self.currentWPIndex)")
+                    delegate?.didMoveToNextWP(waypointIndex: self.currentWPIndex!, status: "entered", location: wayPoints[self.currentWPIndex!])
+                }
+                
+            }
+            //on monitoring issue, catch up
+//            for (i,waypoint) in wayPoints.enumerated() {
+//                let region = CLCircularRegion(center: waypoint.coordinate, radius: radius * 1.1, identifier: "catchUp\(i)")
+//                if region.contains(location.coordinate) {
+//                    currentWPIndex = i
+//                    for (i,step) in route.steps.enumerated() {
+//                        let range = step.wayPoints
+//                        if currentWPIndex <= range.first! && currentWPIndex >= range.last! {
+//                            if let currentIndex = self.currentStep?.index {
+//                                self.currentStep = (i,step)
+//
+//                                let stepGap = currentIndex - currentStep!.index
+//
+//                                for _ in 0 ..< stepGap {
+//                                    NotificationCenter.default.post(name: newStepNotification, object: nil, userInfo: nil)
+//                                }
+//
+//                            }else{
+//
+//                            }
+//                            return
+//                        }
+//                    }
+//                }
+//            }
+            //if still not found recalculate
+            
+        }
+                
     }
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         checkForAuthorization()
-    }
-    func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
-        
-        guard let wayPoints = self.wayPoints else {return}
-        guard let steps = self.steps else {return}
-
-        locationManager.stopMonitoring(for: region)
-
-        var message = ""
-        for (i,step) in steps.enumerated() {
-            if step.wayPoints.first == currentWPIndex {
-                message = step.instruction
-            }else if step.wayPoints.last == currentWPIndex {
-                message = steps[i+1].instruction
-            }else if step.wayPoints.first! < currentWPIndex && step.wayPoints.last! > currentWPIndex {
-                message = "Prepare to \(steps[i+1].instruction)"
-            }
-        }
-
-        delegate?.didReceiveNewDirectionInstructions(instruction: message)
-
-        NotificationCenter.default.post(name: newStepNotification, object: nil)
-
-
-        currentWPIndex += 1
-        let coordinate = wayPoints[currentWPIndex]
-        let region = CLCircularRegion(center: coordinate.coordinate, radius: 30, identifier: "monitoredWP")
-
-        locationManager.startMonitoring(for: region)
-        
-        
-    }
-    func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
-        
-        guard let _ = self.wayPoints else {return}
-
-        
-    }
-    func locationManager(_ manager: CLLocationManager, monitoringDidFailFor region: CLRegion?, withError error: Error) {
-        print(error)
     }
     func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
         
@@ -488,20 +513,14 @@ extension Locator: RoutingManagerDelegate {
                 self.wayPoints = route.wayPoints
                 self.steps = route.steps
                 
-                //        highlightWayPoints()
-                
-                if let monitoredWayPoint = wayPoints!.first {
-                    self.monitoredWayPoint = monitoredWayPoint
-                    #warning("set back to zero")
-                    self.currentWPIndex = 0
-                }
-                
+                delegate?.didFindWayPoints(wayPoints: route.wayPoints)
                 
                 #warning("test distance filter")
                 locationManager.distanceFilter = 1
                 
                 delegate?.didFindRoute(polyline: route.polylines, summary: route.summary)
                 delegate?.didFindWayPoints(wayPoints: route.wayPoints)
+                
             case .recalculation:
                 
                 self.newRoute = route

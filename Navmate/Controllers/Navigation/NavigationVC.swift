@@ -86,7 +86,7 @@ class NavigationVC: UIViewController {
             
             indicationsTableView.reloadData()
             
-            Locator.shared.startRerouting() 
+            Locator.shared.startRerouting()
             
         }
         
@@ -96,8 +96,8 @@ class NavigationVC: UIViewController {
         
         let currentRow = self.indicationsTableView.indexPathForSelectedRow?.row ?? 0
         let nextRow = IndexPath(row: currentRow + 1, section: 0)
-        
-        if nextRow.row < indicationsTableView.numberOfRows(inSection: 0) - 1{
+        print("\(indicationsTableView.numberOfRows(inSection: 0))")
+        if nextRow.row < indicationsTableView.numberOfRows(inSection: 0) - 2{
             
             self.indicationsTableView.selectRow(at: nextRow, animated: true, scrollPosition: .top)
             let cell = indicationsTableView.cellForRow(at: nextRow) as! NavigationCell

@@ -35,6 +35,7 @@
 		49C0F41A2450AB450016212D /* MonumentNavigationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C0F4192450AB450016212D /* MonumentNavigationCell.swift */; };
 		49C1B0A42450B713007B5808 /* MonumentNavigationDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C1B0A32450B713007B5808 /* MonumentNavigationDetail.swift */; };
 		49C1B0A62451B00D007B5808 /* RouteRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C1B0A52451B00D007B5808 /* RouteRequest.swift */; };
+		49C1B0A82452262F007B5808 /* lyonAlbatrosCycle.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 49C1B0A72452262F007B5808 /* lyonAlbatrosCycle.gpx */; };
 		49E9D03A244C92BC00E79D5F /* K.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E9D039244C92BC00E79D5F /* K.swift */; };
 		49E9D03C244CB03E00E79D5F /* WikipediaManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E9D03B244CB03E00E79D5F /* WikipediaManager.swift */; };
 		49E9D03E244CBFA000E79D5F /* CustomPlainAV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E9D03D244CBFA000E79D5F /* CustomPlainAV.swift */; };
@@ -86,6 +87,7 @@
 		49C0F4192450AB450016212D /* MonumentNavigationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonumentNavigationCell.swift; sourceTree = "<group>"; };
 		49C1B0A32450B713007B5808 /* MonumentNavigationDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonumentNavigationDetail.swift; sourceTree = "<group>"; };
 		49C1B0A52451B00D007B5808 /* RouteRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteRequest.swift; sourceTree = "<group>"; };
+		49C1B0A72452262F007B5808 /* lyonAlbatrosCycle.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = lyonAlbatrosCycle.gpx; sourceTree = "<group>"; };
 		49E9D039244C92BC00E79D5F /* K.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = K.swift; sourceTree = "<group>"; };
 		49E9D03B244CB03E00E79D5F /* WikipediaManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WikipediaManager.swift; sourceTree = "<group>"; };
 		49E9D03D244CBFA000E79D5F /* CustomPlainAV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPlainAV.swift; sourceTree = "<group>"; };
@@ -197,6 +199,7 @@
 				4929C01B2450772200D40931 /* lyontoAlbatrosWalk.gpx */,
 				4929C01724504F6D00D40931 /* gare.gpx */,
 				4929C019245061A100D40931 /* lyonFast.gpx */,
+				49C1B0A72452262F007B5808 /* lyonAlbatrosCycle.gpx */,
 				49A5D2A1244357B6002E7D53 /* Navmate */,
 				49A5D2A0244357B6002E7D53 /* Products */,
 				76EB0CE726034E6F25289FDE /* Pods */,
@@ -454,6 +457,7 @@
 				49A5D2AF244357B9002E7D53 /* LaunchScreen.storyboard in Resources */,
 				4929C01A245061A100D40931 /* lyonFast.gpx in Resources */,
 				49A5D2AC244357B9002E7D53 /* Assets.xcassets in Resources */,
+				49C1B0A82452262F007B5808 /* lyonAlbatrosCycle.gpx in Resources */,
 				4929C01824504F6D00D40931 /* gare.gpx in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
