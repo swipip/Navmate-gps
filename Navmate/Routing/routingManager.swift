@@ -155,7 +155,7 @@ class RoutingManager {
             let task = URLSession.shared.dataTask(with: request) { data, response, error in
               if let response = response, let data = data {
             //    print(response)
-                print(String(data: data, encoding: .utf8) ?? "")
+//                print(String(data: data, encoding: .utf8) ?? "")
                 
                 DispatchQueue.main.async {
                     completion(data)

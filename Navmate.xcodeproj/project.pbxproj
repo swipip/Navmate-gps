@@ -28,6 +28,7 @@
 		493652132443AA9000120DAC /* CustomPin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493652122443AA9000120DAC /* CustomPin.swift */; };
 		49A16CF9245316600096F430 /* lyonploermel.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 49A16CF8245316600096F430 /* lyonploermel.gpx */; };
 		49A16CFD2453224A0096F430 /* lyonSlow.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 49A16CFC2453224A0096F430 /* lyonSlow.gpx */; };
+		49A16CFF2453407D0096F430 /* eglantierGuerande.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 49A16CFE2453407D0096F430 /* eglantierGuerande.gpx */; };
 		49A5D2A3244357B6002E7D53 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A5D2A2244357B6002E7D53 /* AppDelegate.swift */; };
 		49A5D2A5244357B6002E7D53 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A5D2A4244357B6002E7D53 /* SceneDelegate.swift */; };
 		49A5D2A7244357B6002E7D53 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A5D2A6244357B6002E7D53 /* ViewController.swift */; };
@@ -81,6 +82,7 @@
 		493652122443AA9000120DAC /* CustomPin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPin.swift; sourceTree = "<group>"; };
 		49A16CF8245316600096F430 /* lyonploermel.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = lyonploermel.gpx; sourceTree = "<group>"; };
 		49A16CFC2453224A0096F430 /* lyonSlow.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = lyonSlow.gpx; sourceTree = "<group>"; };
+		49A16CFE2453407D0096F430 /* eglantierGuerande.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = eglantierGuerande.gpx; sourceTree = "<group>"; };
 		49A5D29F244357B6002E7D53 /* Navmate.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Navmate.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		49A5D2A2244357B6002E7D53 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		49A5D2A4244357B6002E7D53 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -201,6 +203,7 @@
 			isa = PBXGroup;
 			children = (
 				4929C01B2450772200D40931 /* lyontoAlbatrosWalk.gpx */,
+				49A16CFE2453407D0096F430 /* eglantierGuerande.gpx */,
 				4929C01724504F6D00D40931 /* gare.gpx */,
 				49A16CF8245316600096F430 /* lyonploermel.gpx */,
 				49C1B0A92452C5D2007B5808 /* lyonCavalièreCycle.gpx */,
@@ -468,6 +471,7 @@
 				4929C01A245061A100D40931 /* lyonFast.gpx in Resources */,
 				49A16CFD2453224A0096F430 /* lyonSlow.gpx in Resources */,
 				49A5D2AC244357B9002E7D53 /* Assets.xcassets in Resources */,
+				49A16CFF2453407D0096F430 /* eglantierGuerande.gpx in Resources */,
 				49C1B0A82452262F007B5808 /* lyonAlbatrosCycle.gpx in Resources */,
 				4929C01824504F6D00D40931 /* gare.gpx in Resources */,
 				49A16CF9245316600096F430 /* lyonploermel.gpx in Resources */,

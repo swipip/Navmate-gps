@@ -100,8 +100,8 @@ class NavigationVC: UIViewController {
         
         let currentRow = self.indicationsTableView.indexPathForSelectedRow?.row ?? 0
         let nextRow = IndexPath(row: currentRow + 1, section: 0)
-        print("\(indicationsTableView.numberOfRows(inSection: 0))")
-        if nextRow.row < indicationsTableView.numberOfRows(inSection: 0) - 2{
+//        print("\(indicationsTableView.numberOfRows(inSection: 0))")
+        if nextRow.row < indicationsTableView.numberOfRows(inSection: 0) - 1{
             
             self.indicationsTableView.selectRow(at: nextRow, animated: true, scrollPosition: .top)
             if let cell = indicationsTableView.cellForRow(at: nextRow) as? NavigationCell {
