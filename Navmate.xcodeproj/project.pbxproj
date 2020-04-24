@@ -26,6 +26,8 @@
 		49355837244C88DA0023F848 /* MonumentSearchDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49355836244C88DA0023F848 /* MonumentSearchDetailCell.swift */; };
 		493651F02443780100120DAC /* MapVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493651EF2443780100120DAC /* MapVC.swift */; };
 		493652132443AA9000120DAC /* CustomPin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493652122443AA9000120DAC /* CustomPin.swift */; };
+		49A16CF9245316600096F430 /* lyonploermel.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 49A16CF8245316600096F430 /* lyonploermel.gpx */; };
+		49A16CFD2453224A0096F430 /* lyonSlow.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 49A16CFC2453224A0096F430 /* lyonSlow.gpx */; };
 		49A5D2A3244357B6002E7D53 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A5D2A2244357B6002E7D53 /* AppDelegate.swift */; };
 		49A5D2A5244357B6002E7D53 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A5D2A4244357B6002E7D53 /* SceneDelegate.swift */; };
 		49A5D2A7244357B6002E7D53 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A5D2A6244357B6002E7D53 /* ViewController.swift */; };
@@ -36,6 +38,7 @@
 		49C1B0A42450B713007B5808 /* MonumentNavigationDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C1B0A32450B713007B5808 /* MonumentNavigationDetail.swift */; };
 		49C1B0A62451B00D007B5808 /* RouteRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C1B0A52451B00D007B5808 /* RouteRequest.swift */; };
 		49C1B0A82452262F007B5808 /* lyonAlbatrosCycle.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 49C1B0A72452262F007B5808 /* lyonAlbatrosCycle.gpx */; };
+		49C1B0AA2452C5D2007B5808 /* lyonCavalièreCycle.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 49C1B0A92452C5D2007B5808 /* lyonCavalièreCycle.gpx */; };
 		49E9D03A244C92BC00E79D5F /* K.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E9D039244C92BC00E79D5F /* K.swift */; };
 		49E9D03C244CB03E00E79D5F /* WikipediaManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E9D03B244CB03E00E79D5F /* WikipediaManager.swift */; };
 		49E9D03E244CBFA000E79D5F /* CustomPlainAV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E9D03D244CBFA000E79D5F /* CustomPlainAV.swift */; };
@@ -76,6 +79,8 @@
 		49355836244C88DA0023F848 /* MonumentSearchDetailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonumentSearchDetailCell.swift; sourceTree = "<group>"; };
 		493651EF2443780100120DAC /* MapVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapVC.swift; sourceTree = "<group>"; };
 		493652122443AA9000120DAC /* CustomPin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPin.swift; sourceTree = "<group>"; };
+		49A16CF8245316600096F430 /* lyonploermel.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = lyonploermel.gpx; sourceTree = "<group>"; };
+		49A16CFC2453224A0096F430 /* lyonSlow.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = lyonSlow.gpx; sourceTree = "<group>"; };
 		49A5D29F244357B6002E7D53 /* Navmate.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Navmate.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		49A5D2A2244357B6002E7D53 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		49A5D2A4244357B6002E7D53 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -88,6 +93,7 @@
 		49C1B0A32450B713007B5808 /* MonumentNavigationDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonumentNavigationDetail.swift; sourceTree = "<group>"; };
 		49C1B0A52451B00D007B5808 /* RouteRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteRequest.swift; sourceTree = "<group>"; };
 		49C1B0A72452262F007B5808 /* lyonAlbatrosCycle.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = lyonAlbatrosCycle.gpx; sourceTree = "<group>"; };
+		49C1B0A92452C5D2007B5808 /* lyonCavalièreCycle.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "lyonCavalièreCycle.gpx"; sourceTree = "<group>"; };
 		49E9D039244C92BC00E79D5F /* K.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = K.swift; sourceTree = "<group>"; };
 		49E9D03B244CB03E00E79D5F /* WikipediaManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WikipediaManager.swift; sourceTree = "<group>"; };
 		49E9D03D244CBFA000E79D5F /* CustomPlainAV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPlainAV.swift; sourceTree = "<group>"; };
@@ -171,8 +177,6 @@
 			isa = PBXGroup;
 			children = (
 				49F903EA245040D5004B7831 /* Annotations */,
-				49F903E62450407A004B7831 /* Navigation metrics */,
-				49F903E524504063004B7831 /* POIs */,
 				49E9D06F244DC98700E79D5F /* MonumentAnnotations */,
 				49355833244B76A90023F848 /* Search */,
 				4935582A244B5BAD0023F848 /* DirectionOptions */,
@@ -198,6 +202,9 @@
 			children = (
 				4929C01B2450772200D40931 /* lyontoAlbatrosWalk.gpx */,
 				4929C01724504F6D00D40931 /* gare.gpx */,
+				49A16CF8245316600096F430 /* lyonploermel.gpx */,
+				49C1B0A92452C5D2007B5808 /* lyonCavalièreCycle.gpx */,
+				49A16CFC2453224A0096F430 /* lyonSlow.gpx */,
 				4929C019245061A100D40931 /* lyonFast.gpx */,
 				49C1B0A72452262F007B5808 /* lyonAlbatrosCycle.gpx */,
 				49A5D2A1244357B6002E7D53 /* Navmate */,
@@ -362,6 +369,8 @@
 		49F903E9245040B7004B7831 /* Navigation */ = {
 			isa = PBXGroup;
 			children = (
+				49F903E524504063004B7831 /* POIs */,
+				49F903E62450407A004B7831 /* Navigation metrics */,
 				49E9D079244DEC2300E79D5F /* NavigationCell.swift */,
 			);
 			path = Navigation;
@@ -455,10 +464,13 @@
 			files = (
 				4929C01C2450772300D40931 /* lyontoAlbatrosWalk.gpx in Resources */,
 				49A5D2AF244357B9002E7D53 /* LaunchScreen.storyboard in Resources */,
+				49C1B0AA2452C5D2007B5808 /* lyonCavalièreCycle.gpx in Resources */,
 				4929C01A245061A100D40931 /* lyonFast.gpx in Resources */,
+				49A16CFD2453224A0096F430 /* lyonSlow.gpx in Resources */,
 				49A5D2AC244357B9002E7D53 /* Assets.xcassets in Resources */,
 				49C1B0A82452262F007B5808 /* lyonAlbatrosCycle.gpx in Resources */,
 				4929C01824504F6D00D40931 /* gare.gpx in Resources */,
+				49A16CF9245316600096F430 /* lyonploermel.gpx in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

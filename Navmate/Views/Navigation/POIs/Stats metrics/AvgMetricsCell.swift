@@ -32,15 +32,6 @@ class AvgMetricsCell: UITableViewCell {
         return label
     }()
     
-    var timer = Timer()
-    var totalTime = 0
-    var timeElpased = 0
-    
-    var maxSpeed:Double?
-    var avgSpeed: Double?
-    var totalDistance: Double?
-    
-    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
@@ -71,84 +62,52 @@ class AvgMetricsCell: UITableViewCell {
         
         switch cellType {
         case .maxSpeed:
-            self.maxSpeed = 0.0
+            
             let speed = NSNotification.Name(K.shared.notificationSpeed)
             NotificationCenter.default.addObserver(self, selector: #selector(didReceiveNotification), name: speed, object: nil)
         case .avgSpeed:
-            self.avgSpeed = 0.0
-            self.totalTime = 1
-            self.timeElpased = 1
-            let speed = NSNotification.Name(K.shared.notificationSpeed)
-            NotificationCenter.default.addObserver(self, selector: #selector(didReceiveNotification), name: speed, object: nil)
-            timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(didUpdateTimeElapsedForAvg), userInfo: nil, repeats: true)
+            let avgSpeed = NSNotification.Name(K.shared.notificationAvgSpeed)
+            NotificationCenter.default.addObserver(self, selector: #selector(didReceiveNotification), name: avgSpeed, object: nil)
         case .duration:
-            self.totalTime = 1
-            self.timeElpased = 1
             self.metricValue.text = "00 min"
-            timer = Timer.scheduledTimer(timeInterval: 60, target: self, selector: #selector(updateTime), userInfo: nil, repeats: true)
+            let totalTime = NSNotification.Name(K.shared.notificationTotalTime)
+            NotificationCenter.default.addObserver(self, selector: #selector(didReceiveNotification), name: totalTime, object: nil)
             
         case .distance:
-            self.totalDistance = 0.0
             let distance = NSNotification.Name(K.shared.notificationTotalDistance)
             NotificationCenter.default.addObserver(self, selector: #selector(didReceiveNotification), name: distance, object: nil)
         }
         
     }
-    @objc private func didUpdateTimeElapsedForAvg() {
-        self.timeElpased += 1
-        self.totalTime += 1
-    }
     @objc private func didReceiveNotification(_ notification: Notification) {
         
         if let speed = notification.userInfo?["speed"] as? Double {
-            if let maxSpeed = self.maxSpeed {
-                if maxSpeed < speed * 3.6 {
-                    self.maxSpeed = speed * 3.6
-                    self.metricValue.text = "\(Int(maxSpeed)) Kmh"
-                }
-            }
-            if let avgSpeed = self.avgSpeed {
-                
-                self.avgSpeed = (avgSpeed / Double(totalTime)) + (speed * 3.6 * Double(timeElpased) / Double(totalTime))
-                
-//                print("total: \(totalTime) elapsed: \(timeElpased)")
-                
-                self.metricValue.text = "\(String(format: "%.0f", self.avgSpeed ?? 0)) Kmh"
-                
-                self.timer.fire()
-                
-                self.timeElpased = 0
-            }
+            
+            metricValue.text = "\(Int(speed * 3.6)) Kmh"
+            
+        }
+        if let avgSpeed = notification.userInfo?["avgSpeed"] as? Double {
+            
+            self.metricValue.text = "\(Int(avgSpeed * 3.6)) Kmh"
+            
+        }
+        if let totalTime = notification.userInfo?["totalTime"] as? Double {
+            
+            let timeString = Locator.shared.secondsToHoursMinutesSeconds(seconds: Int(totalTime))
+            metricValue.text = timeString.timeString
+            
+            
         }
         if let distance = notification.userInfo?["totalDistance"] as? Double {
             
-            if let dist = self.totalDistance {
-                
-                self.totalDistance = dist + distance
-                
-                if self.totalDistance! > 1000 {
-                    let total = self.totalDistance! / 1000
-                    let totalString = String(format: "%.1f", total)
-                    self.metricValue.text = "\(totalString) Km"
-                }else{
-                    self.metricValue.text = "\(Int(self.totalDistance!)) m"
-                }
-                
+            if distance > 1000 {
+                let total = distance / 1000
+                let totalString = String(format: "%.1f", total)
+                self.metricValue.text = "\(totalString) Km"
+            }else{
+                self.metricValue.text = "\(Int(distance)) m"
             }
             
-        }
-    }
-    @objc private func updateTime() {
-        self.totalTime += 60
-        
-        let time = self.secondsToHoursMinutesSeconds(seconds: totalTime)
-        
-        if self.totalTime <= 600 {
-            self.metricValue.text = "0\(time.minutes) min"
-        }else if self.totalTime <= 3600 {
-            self.metricValue.text = "\(time.minutes) min"
-        }else{
-            self.metricValue.text = "\(time.hours):\(time.minutes) heures"
         }
     }
     func secondsToHoursMinutesSeconds (seconds : Int) -> (hours:Int,minutes: Int,seconds: Int) {

@@ -364,6 +364,7 @@ extension MapVC: LocatorDelegate {
             let region = MKCoordinateRegion(center: location.coordinate, latitudinalMeters: 500, longitudinalMeters: 500)
             self.mapView.setRegion(region, animated: true)
             self.mapView.userTrackingMode = .followWithHeading
+            
         }
         
     }
@@ -398,7 +399,7 @@ extension MapVC: LocatorDelegate {
         
     }
     func didFindRoute(polyline: [MKPolyline], summary: Summary) {
-
+        
         mapView.setVisibleMapRect(polyline[0].boundingMapRect, edgePadding: UIEdgeInsets(top: 40, left: 40, bottom: 300, right: 40), animated: true)
         mapView.addOverlays([polyline[0]])
         
@@ -413,6 +414,7 @@ extension MapVC: LocatorDelegate {
     }
     #warning("implementation")
     func didFindWayPoints(wayPoints: [CLLocation]) {
+        self.circleColor = .red
         for waypoint in wayPoints {
 
             let circle = MKCircle(center: waypoint.coordinate, radius: 30)

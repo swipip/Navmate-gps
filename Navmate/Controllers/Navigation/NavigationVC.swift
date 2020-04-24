@@ -88,6 +88,10 @@ class NavigationVC: UIViewController {
             
             Locator.shared.startRerouting()
             
+            if let cell = indicationsTableView.cellForRow(at: IndexPath(item: 0, section: 0)) as? NavigationCell {
+                cell.magnify(on: true)
+            }
+            
         }
         
     }
@@ -100,8 +104,9 @@ class NavigationVC: UIViewController {
         if nextRow.row < indicationsTableView.numberOfRows(inSection: 0) - 2{
             
             self.indicationsTableView.selectRow(at: nextRow, animated: true, scrollPosition: .top)
-            let cell = indicationsTableView.cellForRow(at: nextRow) as! NavigationCell
-            cell.magnify(on: true)
+            if let cell = indicationsTableView.cellForRow(at: nextRow) as? NavigationCell {
+                cell.magnify(on: true)
+            }
         }
         
     }
@@ -217,7 +222,7 @@ extension NavigationVC: UITableViewDataSource, UITableViewDelegate {
                 let step = Step(type: 14, instruction: "-", name: "-", wayPoints: [1,1], distance: 0, exitNumber: 0, duration: 0)
                 cell.updateIndications(main: "-", sub: 0, type: 14, step: step)
             }else{
-                cell.updateIndications(main: steps[i].name, sub: steps[max(0,i-1)].distance, type: steps[i].type, step: steps[i])
+                cell.updateIndications(main: steps[i].name, sub: steps[max(0,i)].distance, type: steps[i].type, step: steps[i])
             }
             
         }

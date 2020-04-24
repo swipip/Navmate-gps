@@ -57,7 +57,7 @@ class NavigationCell: UITableViewCell {
         self.addSubIndicator()
         
         
-        let distance = Notification.Name(K.shared.notificationLocation)
+        let distance = Notification.Name(K.shared.notificationDistance)
         NotificationCenter.default.addObserver(self, selector: #selector(didReceiveDistanceUpdate(_:)), name: distance, object: nil)
         
     }
@@ -65,12 +65,11 @@ class NavigationCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     @objc private func didReceiveDistanceUpdate(_ notification:Notification) {
-        if self.isSelected {
-            distance -= 3
-            self.subIndicator.text = "\(distance) m"
+        if let distance = notification.userInfo?["distance"] as? Double {
+            if self.isSelected {
+                self.subIndicator.text = "\(Int(distance)) m"
+            }
         }
-        
-        
     }
     func updateIndications(main: String, sub: Double, type: Int, step: Step) {
         
@@ -219,6 +218,12 @@ class NavigationCell: UITableViewCell {
             self.heightAnch.constant = thumbSize
             self.nameIndicator.font = mainFont
             self.subIndicator.font = subFont
+            if on{
+                self.cardBG.addShadow(radius: 5, opacity: 0.3, color: .gray)
+            }else{
+                self.cardBG.addShadow(radius: 5, opacity: 0, color: .gray)
+            }
+            
             self.layoutIfNeeded()
         }) { (_) in
         }
