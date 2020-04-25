@@ -409,12 +409,34 @@ extension Locator: CLLocationManagerDelegate {
                             }else{
                                 if dif != 1 {
                                     if step.type == 7 || step.type == 8{
-
+                                        
+                                        let previousWP = steps?[max(0,i-1)].wayPoints.first
+                                        if previousWP == 0 {
+                                            sendNotification()
+                                        }
+                                        
                                     }else{
                                         if doNotSendNextInstruction{
                                             
                                         }else{
-                                           sendNotification()
+                                           
+                                            let maxIndex = route.steps.count-1
+                                            if let waypoints = steps?[min(maxIndex,i+1)].wayPoints {
+                                                let nextDif = waypoints.last! - waypoints.first!
+                                                if nextDif != 1 && dif == 1{
+                                                
+                                                    sendNotification()
+                                                }else{
+                                                
+                                                    let previousWP = steps?[max(0,i-1)].wayPoints.first
+                                                    if previousWP == 0 {
+                                                        sendNotification()
+                                                    }
+                                                    
+                                                }
+                                            }else{
+                                                sendNotification()
+                                            }
                                         }
                                         
                                     }
@@ -423,6 +445,7 @@ extension Locator: CLLocationManagerDelegate {
                         }
                     }
                     doNotSendNextInstruction = false
+                    contains = true
                     entered = true
                     left = false
                 }
@@ -442,8 +465,9 @@ extension Locator: CLLocationManagerDelegate {
                         let dif = wayPointRange.last! - wayPointRange.first!
                         
                         if currentWPIndex == exitWP {
-                        
-                            if currentWPIndex == exitWP {
+                            if contains == true{
+//                                contains = false
+                            
                                 self.currentStep = (i,route.steps[i+1])
                                 
                                 sendNotification()
