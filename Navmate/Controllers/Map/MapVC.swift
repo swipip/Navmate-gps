@@ -400,8 +400,11 @@ extension MapVC: LocatorDelegate {
     }
     func didFindRoute(polyline: [MKPolyline], summary: Summary) {
         
-        mapView.setVisibleMapRect(polyline[0].boundingMapRect, edgePadding: UIEdgeInsets(top: 40, left: 40, bottom: 300, right: 40), animated: true)
-        mapView.addOverlays([polyline[0]])
+        DispatchQueue.main.async {
+            self.mapView.setVisibleMapRect(polyline[0].boundingMapRect, edgePadding: UIEdgeInsets(top: 40, left: 40, bottom: 300, right: 40), animated: true)
+            self.mapView.addOverlays([polyline[0]])
+        }
+        
         
         if let destination = self.destination {
             delegate?.didDrawRoute(summary: summary, destination: destination)
@@ -414,20 +417,20 @@ extension MapVC: LocatorDelegate {
     }
     #warning("implementation")
     func didFindWayPoints(wayPoints: [CLLocation]) {
-        self.circleColor = .red
-        for waypoint in wayPoints {
-
-            let circle = MKCircle(center: waypoint.coordinate, radius: 30)
-            mapView.addOverlay(circle)
-
-        }
+//        self.circleColor = .red
+//        for waypoint in wayPoints {
+//
+//            let circle = MKCircle(center: waypoint.coordinate, radius: 30)
+//            mapView.addOverlay(circle)
+//
+//        }
     }
     func didMoveToNextWP(waypointIndex: Int,status: String,location: CLLocation) {
 //        self.regionMonitored.text = String("\(waypointIndex) & status: \(status)")
 
-        circleColor = UIColor.blue
-        let circle = MKCircle(center: location.coordinate, radius: 30)
-        mapView.addOverlay(circle)
+//        circleColor = UIColor.blue
+//        let circle = MKCircle(center: location.coordinate, radius: 30)
+//        mapView.addOverlay(circle)
         
     }
 }

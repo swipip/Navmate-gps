@@ -11,6 +11,7 @@ target 'Navmate' do
 pod 'SwiftyJSON', '~> 4.0'
 pod 'Alamofire', '~> 4.0'
 pod 'Polyline', '~> 4.0'
+pod 'lottie-ios'
 
 
 end

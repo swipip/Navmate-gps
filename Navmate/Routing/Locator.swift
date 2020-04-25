@@ -494,36 +494,10 @@ extension Locator: CLLocationManagerDelegate {
                     entered = false
                     self.currentWPIndex! = currentStep!.step.wayPoints.last!
                    
-                    delegate?.didMoveToNextWP(waypointIndex: self.currentWPIndex!, status: "entered", location: wayPoints[self.currentWPIndex!])
+//                    delegate?.didMoveToNextWP(waypointIndex: self.currentWPIndex!, status: "entered", location: wayPoints[self.currentWPIndex!])
                 }
                 
             }
-            //on monitoring issue, catch up
-//            for (i,waypoint) in wayPoints.enumerated() {
-//                let region = CLCircularRegion(center: waypoint.coordinate, radius: radius * 1.1, identifier: "catchUp\(i)")
-//                if region.contains(location.coordinate) {
-//                    currentWPIndex = i
-//                    for (i,step) in route.steps.enumerated() {
-//                        let range = step.wayPoints
-//                        if currentWPIndex <= range.first! && currentWPIndex >= range.last! {
-//                            if let currentIndex = self.currentStep?.index {
-//                                self.currentStep = (i,step)
-//
-//                                let stepGap = currentIndex - currentStep!.index
-//
-//                                for _ in 0 ..< stepGap {
-//                                    NotificationCenter.default.post(name: newStepNotification, object: nil, userInfo: nil)
-//                                }
-//
-//                            }else{
-//
-//                            }
-//                            return
-//                        }
-//                    }
-//                }
-//            }
-            //if still not found recalculate
             
         }
                 
@@ -560,7 +534,7 @@ extension Locator: RoutingManagerDelegate {
                 locationManager.distanceFilter = 1
                 
                 delegate?.didFindRoute(polyline: route.polylines, summary: route.summary)
-                delegate?.didFindWayPoints(wayPoints: route.wayPoints)
+//                delegate?.didFindWayPoints(wayPoints: route.wayPoints)
                 
             case .recalculation:
                 

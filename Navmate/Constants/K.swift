@@ -44,5 +44,6 @@ class K {
     let notificationStartRerouting = "startRerouting"
     let notificationAvgSpeed = "avgSpeed"
     let notificationTotalTime = "totalTime"
+    let notificationWeather = "weather"
     
 }

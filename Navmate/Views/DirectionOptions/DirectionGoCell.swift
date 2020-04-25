@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreLocation
+import Lottie
 
 protocol DirectionGoCellDelegate {
     func didDismissNavigation()
@@ -73,8 +74,11 @@ class DirectionGoCell: UICollectionViewCell {
         label.font = UIFont.systemFont(ofSize: K.shared.cardTitleFontSize, weight: .medium)
         return label
     }()
+    private var animation = AnimationView()
     //MARK: - Data
     var delegate: DirectionGoCellDelegate?
+    private var summary: Summary?
+    
     //MARK: - View loading
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -93,6 +97,8 @@ class DirectionGoCell: UICollectionViewCell {
         addTimeLabel()
         addDistanceLabel()
         addDirectionName()
+        addWeatherView()
+        addObservers()
     }
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -101,10 +107,28 @@ class DirectionGoCell: UICollectionViewCell {
     func secondsToHoursMinutesSeconds (seconds : Int) -> (hours:Int,minutes: Int,seconds: Int) {
       return (seconds / 3600, (seconds % 3600) / 60, (seconds % 3600) % 60)
     }
+    private func addObservers() {
+        
+        let weather = Notification.Name(K.shared.notificationWeather)
+        NotificationCenter.default.addObserver(self, selector: #selector(didFindWeather), name: weather, object: nil)
+        
+    }
+    @objc private func didFindWeather(_ notification:Notification) {
+        if let weather = notification.userInfo?["weather"] as? String {
+            animation.animation = Animation.named(weather)
+            animation.play(fromProgress: 0, toProgress: 1, loopMode: .loop) { (_) in
+
+            }
+        }
+    }
     func updateValues(summary: Summary, destination: CLLocation) {
+        
+        self.summary = summary
         
         let distance = String(format: "%.2f",summary.distance / 1000)
         let time = secondsToHoursMinutesSeconds(seconds: Int(summary.duration))
+        
+        WeatherManager.shared.fetchWeather(latitude: destination.coordinate.latitude, longitude: destination.coordinate.longitude)
         
         self.distanceLabel.text = "\(distance) Km"
         self.timeLabel.text = "\(time.hours)h\(time.minutes) min"
@@ -121,6 +145,22 @@ class DirectionGoCell: UICollectionViewCell {
                 }
             }
         }
+        
+    }
+    private func addWeatherView() {
+        
+        self.addSubview(animation)
+        
+        func addConstraints(fromView: UIView, toView: UIView) {
+               
+           fromView.translatesAutoresizingMaskIntoConstraints = false
+           
+            NSLayoutConstraint.activate([fromView.widthAnchor.constraint(equalToConstant: 100),
+                                         fromView.trailingAnchor.constraint(equalTo: toView.trailingAnchor ,constant: -5),
+                                        fromView.topAnchor.constraint(equalTo: toView.topAnchor, constant: 5),
+                                        fromView.bottomAnchor.constraint(equalTo: toView.bottomAnchor,constant: -5)])
+        }
+        addConstraints(fromView: animation, toView: summaryCard)
         
     }
     private func addDirectionName() {

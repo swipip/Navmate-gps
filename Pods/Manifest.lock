@@ -1,24 +1,28 @@
 PODS:
   - Alamofire (4.9.1)
+  - lottie-ios (3.1.8)
   - Polyline (4.2.1)
   - SwiftyJSON (4.3.0)
 
 DEPENDENCIES:
   - Alamofire (~> 4.0)
+  - lottie-ios
   - Polyline (~> 4.0)
   - SwiftyJSON (~> 4.0)
 
 SPEC REPOS:
   trunk:
     - Alamofire
+    - lottie-ios
     - Polyline
     - SwiftyJSON
 
 SPEC CHECKSUMS:
   Alamofire: 85e8a02c69d6020a0d734f6054870d7ecb75cf18
+  lottie-ios: 48fac6be217c76937e36e340e2d09cf7b10b7f5f
   Polyline: 0e9890790292741c8186201a536b6bb6a78d02dd
   SwiftyJSON: 6faa0040f8b59dead0ee07436cbf76b73c08fd08
 
-PODFILE CHECKSUM: af6aa6a350cc5deca950ec19d5060f91c8b95366
+PODFILE CHECKSUM: 03fdbb3e70111ac07d82c1ae4801a29ed107df63
 
 COCOAPODS: 1.8.4
