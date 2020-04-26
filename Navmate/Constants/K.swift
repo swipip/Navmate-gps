@@ -42,5 +42,8 @@ class K {
     let notificationWikiPedia = "Wikipedia"
     let notificationRerouting = "reRouting"
     let notificationStartRerouting = "startRerouting"
+    let notificationAvgSpeed = "avgSpeed"
+    let notificationTotalTime = "totalTime"
+    let notificationWeather = "weather"
     
 }

@@ -59,6 +59,8 @@ class MapVC: UIViewController {
     
     private var route: Route?
     
+    var circleColor = UIColor.red
+    
     var delegate: MapVCDelegate?
     
     override func viewDidLoad() {
@@ -305,6 +307,11 @@ extension MapVC: MKMapViewDelegate {
             route.lineWidth = 10
             route.miterLimit = 8
             return route
+        }else if overlay is MKCircle {
+            let circle = MKCircleRenderer(circle: overlay as! MKCircle)
+            circle.strokeColor = circleColor
+            circle.lineWidth = 2
+            return circle
         }
         return MKOverlayRenderer()
     }
@@ -357,6 +364,7 @@ extension MapVC: LocatorDelegate {
             let region = MKCoordinateRegion(center: location.coordinate, latitudinalMeters: 500, longitudinalMeters: 500)
             self.mapView.setRegion(region, animated: true)
             self.mapView.userTrackingMode = .followWithHeading
+            
         }
         
     }
@@ -391,9 +399,12 @@ extension MapVC: LocatorDelegate {
         
     }
     func didFindRoute(polyline: [MKPolyline], summary: Summary) {
-
-        mapView.setVisibleMapRect(polyline[0].boundingMapRect, edgePadding: UIEdgeInsets(top: 40, left: 40, bottom: 300, right: 40), animated: true)
-        mapView.addOverlays([polyline[0]])
+        
+        DispatchQueue.main.async {
+            self.mapView.setVisibleMapRect(polyline[0].boundingMapRect, edgePadding: UIEdgeInsets(top: 40, left: 40, bottom: 300, right: 40), animated: true)
+            self.mapView.addOverlays([polyline[0]])
+        }
+        
         
         if let destination = self.destination {
             delegate?.didDrawRoute(summary: summary, destination: destination)
@@ -406,9 +417,10 @@ extension MapVC: LocatorDelegate {
     }
     #warning("implementation")
     func didFindWayPoints(wayPoints: [CLLocation]) {
+//        self.circleColor = .red
 //        for waypoint in wayPoints {
 //
-//            let circle = MKCircle(center: waypoint.coordinate, radius: 20)
+//            let circle = MKCircle(center: waypoint.coordinate, radius: 30)
 //            mapView.addOverlay(circle)
 //
 //        }
@@ -416,8 +428,9 @@ extension MapVC: LocatorDelegate {
     func didMoveToNextWP(waypointIndex: Int,status: String,location: CLLocation) {
 //        self.regionMonitored.text = String("\(waypointIndex) & status: \(status)")
 
-        let circle = MKCircle(center: location.coordinate, radius: 50)
-        mapView.addOverlay(circle)
+//        circleColor = UIColor.blue
+//        let circle = MKCircle(center: location.coordinate, radius: 30)
+//        mapView.addOverlay(circle)
         
     }
 }

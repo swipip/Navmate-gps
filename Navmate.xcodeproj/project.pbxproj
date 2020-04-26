@@ -26,6 +26,25 @@
 		49355837244C88DA0023F848 /* MonumentSearchDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49355836244C88DA0023F848 /* MonumentSearchDetailCell.swift */; };
 		493651F02443780100120DAC /* MapVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493651EF2443780100120DAC /* MapVC.swift */; };
 		493652132443AA9000120DAC /* CustomPin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493652122443AA9000120DAC /* CustomPin.swift */; };
+		49A16CF9245316600096F430 /* lyonploermel.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 49A16CF8245316600096F430 /* lyonploermel.gpx */; };
+		49A16CFD2453224A0096F430 /* lyonSlow.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 49A16CFC2453224A0096F430 /* lyonSlow.gpx */; };
+		49A16CFF2453407D0096F430 /* eglantierGuerande.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 49A16CFE2453407D0096F430 /* eglantierGuerande.gpx */; };
+		49A16D5424542FC90096F430 /* sunny.json in Resources */ = {isa = PBXBuildFile; fileRef = 49A16D4524542FC20096F430 /* sunny.json */; };
+		49A16D5524542FC90096F430 /* snowNight.json in Resources */ = {isa = PBXBuildFile; fileRef = 49A16D4624542FC30096F430 /* snowNight.json */; };
+		49A16D5624542FC90096F430 /* windy.json in Resources */ = {isa = PBXBuildFile; fileRef = 49A16D4724542FC30096F430 /* windy.json */; };
+		49A16D5724542FC90096F430 /* cloudyNight.json in Resources */ = {isa = PBXBuildFile; fileRef = 49A16D4824542FC40096F430 /* cloudyNight.json */; };
+		49A16D5824542FC90096F430 /* snow.json in Resources */ = {isa = PBXBuildFile; fileRef = 49A16D4924542FC40096F430 /* snow.json */; };
+		49A16D5924542FC90096F430 /* mist.json in Resources */ = {isa = PBXBuildFile; fileRef = 49A16D4A24542FC50096F430 /* mist.json */; };
+		49A16D5A24542FC90096F430 /* thunder.json in Resources */ = {isa = PBXBuildFile; fileRef = 49A16D4B24542FC50096F430 /* thunder.json */; };
+		49A16D5B24542FC90096F430 /* rainyNight.json in Resources */ = {isa = PBXBuildFile; fileRef = 49A16D4C24542FC50096F430 /* rainyNight.json */; };
+		49A16D5C24542FC90096F430 /* partlyCloudy.json in Resources */ = {isa = PBXBuildFile; fileRef = 49A16D4D24542FC60096F430 /* partlyCloudy.json */; };
+		49A16D5D24542FC90096F430 /* night.json in Resources */ = {isa = PBXBuildFile; fileRef = 49A16D4E24542FC60096F430 /* night.json */; };
+		49A16D5E24542FC90096F430 /* foggy.json in Resources */ = {isa = PBXBuildFile; fileRef = 49A16D4F24542FC70096F430 /* foggy.json */; };
+		49A16D5F24542FC90096F430 /* shower.json in Resources */ = {isa = PBXBuildFile; fileRef = 49A16D5024542FC70096F430 /* shower.json */; };
+		49A16D6024542FC90096F430 /* storm.json in Resources */ = {isa = PBXBuildFile; fileRef = 49A16D5124542FC80096F430 /* storm.json */; };
+		49A16D6124542FC90096F430 /* stormShower.json in Resources */ = {isa = PBXBuildFile; fileRef = 49A16D5224542FC80096F430 /* stormShower.json */; };
+		49A16D6224542FC90096F430 /* snowSunny.json in Resources */ = {isa = PBXBuildFile; fileRef = 49A16D5324542FC90096F430 /* snowSunny.json */; };
+		49A16D66245430250096F430 /* WeatherManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A16D65245430250096F430 /* WeatherManager.swift */; };
 		49A5D2A3244357B6002E7D53 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A5D2A2244357B6002E7D53 /* AppDelegate.swift */; };
 		49A5D2A5244357B6002E7D53 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A5D2A4244357B6002E7D53 /* SceneDelegate.swift */; };
 		49A5D2A7244357B6002E7D53 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A5D2A6244357B6002E7D53 /* ViewController.swift */; };
@@ -35,6 +54,8 @@
 		49C0F41A2450AB450016212D /* MonumentNavigationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C0F4192450AB450016212D /* MonumentNavigationCell.swift */; };
 		49C1B0A42450B713007B5808 /* MonumentNavigationDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C1B0A32450B713007B5808 /* MonumentNavigationDetail.swift */; };
 		49C1B0A62451B00D007B5808 /* RouteRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C1B0A52451B00D007B5808 /* RouteRequest.swift */; };
+		49C1B0A82452262F007B5808 /* lyonAlbatrosCycle.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 49C1B0A72452262F007B5808 /* lyonAlbatrosCycle.gpx */; };
+		49C1B0AA2452C5D2007B5808 /* lyonCavalièreCycle.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 49C1B0A92452C5D2007B5808 /* lyonCavalièreCycle.gpx */; };
 		49E9D03A244C92BC00E79D5F /* K.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E9D039244C92BC00E79D5F /* K.swift */; };
 		49E9D03C244CB03E00E79D5F /* WikipediaManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E9D03B244CB03E00E79D5F /* WikipediaManager.swift */; };
 		49E9D03E244CBFA000E79D5F /* CustomPlainAV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E9D03D244CBFA000E79D5F /* CustomPlainAV.swift */; };
@@ -75,6 +96,25 @@
 		49355836244C88DA0023F848 /* MonumentSearchDetailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonumentSearchDetailCell.swift; sourceTree = "<group>"; };
 		493651EF2443780100120DAC /* MapVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapVC.swift; sourceTree = "<group>"; };
 		493652122443AA9000120DAC /* CustomPin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPin.swift; sourceTree = "<group>"; };
+		49A16CF8245316600096F430 /* lyonploermel.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = lyonploermel.gpx; sourceTree = "<group>"; };
+		49A16CFC2453224A0096F430 /* lyonSlow.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = lyonSlow.gpx; sourceTree = "<group>"; };
+		49A16CFE2453407D0096F430 /* eglantierGuerande.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = eglantierGuerande.gpx; sourceTree = "<group>"; };
+		49A16D4524542FC20096F430 /* sunny.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = sunny.json; sourceTree = "<group>"; };
+		49A16D4624542FC30096F430 /* snowNight.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = snowNight.json; sourceTree = "<group>"; };
+		49A16D4724542FC30096F430 /* windy.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = windy.json; sourceTree = "<group>"; };
+		49A16D4824542FC40096F430 /* cloudyNight.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = cloudyNight.json; sourceTree = "<group>"; };
+		49A16D4924542FC40096F430 /* snow.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = snow.json; sourceTree = "<group>"; };
+		49A16D4A24542FC50096F430 /* mist.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = mist.json; sourceTree = "<group>"; };
+		49A16D4B24542FC50096F430 /* thunder.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = thunder.json; sourceTree = "<group>"; };
+		49A16D4C24542FC50096F430 /* rainyNight.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = rainyNight.json; sourceTree = "<group>"; };
+		49A16D4D24542FC60096F430 /* partlyCloudy.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = partlyCloudy.json; sourceTree = "<group>"; };
+		49A16D4E24542FC60096F430 /* night.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = night.json; sourceTree = "<group>"; };
+		49A16D4F24542FC70096F430 /* foggy.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = foggy.json; sourceTree = "<group>"; };
+		49A16D5024542FC70096F430 /* shower.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = shower.json; sourceTree = "<group>"; };
+		49A16D5124542FC80096F430 /* storm.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = storm.json; sourceTree = "<group>"; };
+		49A16D5224542FC80096F430 /* stormShower.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = stormShower.json; sourceTree = "<group>"; };
+		49A16D5324542FC90096F430 /* snowSunny.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = snowSunny.json; sourceTree = "<group>"; };
+		49A16D65245430250096F430 /* WeatherManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherManager.swift; sourceTree = "<group>"; };
 		49A5D29F244357B6002E7D53 /* Navmate.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Navmate.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		49A5D2A2244357B6002E7D53 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		49A5D2A4244357B6002E7D53 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -86,6 +126,8 @@
 		49C0F4192450AB450016212D /* MonumentNavigationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonumentNavigationCell.swift; sourceTree = "<group>"; };
 		49C1B0A32450B713007B5808 /* MonumentNavigationDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonumentNavigationDetail.swift; sourceTree = "<group>"; };
 		49C1B0A52451B00D007B5808 /* RouteRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteRequest.swift; sourceTree = "<group>"; };
+		49C1B0A72452262F007B5808 /* lyonAlbatrosCycle.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = lyonAlbatrosCycle.gpx; sourceTree = "<group>"; };
+		49C1B0A92452C5D2007B5808 /* lyonCavalièreCycle.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "lyonCavalièreCycle.gpx"; sourceTree = "<group>"; };
 		49E9D039244C92BC00E79D5F /* K.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = K.swift; sourceTree = "<group>"; };
 		49E9D03B244CB03E00E79D5F /* WikipediaManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WikipediaManager.swift; sourceTree = "<group>"; };
 		49E9D03D244CBFA000E79D5F /* CustomPlainAV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPlainAV.swift; sourceTree = "<group>"; };
@@ -169,8 +211,6 @@
 			isa = PBXGroup;
 			children = (
 				49F903EA245040D5004B7831 /* Annotations */,
-				49F903E62450407A004B7831 /* Navigation metrics */,
-				49F903E524504063004B7831 /* POIs */,
 				49E9D06F244DC98700E79D5F /* MonumentAnnotations */,
 				49355833244B76A90023F848 /* Search */,
 				4935582A244B5BAD0023F848 /* DirectionOptions */,
@@ -191,12 +231,48 @@
 			name = Model;
 			sourceTree = "<group>";
 		};
+		49A16D6324542FCF0096F430 /* Weather Animation */ = {
+			isa = PBXGroup;
+			children = (
+				49A16D4824542FC40096F430 /* cloudyNight.json */,
+				49A16D4F24542FC70096F430 /* foggy.json */,
+				49A16D4A24542FC50096F430 /* mist.json */,
+				49A16D4E24542FC60096F430 /* night.json */,
+				49A16D4D24542FC60096F430 /* partlyCloudy.json */,
+				49A16D4C24542FC50096F430 /* rainyNight.json */,
+				49A16D5024542FC70096F430 /* shower.json */,
+				49A16D4924542FC40096F430 /* snow.json */,
+				49A16D4624542FC30096F430 /* snowNight.json */,
+				49A16D5324542FC90096F430 /* snowSunny.json */,
+				49A16D5124542FC80096F430 /* storm.json */,
+				49A16D5224542FC80096F430 /* stormShower.json */,
+				49A16D4524542FC20096F430 /* sunny.json */,
+				49A16D4B24542FC50096F430 /* thunder.json */,
+				49A16D4724542FC30096F430 /* windy.json */,
+			);
+			path = "Weather Animation";
+			sourceTree = "<group>";
+		};
+		49A16D6424542FE20096F430 /* Weather */ = {
+			isa = PBXGroup;
+			children = (
+				49A16D65245430250096F430 /* WeatherManager.swift */,
+				49A16D6324542FCF0096F430 /* Weather Animation */,
+			);
+			path = Weather;
+			sourceTree = "<group>";
+		};
 		49A5D296244357B6002E7D53 = {
 			isa = PBXGroup;
 			children = (
 				4929C01B2450772200D40931 /* lyontoAlbatrosWalk.gpx */,
+				49A16CFE2453407D0096F430 /* eglantierGuerande.gpx */,
 				4929C01724504F6D00D40931 /* gare.gpx */,
+				49A16CF8245316600096F430 /* lyonploermel.gpx */,
+				49C1B0A92452C5D2007B5808 /* lyonCavalièreCycle.gpx */,
+				49A16CFC2453224A0096F430 /* lyonSlow.gpx */,
 				4929C019245061A100D40931 /* lyonFast.gpx */,
+				49C1B0A72452262F007B5808 /* lyonAlbatrosCycle.gpx */,
 				49A5D2A1244357B6002E7D53 /* Navmate */,
 				49A5D2A0244357B6002E7D53 /* Products */,
 				76EB0CE726034E6F25289FDE /* Pods */,
@@ -217,6 +293,7 @@
 			children = (
 				49A5D2A2244357B6002E7D53 /* AppDelegate.swift */,
 				49A5D2A4244357B6002E7D53 /* SceneDelegate.swift */,
+				49A16D6424542FE20096F430 /* Weather */,
 				493652142443AF4200120DAC /* Model */,
 				493652112443AA7E00120DAC /* Views */,
 				49A5D2B624435D53002E7D53 /* Controllers */,
@@ -359,6 +436,8 @@
 		49F903E9245040B7004B7831 /* Navigation */ = {
 			isa = PBXGroup;
 			children = (
+				49F903E524504063004B7831 /* POIs */,
+				49F903E62450407A004B7831 /* Navigation metrics */,
 				49E9D079244DEC2300E79D5F /* NavigationCell.swift */,
 			);
 			path = Navigation;
@@ -450,11 +529,31 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				49A16D5D24542FC90096F430 /* night.json in Resources */,
+				49A16D5424542FC90096F430 /* sunny.json in Resources */,
+				49A16D5A24542FC90096F430 /* thunder.json in Resources */,
 				4929C01C2450772300D40931 /* lyontoAlbatrosWalk.gpx in Resources */,
 				49A5D2AF244357B9002E7D53 /* LaunchScreen.storyboard in Resources */,
+				49A16D5524542FC90096F430 /* snowNight.json in Resources */,
+				49C1B0AA2452C5D2007B5808 /* lyonCavalièreCycle.gpx in Resources */,
+				49A16D5B24542FC90096F430 /* rainyNight.json in Resources */,
 				4929C01A245061A100D40931 /* lyonFast.gpx in Resources */,
+				49A16D5E24542FC90096F430 /* foggy.json in Resources */,
+				49A16CFD2453224A0096F430 /* lyonSlow.gpx in Resources */,
+				49A16D6124542FC90096F430 /* stormShower.json in Resources */,
+				49A16D6224542FC90096F430 /* snowSunny.json in Resources */,
 				49A5D2AC244357B9002E7D53 /* Assets.xcassets in Resources */,
+				49A16D5624542FC90096F430 /* windy.json in Resources */,
+				49A16CFF2453407D0096F430 /* eglantierGuerande.gpx in Resources */,
+				49A16D5824542FC90096F430 /* snow.json in Resources */,
+				49C1B0A82452262F007B5808 /* lyonAlbatrosCycle.gpx in Resources */,
 				4929C01824504F6D00D40931 /* gare.gpx in Resources */,
+				49A16D5724542FC90096F430 /* cloudyNight.json in Resources */,
+				49A16D5C24542FC90096F430 /* partlyCloudy.json in Resources */,
+				49A16D5F24542FC90096F430 /* shower.json in Resources */,
+				49A16D5924542FC90096F430 /* mist.json in Resources */,
+				49A16CF9245316600096F430 /* lyonploermel.gpx in Resources */,
+				49A16D6024542FC90096F430 /* storm.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -509,6 +608,7 @@
 			files = (
 				49355832244B71D30023F848 /* RouteQueryModel.swift in Sources */,
 				49C1B0A42450B713007B5808 /* MonumentNavigationDetail.swift in Sources */,
+				49A16D66245430250096F430 /* WeatherManager.swift in Sources */,
 				49E9D077244DEBE700E79D5F /* NavigationMetricsCell.swift in Sources */,
 				4900D284244858F50065752F /* SearchVC.swift in Sources */,
 				49A5D2A7244357B6002E7D53 /* ViewController.swift in Sources */,

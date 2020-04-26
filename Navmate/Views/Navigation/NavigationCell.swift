@@ -40,6 +40,13 @@ class NavigationCell: UITableViewCell {
         label.text = "90m"
         return label
     }()
+    private lazy var exitlabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .white
+        label.textAlignment = .right
+        label.font = UIFont.systemFont(ofSize: 15)
+        return label
+    }()
     private var heightConstraint: NSLayoutConstraint!
     private var widthConstraint: NSLayoutConstraint!
     
@@ -55,9 +62,10 @@ class NavigationCell: UITableViewCell {
         self.addSign()
         self.addNameIndicator()
         self.addSubIndicator()
+        self.addExitLabel()
         
         
-        let distance = Notification.Name(K.shared.notificationLocation)
+        let distance = Notification.Name(K.shared.notificationDistance)
         NotificationCenter.default.addObserver(self, selector: #selector(didReceiveDistanceUpdate(_:)), name: distance, object: nil)
         
     }
@@ -65,12 +73,11 @@ class NavigationCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     @objc private func didReceiveDistanceUpdate(_ notification:Notification) {
-        if self.isSelected {
-            distance -= 3
-            self.subIndicator.text = "\(distance) m"
+        if let distance = notification.userInfo?["distance"] as? Double {
+            if self.isSelected {
+                self.subIndicator.text = "\(Int(distance)) m"
+            }
         }
-        
-        
     }
     func updateIndications(main: String, sub: Double, type: Int, step: Step) {
         
@@ -94,6 +101,7 @@ class NavigationCell: UITableViewCell {
         case 6:
             self.roadSignIV.image = UIImage(named: "continue")
         case 7:
+            exitlabel.text = "Sortie \(step.exitNumber)"
             switch step.exitNumber {
             case 1:
                 self.roadSignIV.image = UIImage(named: "round1")
@@ -105,6 +113,7 @@ class NavigationCell: UITableViewCell {
                 self.roadSignIV.image = UIImage(named: "round3")
             }
         case 8:
+            exitlabel.text = "Sortie \(step.exitNumber)"
             switch step.exitNumber {
             case 1:
                 self.roadSignIV.image = UIImage(named: "round1")
@@ -129,6 +138,21 @@ class NavigationCell: UITableViewCell {
         default:
             self.roadSignIV.image = UIImage(named: "")
         }
+        
+    }
+    private func addExitLabel() {
+        
+        self.addSubview(exitlabel)
+        
+        func addConstraints(fromView: UIView, toView: UIView) {
+               
+           fromView.translatesAutoresizingMaskIntoConstraints = false
+           
+            NSLayoutConstraint.activate([fromView.widthAnchor.constraint(equalToConstant: 150),
+                                         fromView.trailingAnchor.constraint(equalTo: toView.trailingAnchor ,constant: -20),
+                                        fromView.bottomAnchor.constraint(equalTo: roadSignIV.bottomAnchor, constant: 0)])
+        }
+        addConstraints(fromView: exitlabel, toView: cardBG)
         
     }
     private func addSubIndicator(){
@@ -219,6 +243,13 @@ class NavigationCell: UITableViewCell {
             self.heightAnch.constant = thumbSize
             self.nameIndicator.font = mainFont
             self.subIndicator.font = subFont
+            self.exitlabel.font = subFont
+            if on{
+                self.cardBG.addShadow(radius: 5, opacity: 0.3, color: .gray)
+            }else{
+                self.cardBG.addShadow(radius: 5, opacity: 0, color: .gray)
+            }
+            
             self.layoutIfNeeded()
         }) { (_) in
         }
