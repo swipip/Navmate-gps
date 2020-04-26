@@ -42,7 +42,7 @@
 		49A16D5E24542FC90096F430 /* foggy.json in Resources */ = {isa = PBXBuildFile; fileRef = 49A16D4F24542FC70096F430 /* foggy.json */; };
 		49A16D5F24542FC90096F430 /* shower.json in Resources */ = {isa = PBXBuildFile; fileRef = 49A16D5024542FC70096F430 /* shower.json */; };
 		49A16D6024542FC90096F430 /* storm.json in Resources */ = {isa = PBXBuildFile; fileRef = 49A16D5124542FC80096F430 /* storm.json */; };
-		49A16D6124542FC90096F430 /* stormShowerjson.json in Resources */ = {isa = PBXBuildFile; fileRef = 49A16D5224542FC80096F430 /* stormShowerjson.json */; };
+		49A16D6124542FC90096F430 /* stormShower.json in Resources */ = {isa = PBXBuildFile; fileRef = 49A16D5224542FC80096F430 /* stormShower.json */; };
 		49A16D6224542FC90096F430 /* snowSunny.json in Resources */ = {isa = PBXBuildFile; fileRef = 49A16D5324542FC90096F430 /* snowSunny.json */; };
 		49A16D66245430250096F430 /* WeatherManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A16D65245430250096F430 /* WeatherManager.swift */; };
 		49A5D2A3244357B6002E7D53 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A5D2A2244357B6002E7D53 /* AppDelegate.swift */; };
@@ -112,7 +112,7 @@
 		49A16D4F24542FC70096F430 /* foggy.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = foggy.json; sourceTree = "<group>"; };
 		49A16D5024542FC70096F430 /* shower.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = shower.json; sourceTree = "<group>"; };
 		49A16D5124542FC80096F430 /* storm.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = storm.json; sourceTree = "<group>"; };
-		49A16D5224542FC80096F430 /* stormShowerjson.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = stormShowerjson.json; sourceTree = "<group>"; };
+		49A16D5224542FC80096F430 /* stormShower.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = stormShower.json; sourceTree = "<group>"; };
 		49A16D5324542FC90096F430 /* snowSunny.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = snowSunny.json; sourceTree = "<group>"; };
 		49A16D65245430250096F430 /* WeatherManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherManager.swift; sourceTree = "<group>"; };
 		49A5D29F244357B6002E7D53 /* Navmate.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Navmate.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -245,7 +245,7 @@
 				49A16D4624542FC30096F430 /* snowNight.json */,
 				49A16D5324542FC90096F430 /* snowSunny.json */,
 				49A16D5124542FC80096F430 /* storm.json */,
-				49A16D5224542FC80096F430 /* stormShowerjson.json */,
+				49A16D5224542FC80096F430 /* stormShower.json */,
 				49A16D4524542FC20096F430 /* sunny.json */,
 				49A16D4B24542FC50096F430 /* thunder.json */,
 				49A16D4724542FC30096F430 /* windy.json */,
@@ -540,7 +540,7 @@
 				4929C01A245061A100D40931 /* lyonFast.gpx in Resources */,
 				49A16D5E24542FC90096F430 /* foggy.json in Resources */,
 				49A16CFD2453224A0096F430 /* lyonSlow.gpx in Resources */,
-				49A16D6124542FC90096F430 /* stormShowerjson.json in Resources */,
+				49A16D6124542FC90096F430 /* stormShower.json in Resources */,
 				49A16D6224542FC90096F430 /* snowSunny.json in Resources */,
 				49A5D2AC244357B9002E7D53 /* Assets.xcassets in Resources */,
 				49A16D5624542FC90096F430 /* windy.json in Resources */,
