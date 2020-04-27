@@ -96,6 +96,9 @@ class Locator: NSObject {
             locationManager.delegate = self
             locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
             locationManager.startUpdatingLocation()
+            locationManager.startMonitoringSignificantLocationChanges()
+            locationManager.allowsBackgroundLocationUpdates = true
+            locationManager.pausesLocationUpdatesAutomatically = false
         }
         
     }
@@ -361,12 +364,15 @@ extension Locator: CLLocationManagerDelegate {
         if notificationNumber <= currentStep!.index + 1{
             NotificationCenter.default.post(name: newStepNotification, object: nil, userInfo: nil)
             notificationNumber += 1
+            let message = RoutingInterpret.shared.interpretType(type: currentStep!.step.type)
+
+            NotificationManager.shared.sendNotification(title: message, body: "\(message) sur \(currentStep!.step.name)")
         }else{
             
         }
     }
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-
+        
         guard let route = self.route else {return}
         guard let currentWPIndex = currentWPIndex else {return}
         

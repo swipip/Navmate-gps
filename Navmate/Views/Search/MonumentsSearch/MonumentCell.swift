@@ -13,7 +13,7 @@ protocol MonumentCellDelegate {
 }
 class MonumentCell: UITableViewCell {
 
-    private lazy var collectionView: UICollectionView = {
+    lazy var collectionView: UICollectionView = {
         let layout = SnappingCollectionViewLayoutWithOffset()
         layout.scrollDirection = .horizontal
         let collection = UICollectionView(frame: CGRect(x: 0, y: 0, width: 0, height: 0), collectionViewLayout: layout)

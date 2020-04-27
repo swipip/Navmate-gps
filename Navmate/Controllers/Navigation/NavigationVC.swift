@@ -17,7 +17,7 @@ class NavigationVC: UIViewController {
 
     private lazy var headerBackGround: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor(named: "blueGray")
+        view.backgroundColor = UIColor(named: "blue")
         view.layer.cornerRadius = 0
         return view
     }()

@@ -66,6 +66,15 @@ class SearchVC: UIViewController {
     deinit {
         print("search vc out")
     }
+    func transitionTable() {
+        
+        if let cell = researchTable.cellForRow(at: IndexPath(item: 0, section: 0)) as? MonumentCell {
+            cell.collectionView.invalidateIntrinsicContentSize()
+            cell.collectionView.reloadData()
+        }
+        
+        
+    }
     func resignKeyboard() {
         self.searchField.resignFirstResponder()
         self.researchTable.alpha = 0.0
@@ -73,6 +82,8 @@ class SearchVC: UIViewController {
     private func addSearchResultsTable() {
         
         self.view.addSubview(researchTable)
+        
+        researchTable.autoresizingMask = .flexibleWidth
         
         func addConstraints(fromView: UIView, toView: UIView) {
                
@@ -130,6 +141,11 @@ extension SearchVC: UITableViewDelegate, UITableViewDataSource {
             }
         }
 
+    }
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        if let _ = scrollView as? UITableView {
+            searchField.resignFirstResponder()
+        }
     }
     func numberOfSections(in tableView: UITableView) -> Int {
         return 2

@@ -26,7 +26,7 @@ class WeatherManager: NSObject{
         
     }
     
-    let url = "https://api.openweathermap.org/data/2.5/weather?appid=3fbc7ed13bd5f66de97179239a233a7d&units=metric"
+    let url = "https://api.openweathermap.org/data/2.5/weather?appid=\(Keys.shared.weather)&units=metric"
     
     func fetchWeather(city: String){
         let urlString = "\(url)&q=\(city)"
@@ -118,7 +118,7 @@ struct WeatherModel{
             let time = NSDate()
             let day = check(time: time)
             if day == "night" {
-                return "rainyNight"
+                return "shower"
             }else{
                return "shower"
             }

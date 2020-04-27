@@ -12,7 +12,7 @@ class NavigationCell: UITableViewCell {
 
     private lazy var cardBG: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor(named: "lightBrown")
+        view.backgroundColor = UIColor(named: "blueGray")
         view.layer.cornerRadius = 8
         return view
     }()
@@ -227,7 +227,7 @@ class NavigationCell: UITableViewCell {
         let cellWidth = self.frame.size.width
         let width:CGFloat = on ? cellWidth : cellWidth * 0.9
         let height:CGFloat = on ? 92 : 85
-        let color:UIColor = on ? UIColor(named: "blueGray")! : UIColor(named: "lightBrown")!
+        let color:UIColor = on ? UIColor(named: "blue")! : UIColor(named: "blueGray")!
 //        let scale:CGFloat = on ? 1.1 : 1.0
         let mainFont:UIFont = on ? UIFont.systemFont(ofSize: 30, weight: UIFont.Weight.bold) : UIFont.systemFont(ofSize: 20, weight: UIFont.Weight.regular)
         let subFont:UIFont = on ? UIFont.systemFont(ofSize: 22, weight: UIFont.Weight.bold) : UIFont.systemFont(ofSize: 17, weight: UIFont.Weight.regular)

@@ -23,6 +23,11 @@ class ViewController: UIViewController {
         child.delegate = self
         return child
     }()
+    
+    private var navigationModeOn = false
+    
+    private var searchVCConstraints: (leading: NSLayoutConstraint,width: NSLayoutConstraint,top: NSLayoutConstraint)!
+    
     private lazy var selectableAreaMapVC: UIView = {
        let view = UIView()
         view.backgroundColor = .clear
@@ -128,6 +133,9 @@ class ViewController: UIViewController {
         
         self.animateTransitionIfNeededMap(state: .total, duration: 1)
         
+        
+        navigationModeOn = false
+        
         self.addSearchVC()
         self.addSelectableHandle()
         
@@ -196,6 +204,22 @@ class ViewController: UIViewController {
         addConstraints(fromView: locationButton, toView: self.searchVC.view!)
         
     }
+    private func addLocationButtonLandscape() {
+        
+        self.view.addSubview(locationButton)
+        
+        func addConstraints(fromView: UIView, toView: UIView) {
+               
+           fromView.translatesAutoresizingMaskIntoConstraints = false
+           
+           NSLayoutConstraint.activate([fromView.widthAnchor.constraint(equalToConstant: 40),
+                                        fromView.trailingAnchor.constraint(equalTo: toView.trailingAnchor, constant: -20),
+                                        fromView.heightAnchor.constraint(equalToConstant: 40),
+                                        fromView.bottomAnchor.constraint(equalTo: toView.bottomAnchor,constant: -20)])
+        }
+        addConstraints(fromView: locationButton, toView: self.view)
+        
+    }
     private func addSelectableHandle() {
         
         self.view.addSubview(selectableAreaSearchVC)
@@ -238,17 +262,25 @@ class ViewController: UIViewController {
         
         
         func addConstraints(fromView: UIView, toView: UIView) {
-               
+
            fromView.translatesAutoresizingMaskIntoConstraints = false
-           
-           NSLayoutConstraint.activate([fromView.leadingAnchor.constraint(equalTo: toView.leadingAnchor, constant: 0),
-                                        fromView.trailingAnchor.constraint(equalTo: toView.trailingAnchor, constant: 0),
+
+           NSLayoutConstraint.activate([
+//            fromView.leadingAnchor.constraint(equalTo: toView.leadingAnchor, constant: 0),
+//                                        fromView.trailingAnchor.constraint(equalTo: toView.trailingAnchor, constant: 0),
                                         fromView.heightAnchor.constraint(equalToConstant: self.view.frame.size.height)])
         }
         addConstraints(fromView: view, toView: self.view)
         
+        let leadingConstraint = NSLayoutConstraint(item: searchVC.view!, attribute: .leading, relatedBy: .equal, toItem: self.view, attribute: .leading, multiplier: 1, constant: 0)
+        let trailingConstraint = NSLayoutConstraint(item: searchVC.view!, attribute: .trailing, relatedBy: .equal, toItem: self.view, attribute: .trailing, multiplier: 1, constant:0)
         searchVCTopConstraint = NSLayoutConstraint(item: searchVC.view!, attribute: .top, relatedBy: .equal, toItem: self.view, attribute: .bottom, multiplier: 1, constant: -100)
-        self.view.addConstraint(searchVCTopConstraint)
+        
+        let constraints = [leadingConstraint,trailingConstraint,searchVCTopConstraint]
+        
+        searchVCConstraints = (leading: leadingConstraint, width: trailingConstraint, top: searchVCTopConstraint)
+        
+        self.view.addConstraints(constraints)
         
     }
     func addMapView() {
@@ -402,19 +434,50 @@ class ViewController: UIViewController {
         }
         
     }
-    
+    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
+        if UIDevice.current.orientation == .landscapeLeft || UIDevice.current.orientation == .landscapeRight {
+            searchVCConstraints.leading.constant = 50
+            searchVCConstraints.width.constant = -400
+            searchVCConstraints.top.constant = -350
+            
+            locationButton.removeFromSuperview()
+            addLocationButtonLandscape()
+            
+            self.searchVC.researchTable.setNeedsDisplay()
+            self.searchVC.transitionTable()
+        }else if UIDevice.current.orientation == .portrait{
+            if navigationModeOn == false {
+                searchVCConstraints.leading.constant = 0
+                searchVCConstraints.width.constant = 0
+                searchVCConstraints.top.constant = -100
+                
+                locationButton.removeFromSuperview()
+                addLocationButton()
+                
+                self.searchVC.researchTable.setNeedsDisplay()
+                self.searchVC.transitionTable()
+            }
 
-}
-extension ViewController: MonumentManagerDelegate {
-    
-    func didFetchData(monuments: [Monument]) {
-        #warning("update server with right longitude")
-//        let coordinate = CLLocation(latitude: monuments[120].latitude, longitude: -monuments[120].longitude)
-//
-//        mapView.updatePosition(with: coordinate, name: monuments[120].name)
+        }
+    }
+    private func transitionedToLandscape() {
+        
+//        searchVC.view.removeConstraints(searchVC.view.constraints)
+        
+        func addConstraints(fromView: UIView, toView: UIView) {
+               
+           fromView.translatesAutoresizingMaskIntoConstraints = false
+           
+           NSLayoutConstraint.activate([fromView.leadingAnchor.constraint(equalTo: toView.leadingAnchor, constant: 20),
+                                        fromView.widthAnchor.constraint(equalToConstant: 300),
+                                        fromView.topAnchor.constraint(equalTo: toView.topAnchor, constant: 50),
+                                        fromView.bottomAnchor.constraint(equalTo: toView.bottomAnchor,constant: 0)])
+        }
+        addConstraints(fromView: searchVC.view, toView: self.view)
         
     }
     
+
 }
 extension ViewController: SearchVCDelegate {
     func didSelectedPOI(type: String) {
@@ -507,6 +570,8 @@ extension ViewController: DirectionVCDelegate {
     }
     
     func didEngagedNavigation() {
+        
+        navigationModeOn = true
         
         navigationVC = NavigationVC()
         navigationVC.willMove(toParent: self)

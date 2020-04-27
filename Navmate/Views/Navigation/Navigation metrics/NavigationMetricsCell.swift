@@ -22,14 +22,14 @@ class NavigationMetricsCell: UICollectionViewCell {
         let imageV = UIImageView()
         imageV.image = UIImage()
         imageV.tintColor = UIColor(named: "orange")
-        imageV.contentMode = .scaleAspectFit
+        imageV.contentMode = .scaleAspectFill
         return imageV
     }()
     private lazy var metricValue: UILabel = {
         let label = UILabel()
         label.text = "-"
         label.font = UIFont.systemFont(ofSize: 27, weight: .medium)
-        label.textColor = UIColor(named: "brown")
+        label.textColor = UIColor(named: "blueGray")
         label.textAlignment = .right
         label.adjustsFontSizeToFitWidth = true
         return label
