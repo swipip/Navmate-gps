@@ -371,6 +371,56 @@ extension Locator: CLLocationManagerDelegate {
             
         }
     }
+    func checkForRerouting(location: CLLocation){
+        
+        guard let route = self.route else {return}
+        guard let wpIndex = self.currentWPIndex else {return}
+        
+        let monitoredWP = route.wayPoints[wpIndex]
+        
+        let rad = 57.295779513082323
+        let radius = 3440.4
+        let latitude = monitoredWP.coordinate.latitude
+        let longitude = monitoredWP.coordinate.longitude
+        let pi = Double.pi
+        
+        if let type = currentStep?.step.type {
+            
+            let cap = RoutingInterpret.shared.typeAngle[type]! + location.course
+//            print(location.course)
+            let distance = 0.02
+            
+            let newLatitude = (rad * asin(((sin(((latitude * pi) / 180)) * cos((distance / radius))) + ((cos(((latitude * pi) / 180)) * sin((distance / 3440.06))) * cos(((cap * pi) / 180))))))
+            let newLongitude = (longitude + (rad * atan2(((sin(((cap * pi) / 180)) * sin((distance / 3440.06))) * cos(((latitude * pi) / 180))), (cos((distance / 3440.06)) - (sin(((latitude * pi) / 180)) * sin(((latitude * pi) / 180)))))))
+            
+            
+            let newCheckWP = CLLocation(latitude: newLatitude, longitude: newLongitude)
+            
+            delegate?.didMoveToNextWP(waypointIndex: 0, status: "", location: newCheckWP)
+            
+            
+        }
+        
+    }
+    func getBearingBetweenTwoPoints1(point1 : CLLocation, point2 : CLLocation) -> Double {
+
+        func degreesToRadians(degrees: Double) -> Double { return degrees * .pi / 180.0 }
+        func radiansToDegrees(radians: Double) -> Double { return radians * 180.0 / .pi }
+        
+        let lat1 = degreesToRadians(degrees: point1.coordinate.latitude)
+        let lon1 = degreesToRadians(degrees: point1.coordinate.longitude)
+
+        let lat2 = degreesToRadians(degrees: point2.coordinate.latitude)
+        let lon2 = degreesToRadians(degrees: point2.coordinate.longitude)
+
+        let dLon = lon2 - lon1
+
+        let y = sin(dLon) * cos(lat2)
+        let x = cos(lat1) * sin(lat2) - sin(lat1) * cos(lat2) * cos(dLon)
+        let radiansBearing = atan2(y, x)
+
+        return radiansToDegrees(radians: radiansBearing)
+    }
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         
         guard let route = self.route else {return}
@@ -378,7 +428,12 @@ extension Locator: CLLocationManagerDelegate {
         
         let wayPoints = route.wayPoints
         
+//        let bearing = getBearingBetweenTwoPoints1(point1: locations.first!, point2: locations.last!)
+//        print(bearing)
+        
         if let location = locations.last {
+            
+            
             
             let suitableForSpeedAndAltitude = filterLocation(location)
             
@@ -405,7 +460,7 @@ extension Locator: CLLocationManagerDelegate {
                         let enterWP = wayPointRange.first
                         let dif = wayPointRange.last! - wayPointRange.first!
                         
-                        delegate?.didMoveToNextWP(waypointIndex: currentWPIndex, status: "entered", location: wayPoints[currentWPIndex])
+//                        delegate?.didMoveToNextWP(waypointIndex: currentWPIndex, status: "entered", location: wayPoints[currentWPIndex])
                         
                         if currentWPIndex == enterWP {
                             self.currentStep = (i,step)
@@ -473,7 +528,7 @@ extension Locator: CLLocationManagerDelegate {
                         if currentWPIndex == exitWP {
                             if contains == true{
 //                                contains = false
-                            
+                            checkForRerouting(location: location)
                                 self.currentStep = (i,route.steps[i+1])
                                 
                                 sendNotification()

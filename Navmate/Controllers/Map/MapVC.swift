@@ -429,9 +429,9 @@ extension MapVC: LocatorDelegate {
     func didMoveToNextWP(waypointIndex: Int,status: String,location: CLLocation) {
 //        self.regionMonitored.text = String("\(waypointIndex) & status: \(status)")
 
-//        circleColor = UIColor.blue
-//        let circle = MKCircle(center: location.coordinate, radius: 30)
-//        mapView.addOverlay(circle)
+        circleColor = UIColor.blue
+        let circle = MKCircle(center: location.coordinate, radius: 30)
+        mapView.addOverlay(circle)
         
     }
 }
