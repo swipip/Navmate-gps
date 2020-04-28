@@ -13,7 +13,7 @@ class POIsCell: UICollectionViewCell {
     
     private lazy var cardBG: UIView = {
         let view = UIView()
-        view.backgroundColor = .white
+        view.backgroundColor = K.shared.white
         view.addShadow(radius: 5, opacity: 0.5, color: .gray)
         view.layer.cornerRadius = K.shared.cornerRadiusCard
         return view
@@ -23,6 +23,7 @@ class POIsCell: UICollectionViewCell {
         table.showsVerticalScrollIndicator = false
         table.dataSource = self
         table.delegate = self
+        table.backgroundColor = K.shared.white
         table.separatorStyle = .none
         table.register(MonumentNavigationCell.self, forCellReuseIdentifier: "cellID")
         return table
@@ -30,7 +31,7 @@ class POIsCell: UICollectionViewCell {
     private lazy var cardTitle: UILabel = {
         let label = UILabel()
         label.text = "A découvrir aux alentours"
-        label.textColor = .black
+//        label.textColor = .black
         label.font = UIFont.systemFont(ofSize: K.shared.cardTitleFontSize,weight: .medium)
         return label
     }()
@@ -39,6 +40,8 @@ class POIsCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
+        self.backgroundColor = K.shared.white
         
         self.addCard()
         self.addLabel()

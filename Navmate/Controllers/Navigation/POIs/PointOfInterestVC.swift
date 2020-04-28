@@ -16,7 +16,7 @@ class PointOfInterestVC: UIViewController {
         layout.scrollDirection = .horizontal
         let collection = UICollectionView(frame: CGRect(x: 0, y: 0, width: 0, height: 0), collectionViewLayout: layout)
         collection.delegate = self
-        collection.backgroundColor = .white
+        collection.backgroundColor = K.shared.white
         collection.dataSource = self
         collection.decelerationRate = .fast
         collection.showsHorizontalScrollIndicator = false

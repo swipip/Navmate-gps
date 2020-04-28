@@ -12,7 +12,7 @@ class MonumentSearchDetailCell: UICollectionViewCell {
     
     private lazy var cardBG: UIView = {
         let view = UIView()
-        view.backgroundColor = .white
+        view.backgroundColor = K.shared.white
         view.layer.cornerRadius = 8
         view.addShadow(radius: 5, opacity: 0.3, color: .gray)
         return view
@@ -47,6 +47,8 @@ class MonumentSearchDetailCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
+        self.backgroundColor = K.shared.white
         
         self.addCardBG()
         self.addImage()

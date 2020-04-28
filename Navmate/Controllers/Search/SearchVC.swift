@@ -34,6 +34,7 @@ class SearchVC: UIViewController {
         table.register(ResearchCell.self, forCellReuseIdentifier: Cells.searchCell)
         table.register(MonumentCell.self, forCellReuseIdentifier: Cells.monumentCell)
         table.alpha = 0.0
+        table.backgroundColor = K.shared.white
         table.separatorStyle = .none
         table.delegate = self
         table.dataSource = self
@@ -56,7 +57,7 @@ class SearchVC: UIViewController {
         
         searchCompleter.delegate = self
         
-        self.view.backgroundColor = .white
+        self.view.backgroundColor = K.shared.white
         
         addSearchBar()
         addHandle()
@@ -155,7 +156,7 @@ extension SearchVC: UITableViewDelegate, UITableViewDataSource {
         let titles = ["Intéréssant aux alentours","Recherche"]
         
         let headerView = UIView()
-        headerView.backgroundColor = .white
+        headerView.backgroundColor = K.shared.white
         
         let label = UILabel()
         label.text = titles[section]

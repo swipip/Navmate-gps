@@ -537,7 +537,7 @@ extension Locator: RoutingManagerDelegate {
                 delegate?.didFindWayPoints(wayPoints: route.wayPoints)
                 
                 #warning("test distance filter")
-                locationManager.distanceFilter = 1
+                locationManager.distanceFilter = 4
                 
                 delegate?.didFindRoute(polyline: route.polylines, summary: route.summary)
 //                delegate?.didFindWayPoints(wayPoints: route.wayPoints)

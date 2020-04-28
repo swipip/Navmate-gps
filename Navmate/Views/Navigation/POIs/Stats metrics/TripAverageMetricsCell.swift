@@ -28,12 +28,15 @@ class TripAverageMetricsCell: CommonPoisCell {
         let view = UIView()
         view.clipsToBounds = true
         view.layer.cornerRadius = 8
-        view.backgroundColor = .white
+        view.backgroundColor = K.shared.white
         return view
     }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
+        self.backgroundColor = K.shared.white
+        
         self.addCard()
         self.addContainer()
         self.addThumbBackground()

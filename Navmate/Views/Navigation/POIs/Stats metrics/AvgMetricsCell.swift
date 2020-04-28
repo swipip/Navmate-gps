@@ -19,14 +19,14 @@ class AvgMetricsCell: UITableViewCell {
     private lazy var metricName: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: K.shared.cardTitleFontSize)
-        label.textColor = K.shared.bluegray
+        label.textColor = K.shared.blueGrayFont
         label.text = "-"
         return label
     }()
     private lazy var metricValue: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: K.shared.cardTitleFontSize,weight: .bold)
-        label.textColor = K.shared.bluegray
+        label.textColor = K.shared.blueGrayFont
         label.text = "-"
         label.textAlignment = .right
         return label

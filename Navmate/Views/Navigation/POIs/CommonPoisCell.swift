@@ -20,7 +20,7 @@ class CommonPoisCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
+        self.backgroundColor = K.shared.white
     }
     
     required init?(coder: NSCoder) {

@@ -55,6 +55,8 @@ class NavigationVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.view.backgroundColor = K.shared.white
+        
         self.addIndicationsTableView()
         self.addHeaderBG()
         self.addMetricsCollection()

@@ -14,7 +14,6 @@ class BarChartCell: CommonPoisCell {
     private lazy var cardTitle: UILabel = {
         let label = UILabel()
         label.text = "Dénivelé"
-        label.textColor = .black
         label.font = UIFont.systemFont(ofSize: K.shared.cardTitleFontSize,weight: .medium)
         return label
     }()
@@ -34,6 +33,8 @@ class BarChartCell: CommonPoisCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
+        self.backgroundColor = K.shared.white
+        self.cardBG.backgroundColor = K.shared.white
         self.addCard()
         self.addLabel()
         self.addObservers()

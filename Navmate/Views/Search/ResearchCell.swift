@@ -34,6 +34,8 @@ class ResearchCell: UITableViewCell {
         
         self.selectionStyle = .none
         
+        self.backgroundColor = K.shared.white
+        
         addThumbNail()
         addTitleLabel()
         addsubTitleLabel()

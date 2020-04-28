@@ -13,7 +13,7 @@ class NavigationMetricsCell: UICollectionViewCell {
     
     private lazy var cardBG: UIView = {
         let view = UIView()
-        view.backgroundColor = .white
+        view.backgroundColor = K.shared.white
         view.addShadow(radius: 5, opacity: 0.5, color: .gray)
         view.layer.cornerRadius = 8
         return view
@@ -29,7 +29,7 @@ class NavigationMetricsCell: UICollectionViewCell {
         let label = UILabel()
         label.text = "-"
         label.font = UIFont.systemFont(ofSize: 27, weight: .medium)
-        label.textColor = UIColor(named: "blueGray")
+        label.textColor = K.shared.blueGrayFont
         label.textAlignment = .right
         label.adjustsFontSizeToFitWidth = true
         return label
@@ -43,7 +43,7 @@ class NavigationMetricsCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.backgroundColor = .white
+        self.backgroundColor = K.shared.white
         self.addCard()
         self.addMetricImage()
         self.addLabel()

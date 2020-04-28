@@ -52,6 +52,7 @@ class ViewController: UIViewController {
         button.layer.cornerRadius = K.shared.cornerRadiusImageThumbNailCell
         button.setImage(UIImage(systemName: "location.fill"), for: .normal)
         button.tintColor = K.shared.brown
+        button.backgroundColor = K.shared.white
         button.addTarget(self, action: #selector(locationButtonPressed(_ :)), for: .touchUpInside)
         return button
     }()
@@ -106,12 +107,19 @@ class ViewController: UIViewController {
         
         self.navigationController?.navigationBar.isHidden = true
         
+        self.view.backgroundColor = K.shared.white
+        
         addMapView()
         addSearchVC()
         addSelectableHandle()
         addSelectableHandleMap()
         addLocationButton()
         addDismissNavButton()
+        
+        let launch = LaunchView()
+        launch.frame = self.view.bounds
+        
+        self.view.addSubview(launch)
         
     }
     //MARK: - UI Construction
