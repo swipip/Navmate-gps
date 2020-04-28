@@ -115,7 +115,13 @@ class DirectionGoCell: UICollectionViewCell {
     }
     @objc private func didFindWeather(_ notification:Notification) {
         if let weather = notification.userInfo?["weather"] as? String {
+            
+//            let keypath1 = AnimationKeypath(keypath: "sun_1")
+//
+//            animation.setNodeIsEnabled(isEnabled: false, keypath: keypath1)
+            
             animation.animation = Animation.named(weather)
+            print("\(#function) \(weather)")
             animation.play(fromProgress: 0, toProgress: 1, loopMode: .loop) { (_) in
 
             }

@@ -404,13 +404,11 @@ extension MapVC: LocatorDelegate {
         DispatchQueue.main.async {
             self.mapView.setVisibleMapRect(polyline[0].boundingMapRect, edgePadding: UIEdgeInsets(top: 40, left: 40, bottom: 300, right: 40), animated: true)
             self.mapView.addOverlays([polyline[0]])
+            if let destination = self.destination {
+                self.delegate?.didDrawRoute(summary: summary, destination: destination)
+            }
         }
-        
-        
-        if let destination = self.destination {
-            delegate?.didDrawRoute(summary: summary, destination: destination)
-        }
-        
+            
     }
     func didChangeAuthorizationStatus() {
         mapView.showsUserLocation = true
