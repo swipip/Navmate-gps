@@ -23,6 +23,7 @@ class MapVC: UIViewController {
         map.register(MKAnnotationView.self, forAnnotationViewWithReuseIdentifier: mkViews.plain)
         map.register(CustomPlainAV.self, forAnnotationViewWithReuseIdentifier: mkViews.customPlain)
         map.register(MonumentAnnotationView.self, forAnnotationViewWithReuseIdentifier: mkViews.monument)
+        map.register(GasAnnotationView.self, forAnnotationViewWithReuseIdentifier: mkViews.gas)
         let longPress = UILongPressGestureRecognizer(target: self, action: #selector(didLongPressOnTheMap(_:)))
         longPress.minimumPressDuration = 1
         map.addGestureRecognizer(longPress)
@@ -45,6 +46,7 @@ class MapVC: UIViewController {
         static let plain = "plain"
         static let customPlain = "customPlain"
         static let monument = "monument"
+        static let gas = "gas"
     }
     //MapView Constraints
     var topConstraint = NSLayoutConstraint()
@@ -163,30 +165,6 @@ class MapVC: UIViewController {
         }
 
     }
-    func getCenterLocation() -> CLLocation{
-        
-        let latitude = mapView.centerCoordinate.latitude
-        let longitude = mapView.centerCoordinate.longitude
-        
-        return CLLocation(latitude: latitude, longitude: longitude)
-        
-    }
-    private func addPin() {
-        
-        self.view.addSubview(pin)
-        
-        func addConstraints(fromView: UIView, toView: UIView) {
-               
-           fromView.translatesAutoresizingMaskIntoConstraints = false
-           
-           NSLayoutConstraint.activate([fromView.centerXAnchor.constraint(equalTo: toView.centerXAnchor, constant: 0),
-                                        fromView.heightAnchor.constraint(equalToConstant: 40),
-                                        fromView.centerYAnchor.constraint(equalTo: toView.centerYAnchor, constant: 0),
-                                        fromView.widthAnchor.constraint(equalToConstant: 40)])
-        }
-        addConstraints(fromView: pin, toView: self.view)
-        
-    }
     private func addMapView() {
         
         self.view.addSubview(mapView)
@@ -242,6 +220,8 @@ class MapVC: UIViewController {
     @objc private func didLongPressOnTheMap(_ recognizer:UILongPressGestureRecognizer!) {
         
         if recognizer.state == .began {
+            
+            mapView.removeAnnotations(mapView.annotations)
             
             let notification = UIImpactFeedbackGenerator(style: .heavy)
             notification.prepare()
@@ -320,16 +300,23 @@ extension MapVC: MKMapViewDelegate {
         
         guard !(annotation is MKUserLocation) else {return nil}
         
+        if #available(iOS 11.0, *) {
+            let view = mapView.view(for: annotation)
+            view?.prepareForDisplay()
+        }
+        
         if let annotation = annotation as? MonumentAnnotation {
             let annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: mkViews.monument, for: annotation) as! MonumentAnnotationView
             
             annotationView.delegate = self
             annotationView.passCoordinates(annotationData: annotation)
             
-            if #available(iOS 11.0, *) {
-                let view = mapView.view(for: annotation)
-                view?.prepareForDisplay()
-            }
+            return annotationView
+        }
+        if let annotation = annotation as? GasAnnotation {
+            let annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: mkViews.gas, for: annotation) as! GasAnnotationView
+            
+//            annotationView.passCoordinates(annotationData: annotation)
             
             return annotationView
         }

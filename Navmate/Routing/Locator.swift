@@ -88,6 +88,11 @@ class Locator: NSObject {
     private var notificationNumber = 0
     private var doNotSendNextInstruction = false
     
+    //rerouting algorithm
+    private var reroutingCheckTimer = Timer()
+    private var checkPoint: CLCircularRegion?
+    private var reroutingRequiered = false
+    
     private override init() {
         super.init()
         
@@ -386,54 +391,68 @@ extension Locator: CLLocationManagerDelegate {
         
         if let type = currentStep?.step.type {
             
-            let cap = RoutingInterpret.shared.typeAngle[type]! + location.course
-//            print(location.course)
-            let distance = 0.02
+            let bearing = RoutingInterpret.shared.typeAngle[type]! + location.course
+            print(bearing)
+            let distance = 0.04
             
-            let newLatitude = (rad * asin(((sin(((latitude * pi) / 180)) * cos((distance / radius))) + ((cos(((latitude * pi) / 180)) * sin((distance / 3440.06))) * cos(((cap * pi) / 180))))))
-            let newLongitude = (longitude + (rad * atan2(((sin(((cap * pi) / 180)) * sin((distance / 3440.06))) * cos(((latitude * pi) / 180))), (cos((distance / 3440.06)) - (sin(((latitude * pi) / 180)) * sin(((latitude * pi) / 180)))))))
+            let newLatitude = (rad * asin(((sin(((latitude * pi) / 180)) * cos((distance / radius))) + ((cos(((latitude * pi) / 180)) * sin((distance / 3440.06))) * cos(((bearing * pi) / 180))))))
+            let newLongitude = (longitude + (rad * atan2(((sin(((bearing * pi) / 180)) * sin((distance / 3440.06))) * cos(((latitude * pi) / 180))), (cos((distance / 3440.06)) - (sin(((latitude * pi) / 180)) * sin(((latitude * pi) / 180)))))))
             
             
             let newCheckWP = CLLocation(latitude: newLatitude, longitude: newLongitude)
             
+            checkPoint = CLCircularRegion(center: newCheckWP.coordinate, radius: 30, identifier: "checkPoint")
+            
             delegate?.didMoveToNextWP(waypointIndex: 0, status: "", location: newCheckWP)
             
+            reroutingCheckTimer = Timer.scheduledTimer(timeInterval: 45, target: self, selector: #selector(checkPointTimerExpirated), userInfo: nil, repeats: false)
             
         }
         
     }
-    func getBearingBetweenTwoPoints1(point1 : CLLocation, point2 : CLLocation) -> Double {
-
-        func degreesToRadians(degrees: Double) -> Double { return degrees * .pi / 180.0 }
-        func radiansToDegrees(radians: Double) -> Double { return radians * 180.0 / .pi }
+    @objc private func checkPointTimerExpirated() {
         
-        let lat1 = degreesToRadians(degrees: point1.coordinate.latitude)
-        let lon1 = degreesToRadians(degrees: point1.coordinate.longitude)
-
-        let lat2 = degreesToRadians(degrees: point2.coordinate.latitude)
-        let lon2 = degreesToRadians(degrees: point2.coordinate.longitude)
-
-        let dLon = lon2 - lon1
-
-        let y = sin(dLon) * cos(lat2)
-        let x = cos(lat1) * sin(lat2) - sin(lat1) * cos(lat2) * cos(dLon)
-        let radiansBearing = atan2(y, x)
-
-        return radiansToDegrees(radians: radiansBearing)
+        print("\(#function) user did not entered checkpoint")
+        
+        //Reroute user from current location
+        reroutingCheckTimer.invalidate()
+        
+        if let route = self.route, let initialRequest = self.currentRequest, let destinationCoordinate = route.wayPoints.last {
+            
+            let request = RouteRequest(destinationName: currentRequest?.destinationName ?? "Destination",
+                                       destination: destinationCoordinate.coordinate,
+                                       destinationType: .regular,
+                                       mode: initialRequest.mode,
+                                       preference: initialRequest.preference,
+                                       avoid: initialRequest.avoid,
+                                       calculationMode: .recalculation)
+            
+            self.getRoute(request: request)
+            
+            reroutingRequiered = true
+            
+        }
+        
     }
+    fileprivate func checkForCheckpointValidation(_ location: CLLocation) {
+        if let checkPoint = checkPoint {
+            if checkPoint.contains(location.coordinate){
+                reroutingCheckTimer.invalidate()
+                self.checkPoint = nil
+            }
+        }
+    }
+    
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         
         guard let route = self.route else {return}
         guard let currentWPIndex = currentWPIndex else {return}
-        
+
         let wayPoints = route.wayPoints
-        
-//        let bearing = getBearingBetweenTwoPoints1(point1: locations.first!, point2: locations.last!)
-//        print(bearing)
         
         if let location = locations.last {
             
-            
+            checkForCheckpointValidation(location)
             
             let suitableForSpeedAndAltitude = filterLocation(location)
             
@@ -468,6 +487,7 @@ extension Locator: CLLocationManagerDelegate {
                             if currentWPIndex == 0 {
                                 //                                self.currentWPIndex! += 1
                             }else{
+                                checkForRerouting(location: location)
                                 if dif != 1 {
                                     if step.type == 7 || step.type == 8{
                                         
@@ -528,7 +548,7 @@ extension Locator: CLLocationManagerDelegate {
                         if currentWPIndex == exitWP {
                             if contains == true{
 //                                contains = false
-                            checkForRerouting(location: location)
+                            
                                 self.currentStep = (i,route.steps[i+1])
                                 
                                 sendNotification()
@@ -600,6 +620,11 @@ extension Locator: RoutingManagerDelegate {
             case .recalculation:
                 
                 self.newRoute = route
+                
+                if reroutingRequiered {
+                    startRerouting()
+                    reroutingRequiered = false
+                }
                 
                 let userInfo = ["routeNew":route]
                 NotificationCenter.default.post(name: routeNotification, object: nil, userInfo: userInfo)

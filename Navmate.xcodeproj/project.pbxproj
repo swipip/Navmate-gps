@@ -13,6 +13,8 @@
 		4900D2AD2449DE910065752F /* Route.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4900D2AA2449DE910065752F /* Route.swift */; };
 		4900D2AE2449DE910065752F /* Locator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4900D2AB2449DE910065752F /* Locator.swift */; };
 		4906C821244ED2CD00D23F3E /* WikiDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4906C820244ED2CD00D23F3E /* WikiDetailVC.swift */; };
+		491DD4DD24597EA800754338 /* GasAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491DD4DC24597EA800754338 /* GasAnnotation.swift */; };
+		491DD4DF24597F1E00754338 /* GasAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491DD4DE24597F1E00754338 /* GasAnnotationView.swift */; };
 		4929C01824504F6D00D40931 /* gare.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 4929C01724504F6D00D40931 /* gare.gpx */; };
 		4929C01A245061A100D40931 /* lyonFast.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 4929C019245061A100D40931 /* lyonFast.gpx */; };
 		4929C01C2450772300D40931 /* lyontoAlbatrosWalk.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 4929C01B2450772200D40931 /* lyontoAlbatrosWalk.gpx */; };
@@ -29,6 +31,7 @@
 		493F1F512455E40A0024BF1C /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 493F1F502455E40A0024BF1C /* MapKit.framework */; };
 		493F1F532455E6690024BF1C /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493F1F522455E6690024BF1C /* NotificationManager.swift */; };
 		493F1F552455EE740024BF1C /* RoutingInterpret.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493F1F542455EE740024BF1C /* RoutingInterpret.swift */; };
+		493F1F57245768A20024BF1C /* LaunchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493F1F56245768A20024BF1C /* LaunchView.swift */; };
 		49A16CF9245316600096F430 /* lyonploermel.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 49A16CF8245316600096F430 /* lyonploermel.gpx */; };
 		49A16CFD2453224A0096F430 /* lyonSlow.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 49A16CFC2453224A0096F430 /* lyonSlow.gpx */; };
 		49A16CFF2453407D0096F430 /* eglantierGuerande.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 49A16CFE2453407D0096F430 /* eglantierGuerande.gpx */; };
@@ -86,6 +89,8 @@
 		4900D2AA2449DE910065752F /* Route.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Route.swift; sourceTree = "<group>"; };
 		4900D2AB2449DE910065752F /* Locator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Locator.swift; sourceTree = "<group>"; };
 		4906C820244ED2CD00D23F3E /* WikiDetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WikiDetailVC.swift; sourceTree = "<group>"; };
+		491DD4DC24597EA800754338 /* GasAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GasAnnotation.swift; sourceTree = "<group>"; };
+		491DD4DE24597F1E00754338 /* GasAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GasAnnotationView.swift; sourceTree = "<group>"; };
 		4929C01724504F6D00D40931 /* gare.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = gare.gpx; sourceTree = "<group>"; };
 		4929C019245061A100D40931 /* lyonFast.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = lyonFast.gpx; sourceTree = "<group>"; };
 		4929C01B2450772200D40931 /* lyontoAlbatrosWalk.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = lyontoAlbatrosWalk.gpx; sourceTree = "<group>"; };
@@ -102,6 +107,7 @@
 		493F1F502455E40A0024BF1C /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		493F1F522455E6690024BF1C /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
 		493F1F542455EE740024BF1C /* RoutingInterpret.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutingInterpret.swift; sourceTree = "<group>"; };
+		493F1F56245768A20024BF1C /* LaunchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchView.swift; sourceTree = "<group>"; };
 		49A16CF8245316600096F430 /* lyonploermel.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = lyonploermel.gpx; sourceTree = "<group>"; };
 		49A16CFC2453224A0096F430 /* lyonSlow.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = lyonSlow.gpx; sourceTree = "<group>"; };
 		49A16CFE2453407D0096F430 /* eglantierGuerande.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = eglantierGuerande.gpx; sourceTree = "<group>"; };
@@ -217,8 +223,8 @@
 		493652112443AA7E00120DAC /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				493F1F56245768A20024BF1C /* LaunchView.swift */,
 				49F903EA245040D5004B7831 /* Annotations */,
-				49E9D06F244DC98700E79D5F /* MonumentAnnotations */,
 				49355833244B76A90023F848 /* Search */,
 				4935582A244B5BAD0023F848 /* DirectionOptions */,
 				49F903E9245040B7004B7831 /* Navigation */,
@@ -455,6 +461,9 @@
 		49F903EA245040D5004B7831 /* Annotations */ = {
 			isa = PBXGroup;
 			children = (
+				491DD4DC24597EA800754338 /* GasAnnotation.swift */,
+				491DD4DE24597F1E00754338 /* GasAnnotationView.swift */,
+				49E9D06F244DC98700E79D5F /* MonumentAnnotations */,
 				493652122443AA9000120DAC /* CustomPin.swift */,
 				49E9D03D244CBFA000E79D5F /* CustomPlainAV.swift */,
 			);
@@ -622,6 +631,7 @@
 				49A16D66245430250096F430 /* WeatherManager.swift in Sources */,
 				49E9D077244DEBE700E79D5F /* NavigationMetricsCell.swift in Sources */,
 				4900D284244858F50065752F /* SearchVC.swift in Sources */,
+				493F1F57245768A20024BF1C /* LaunchView.swift in Sources */,
 				49A5D2A7244357B6002E7D53 /* ViewController.swift in Sources */,
 				49E9D03C244CB03E00E79D5F /* WikipediaManager.swift in Sources */,
 				49E9D07E244DEC6700E79D5F /* PoisCell.swift in Sources */,
@@ -631,6 +641,7 @@
 				49E9D075244DEBAE00E79D5F /* NavigationMetricsVC.swift in Sources */,
 				49C0F41A2450AB450016212D /* MonumentNavigationCell.swift in Sources */,
 				49F903E1244F9B61004B7831 /* CommonPoisCell.swift in Sources */,
+				491DD4DF24597F1E00754338 /* GasAnnotationView.swift in Sources */,
 				49355829244B37410023F848 /* Keys.swift in Sources */,
 				49F903DF244F9B0D004B7831 /* TripAverageMetricsCell.swift in Sources */,
 				49E9D068244DC26300E79D5F /* WikiManagerCoord.swift in Sources */,
@@ -643,6 +654,7 @@
 				4935582E244B5CF40023F848 /* DirectionVC.swift in Sources */,
 				4900D2A82449D0C30065752F /* ResearchCell.swift in Sources */,
 				49355835244C875C0023F848 /* MonumentCell.swift in Sources */,
+				491DD4DD24597EA800754338 /* GasAnnotation.swift in Sources */,
 				4900D2AC2449DE910065752F /* routingManager.swift in Sources */,
 				49E9D080244DEC7300E79D5F /* BarChartCell.swift in Sources */,
 				4935582C244B5BF70023F848 /* DirectionGoCell.swift in Sources */,
