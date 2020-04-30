@@ -245,9 +245,9 @@ class NavigationCell: UITableViewCell {
             self.subIndicator.font = subFont
             self.exitlabel.font = subFont
             if on{
-                self.cardBG.addShadow(radius: 5, opacity: 0.3, color: .gray)
+                self.cardBG.addShadow(radius: 5, opacity: 0.3, color: K.shared.shadow!)
             }else{
-                self.cardBG.addShadow(radius: 5, opacity: 0, color: .gray)
+                self.cardBG.addShadow(radius: 5, opacity: 0, color: K.shared.shadow!)
             }
             
             self.layoutIfNeeded()

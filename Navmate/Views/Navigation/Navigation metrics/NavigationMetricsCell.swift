@@ -14,7 +14,7 @@ class NavigationMetricsCell: UICollectionViewCell {
     private lazy var cardBG: UIView = {
         let view = UIView()
         view.backgroundColor = K.shared.white
-        view.addShadow(radius: 5, opacity: 0.5, color: .gray)
+        view.addShadow(radius: 5, opacity: 0.5, color: K.shared.shadow!)
         view.layer.cornerRadius = 8
         return view
     }()
@@ -95,7 +95,7 @@ class NavigationMetricsCell: UICollectionViewCell {
             case .speed:
                 if let speed = notification.userInfo?["speed"] as? Double {
                     let kmhSpeed = speed * 3.6
-                    let speedString = String(format: "%.2f",kmhSpeed)
+                    let speedString = String(Int(kmhSpeed))
                     self.metricValue.text = "\(speedString) Kmh"
                 }
             case .altitude:
@@ -156,30 +156,28 @@ class NavigationMetricsCell: UICollectionViewCell {
       return (seconds / 3600, (seconds % 3600) / 60, (seconds % 3600) % 60)
     }
     func updateType(type: metricCellType) {
-
-//        let metrics = ["speed","marker","mountain","time","journey"]
+        
+        self.type = type
+        
+        let metricsImageNames = [metricCellType.speed:"speed",
+                                 metricCellType.altitude:"altitude",
+                                 metricCellType.location:"location",
+                                 metricCellType.course:"compass",
+                                 metricCellType.timeLeft:"time",]
         
         self.startUpdating = true
         
-        self.type = type
-        switch self.type {
-        case .speed:
-            self.metricIV.image = UIImage(named: "speed")
-        case .altitude:
-            self.metricIV.image = UIImage(named: "altitude")
-        case .location:
-            self.metricIV.image = UIImage(named: "location")
-        case .course:
-            self.metricIV.image = UIImage(named: "compass")
-        case .timeLeft:
-            self.metricIV.image = UIImage(named: "time")
-            
-            let duration = Locator.shared.getTotalTripDuration()
-            getTimeString(duration)
-            
-        default:
-            self.metricIV.image = UIImage(named: "marker")
+        if let name = metricsImageNames[type] {
+            if traitCollection.userInterfaceStyle == .dark {
+                let imageName = name + "White"
+                self.metricIV.image = UIImage(named: imageName)
+            }else{
+                self.metricIV.image = UIImage(named: name)
+            }
+           
         }
+        
+        
         
     }
     private func addLabel() {

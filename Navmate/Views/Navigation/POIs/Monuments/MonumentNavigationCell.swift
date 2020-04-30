@@ -55,7 +55,7 @@ class MonumentNavigationCell: ResearchCell {
         
         self.titleLabel.text = title
         self.subTitleLabel.text = subTitle
-        self.thumbNail.image = UIImage(named: imageName)
+        self.thumbNail.image = UIImage(named: MonumentManager.shared.getImageName(name: title))
         self.monument = monument
         
     }

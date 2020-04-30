@@ -14,7 +14,7 @@ class POIsCell: UICollectionViewCell {
     private lazy var cardBG: UIView = {
         let view = UIView()
         view.backgroundColor = K.shared.white
-        view.addShadow(radius: 5, opacity: 0.5, color: .gray)
+        view.addShadow(radius: 5, opacity: 0.5, color: K.shared.shadow!)
         view.layer.cornerRadius = K.shared.cornerRadiusCard
         return view
     }()

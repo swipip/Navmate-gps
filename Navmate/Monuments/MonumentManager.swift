@@ -38,6 +38,24 @@ class MonumentManager: NSObject {
         super.init()
     }
     
+    func getImageName(name: String) -> String{
+        if name.contains("Eglise") || name.contains("Église") || name.contains("Croix") || name.contains("Chapelle") {
+            
+            return "church"
+            
+        }else if name.contains("Phare") {
+            return "lighthouse"
+        }else if name.contains("Château") || name.contains("Remparts")  {
+            return "castel"
+        }else if name.contains("Mosqué") {
+            return "mosque"
+        }else if name.contains("Menhir") || name.contains("Pierre") {
+            return "rocks"
+        }else{
+            return "historic"
+        }
+    }
+    
     func getData(for region: CLCircularRegion) {
         
         self.monuments.removeAll()
