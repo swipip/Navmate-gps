@@ -93,6 +93,9 @@ class Locator: NSObject {
     private var checkPoint: CLCircularRegion?
     private var reroutingRequiered = false
     
+    //On the go rerouting
+    private var pointZeroCheckpointTimer = Timer()
+    
     private override init() {
         super.init()
         
@@ -136,6 +139,11 @@ class Locator: NSObject {
         }
         
     }
+    @objc private func zeroCheckpointinvalidated() {
+//        reroute
+        pointZeroCheckpointTimer.invalidate()
+        checkPointTimerExpirated()
+    }
     func secondsToHoursMinutesSeconds (seconds : Int) -> (timeString: String,hours:Int,minutes: Int,seconds: Int) {
         
         let time = (hours: seconds / 3600,minutes: (seconds % 3600) / 60,seconds: (seconds % 3600) % 60)
@@ -163,6 +171,8 @@ class Locator: NSObject {
             durationTracking = duration
         }
         
+        pointZeroCheckpointTimer = Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(zeroCheckpointinvalidated), userInfo: nil, repeats: false)
+        
         self.route = newRoute
         
         if let monitoredWayPoint = wayPoints!.first {
@@ -180,7 +190,8 @@ class Locator: NSObject {
         avgSpeedIncrementTimeTracker += 1
     }
     func startNavigation() {
-        
+                
+        pointZeroCheckpointTimer = Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(zeroCheckpointinvalidated), userInfo: nil, repeats: false)
         timeTrackingTimer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(incrementTime), userInfo: nil, repeats: true)
         avgSpeedTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(incrementTimeForSpeedComputation), userInfo: nil, repeats: true)
         
@@ -415,7 +426,7 @@ extension Locator: CLLocationManagerDelegate {
     }
     @objc private func checkPointTimerExpirated() {
         
-        print("\(#function) user did not entered checkpoint")
+//        print("\(#function) user did not entered checkpoint")
         
         //Reroute user from current location
         reroutingCheckTimer.invalidate()
@@ -490,7 +501,7 @@ extension Locator: CLLocationManagerDelegate {
                             self.currentStep = (i,step)
                             stepDistanceTracking += currentStep!.step.distance
                             if currentWPIndex == 0 {
-                                //                                self.currentWPIndex! += 1
+                                pointZeroCheckpointTimer.invalidate()
                                 break
                             }else{
                                 checkForRerouting(location: location)
