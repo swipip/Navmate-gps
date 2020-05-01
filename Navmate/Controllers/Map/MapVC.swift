@@ -19,13 +19,14 @@ class MapVC: UIViewController {
         let map = MKMapView()
         map.showsScale = true
         map.showsCompass = true
+//        map.layoutMargins = UIEdgeInsets(top: 45, left: 10, bottom: 0, right: 20)
         map.delegate = self
         map.register(MKAnnotationView.self, forAnnotationViewWithReuseIdentifier: mkViews.plain)
         map.register(CustomPlainAV.self, forAnnotationViewWithReuseIdentifier: mkViews.customPlain)
         map.register(MonumentAnnotationView.self, forAnnotationViewWithReuseIdentifier: mkViews.monument)
         map.register(GasAnnotationView.self, forAnnotationViewWithReuseIdentifier: mkViews.gas)
         let longPress = UILongPressGestureRecognizer(target: self, action: #selector(didLongPressOnTheMap(_:)))
-        longPress.minimumPressDuration = 1
+        longPress.minimumPressDuration = 0.5
         map.addGestureRecognizer(longPress)
         
         return map
@@ -184,7 +185,7 @@ class MapVC: UIViewController {
         if let location = locator.getUserLocation() {
             let region = MKCoordinateRegion(center: location.coordinate, latitudinalMeters: 200, longitudinalMeters: 200)
             self.mapView.setRegion(region, animated: true)
-            self.mapView.userTrackingMode = .followWithHeading
+            self.mapView.userTrackingMode = .follow
         }
 
     }
@@ -351,7 +352,7 @@ extension MapVC: LocatorDelegate {
         if let location = locator.getUserLocation() {
             let region = MKCoordinateRegion(center: location.coordinate, latitudinalMeters: 500, longitudinalMeters: 500)
             self.mapView.setRegion(region, animated: true)
-            self.mapView.userTrackingMode = .followWithHeading
+            self.mapView.userTrackingMode = .follow
             
         }
         
@@ -366,7 +367,7 @@ extension MapVC: LocatorDelegate {
         
         delegate?.didDrawRerouting()
         mapView.addOverlay(route.polylines[0])
-        mapView.userTrackingMode = .followWithHeading
+        mapView.userTrackingMode = .follow
         
 //        switch route.summary.destinationType {
 //        case .monument:

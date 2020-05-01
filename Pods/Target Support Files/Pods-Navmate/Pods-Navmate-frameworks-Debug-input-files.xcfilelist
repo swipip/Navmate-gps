@@ -1,5 +1,6 @@
 ${PODS_ROOT}/Target Support Files/Pods-Navmate/Pods-Navmate-frameworks.sh
 ${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework
 ${BUILT_PRODUCTS_DIR}/Polyline/Polyline.framework
+${BUILT_PRODUCTS_DIR}/Solar/Solar.framework
 ${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework
 ${BUILT_PRODUCTS_DIR}/lottie-ios/Lottie.framework

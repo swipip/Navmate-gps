@@ -9,6 +9,7 @@
 import UIKit
 import CoreLocation
 import SafariServices
+import Lottie
 
 protocol WikiMapDetailVCDelegate {
     func didDismiss()
@@ -17,6 +18,11 @@ protocol WikiMapDetailVCDelegate {
 
 class WikiMapDetailVC: UIViewController {
 
+    private lazy var loadingAnimation: AnimationView = {
+        let animation = AnimationView()
+        animation.animation = Animation.named("progress")
+        return animation
+    }()
     private lazy var blurView: UIVisualEffectView = {
         let blur = UIBlurEffect(style: .light)
         let visualEffect = UIVisualEffectView(effect: blur)
@@ -76,6 +82,8 @@ class WikiMapDetailVC: UIViewController {
     var urlString: String?
     var delegate: WikiMapDetailVCDelegate?
     
+    var didFind = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -103,6 +111,10 @@ class WikiMapDetailVC: UIViewController {
             self.addExtract()
             self.addButton()
             self.addKnowMoreButton()
+            if self.didFind == false {
+               self.addAnimation()
+            }
+            
         }
     }
     @objc private func buttonPressed(_ sender:UIButton!) {
@@ -116,6 +128,26 @@ class WikiMapDetailVC: UIViewController {
             
             self.dismiss(animated: true, completion: nil)
             delegate?.didRequestMoreInfo(urlString: self.urlString ?? "https://fr.wikipedia.org")
+            
+        }
+        
+    }
+    private func addAnimation() {
+        
+        self.view.addSubview(loadingAnimation)
+        
+        func addConstraints(fromView: UIView, toView: UIView) {
+               
+           fromView.translatesAutoresizingMaskIntoConstraints = false
+           
+            NSLayoutConstraint.activate([fromView.widthAnchor.constraint(equalToConstant: 60),
+                                         fromView.heightAnchor.constraint(equalToConstant: 60),
+                                        fromView.centerYAnchor.constraint(equalTo: toView.centerYAnchor, constant: 0),
+                                        fromView.centerXAnchor.constraint(equalTo: toView.centerXAnchor,constant: 0)])
+        }
+        addConstraints(fromView: loadingAnimation, toView: self.blurView)
+        
+        loadingAnimation.play(fromProgress: 0, toProgress: 1, loopMode: .loop) { (_) in
             
         }
         
@@ -225,6 +257,29 @@ class WikiMapDetailVC: UIViewController {
 
 }
 extension WikiMapDetailVC: WikiManagerDelegate {
+    
+    func didNotFindData() {
+        
+        
+        let label = UILabel()
+        label.text = "La page Wikipédia n'existe pas pour ce lieu"
+        label.numberOfLines = 0
+        
+        self.view.addSubview(label)
+        
+        
+        func addConstraints(fromView: UIView, toView: UIView) {
+               
+           fromView.translatesAutoresizingMaskIntoConstraints = false
+           
+           NSLayoutConstraint.activate([fromView.leadingAnchor.constraint(equalTo: toView.leadingAnchor, constant: 20),
+                                        fromView.trailingAnchor.constraint(equalTo: toView.trailingAnchor, constant: -20),
+                                        fromView.centerYAnchor.constraint(equalTo: toView.centerYAnchor, constant: 0)])
+        }
+        addConstraints(fromView: label, toView: self.blurView)
+        
+    }
+    
     func didFindData(wiki: WikiObject) {
         if let image =  wiki.image {
             self.imageThumb.image = image
@@ -232,6 +287,12 @@ extension WikiMapDetailVC: WikiManagerDelegate {
         self.cardTitle.text = wiki.title
         self.extract.text = wiki.description
         self.urlString = wiki.url
+        
+        didFind = true
+        
+        loadingAnimation.stop()
+        loadingAnimation.removeFromSuperview()
+        
     }
 }
 extension UIView {

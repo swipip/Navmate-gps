@@ -48,7 +48,6 @@ class ViewController: UIViewController {
     }()
     private lazy var locationButton: UIButton = {
         let button = UIButton()
-        button.backgroundColor = .white
         button.layer.cornerRadius = K.shared.cornerRadiusImageThumbNailCell
         button.setImage(UIImage(systemName: "location.fill"), for: .normal)
         button.tintColor = K.shared.brown
@@ -122,6 +121,13 @@ class ViewController: UIViewController {
         self.view.addSubview(launch)
         
     }
+    override func viewWillAppear(_ animated: Bool) {
+        if let mode = WeatherManager.shared.checkForDarkmode() {
+            if mode == false {
+                overrideUserInterfaceStyle = .dark    
+            }
+        }
+    }
     //MARK: - UI Construction
     private func addDismissNavButton() {
         self.view.addSubview(dismissNavButton)
@@ -143,9 +149,12 @@ class ViewController: UIViewController {
         
         
         navigationModeOn = false
+
+        self.animators.removeAll()
+        animateTransitionIfNeeded(state: .collapsed, duration: 0.6)
         
-        self.addSearchVC()
-        self.addSelectableHandle()
+//        self.addSearchVC()
+//        self.addSelectableHandle()
         
         self.mapView.mapView.removeOverlays(self.mapView.mapView.overlays)
         self.mapView.animateMapView(on: false)
@@ -348,7 +357,7 @@ class ViewController: UIViewController {
                 switch state {
                 case .total:
                     self.MapVCTopConstraint.constant = -45
-                    
+                    self.mapView.mapView.layoutMargins = UIEdgeInsets(top: 45, left: 0, bottom: 0, right: 10)
                     self.view.layoutIfNeeded()
                 case .collapsed:
                     self.MapVCTopConstraint.constant = self.view.frame.size.height - 190
@@ -356,6 +365,7 @@ class ViewController: UIViewController {
                     self.view.layoutIfNeeded()
                 case .midWay:
                     self.MapVCTopConstraint.constant = 290
+                    self.mapView.mapView.layoutMargins = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 10)
                     self.mapView.view.layer.cornerRadius = 12
                     self.view.layoutIfNeeded()
                 }

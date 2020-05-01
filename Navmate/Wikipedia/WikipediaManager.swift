@@ -12,6 +12,7 @@ import SwiftyJSON
 import Alamofire
 protocol WikiManagerDelegate: class {
     func didFindData(wiki: WikiObject)
+    func didNotFindData()
 }
 struct WikiObject {
     
@@ -29,6 +30,8 @@ class WikiManager: NSObject {
     private var imageURL: String?
     
     private override init() {
+        super.init()
+        WikiManagerCoord.shared.delegate = self
         
     }
     
@@ -127,3 +130,10 @@ class WikiManager: NSObject {
     
 }
 
+extension WikiManager: WikiManagerCoordDelegate {
+    
+    func errorRetrievingData() {
+        delegate?.didNotFindData()
+    }
+
+}

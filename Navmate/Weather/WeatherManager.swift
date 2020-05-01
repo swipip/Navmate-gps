@@ -7,7 +7,7 @@
 //
 import Foundation
 import CoreLocation
-
+import Solar
 
 protocol WeatherManagerDelegate: class {
     func didUpdateWeather(weather: String)
@@ -27,6 +27,38 @@ class WeatherManager: NSObject{
     }
     
     let url = "https://api.openweathermap.org/data/2.5/weather?appid=\(Keys.shared.weather)&units=metric"
+    
+    func checkForDarkmode() -> Bool?{
+        
+        if let hours = getSunriseSunset() {
+            let date = Date()
+            
+            if date > hours.sunrise && date < hours.sunset {
+                return true
+            }else{
+                return false
+            }
+        }
+        return nil
+    }
+    
+    func getSunriseSunset() -> (sunrise: Date, sunset: Date)?{
+        
+        if let location = Locator.shared.getUserLocation() {
+            let solar = Solar(coordinate: location.coordinate)
+            let sunrise = solar?.sunrise
+            let sunset = solar?.sunset
+            
+            if let sunrise = sunrise, let sunset = sunset {
+                
+                let actualSR = sunrise
+                let actualSS = sunset //+ 120 * 60
+                
+                return (actualSR,actualSS)
+            }
+        }
+        return nil
+    }
     
     func fetchWeather(city: String){
         let urlString = "\(url)&q=\(city)"
@@ -61,7 +93,7 @@ class WeatherManager: NSObject{
                                 let userInfo = ["weather":weather.conditionName]
                                 NotificationCenter.default.post(name: self.weatherNotification, object: nil, userInfo: userInfo)
                                 
-                                print("weather: \(weather)")
+//                                print("weather: \(weather)")
                                 
 //                                self.delegate?.didUpdateWeather(weather: weather.conditionName)
                             }

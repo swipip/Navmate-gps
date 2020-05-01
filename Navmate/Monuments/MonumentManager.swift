@@ -49,7 +49,7 @@ class MonumentManager: NSObject {
             return "castel"
         }else if name.contains("Mosqué") {
             return "mosque"
-        }else if name.contains("Menhir") || name.contains("Pierre") {
+        }else if name.contains("Menhir") || name.contains("Pierre") || name.contains("Dolmen") {
             return "rocks"
         }else{
             return "historic"

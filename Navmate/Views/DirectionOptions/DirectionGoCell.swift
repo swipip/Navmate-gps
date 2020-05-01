@@ -158,11 +158,11 @@ class DirectionGoCell: UICollectionViewCell {
            fromView.translatesAutoresizingMaskIntoConstraints = false
            
             NSLayoutConstraint.activate([fromView.widthAnchor.constraint(equalToConstant: 100),
-                                         fromView.trailingAnchor.constraint(equalTo: toView.trailingAnchor ,constant: -5),
-                                        fromView.topAnchor.constraint(equalTo: toView.topAnchor, constant: 5),
-                                        fromView.bottomAnchor.constraint(equalTo: toView.bottomAnchor,constant: -5)])
+                                         fromView.trailingAnchor.constraint(equalTo: toView.trailingAnchor ,constant: -15),
+                                        fromView.topAnchor.constraint(equalTo: directionTitle.bottomAnchor, constant: 5),
+                                        fromView.bottomAnchor.constraint(equalTo: dismissButton.topAnchor,constant: -5)])
         }
-        addConstraints(fromView: animation, toView: summaryCard)
+        addConstraints(fromView: animation, toView: directionCard)
 
     }
     private func addDirectionName() {

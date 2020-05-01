@@ -10,12 +10,14 @@ import Foundation
 import CoreLocation
 import Alamofire
 import SwiftyJSON
-
+protocol WikiManagerCoordDelegate: class {
+    func errorRetrievingData()
+}
 class WikiManagerCoord: NSObject {
     
     static let shared = WikiManagerCoord()
     
-//    weak var delegate: WikiManagerCoordDelegate?
+    weak var delegate: WikiManagerCoordDelegate?
     
     private var imageURL: String?
     
@@ -47,24 +49,16 @@ class WikiManagerCoord: NSObject {
         Alamofire.request(wikipediaURl, method: .get, parameters: parameters).responseJSON { (response) in
             if response.result.isSuccess {
 
-//                let data = response.data
-//
-//                let jsonString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)! as String
-//
-//                print(jsonString)
-                
-//                print(wikipediaURl)
-
                 let jsonData : JSON = JSON(response.result.value!)
 
                 let pageName = jsonData["query"]["geosearch"][0]["title"].stringValue
 
-//                print(pageName)
-                
-                WikiManager.shared.requestInfo(monument: pageName)
-                
-
-                
+                if pageName == "" {
+                    self.delegate?.errorRetrievingData()
+                }else{
+                    WikiManager.shared.requestInfo(monument: pageName)
+                }
+                      
             }
             else {
                 print("Error \(String(describing: response.result.error))")

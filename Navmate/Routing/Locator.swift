@@ -95,6 +95,7 @@ class Locator: NSObject {
     
     //On the go rerouting
     private var pointZeroCheckpointTimer = Timer()
+    private var didCheckforZero = false
     
     private override init() {
         super.init()
@@ -111,6 +112,8 @@ class Locator: NSObject {
         
     }
     private func clearVariableFornewRoute() {
+        pointZeroCheckpointTimer.invalidate()
+        reroutingCheckTimer.invalidate()
         entered = false
         left = true
         previousLocation = nil
@@ -141,6 +144,7 @@ class Locator: NSObject {
     }
     @objc private func zeroCheckpointinvalidated() {
 //        reroute
+        didCheckforZero = false
         pointZeroCheckpointTimer.invalidate()
         checkPointTimerExpirated()
     }
@@ -171,16 +175,19 @@ class Locator: NSObject {
             durationTracking = duration
         }
         
-        pointZeroCheckpointTimer = Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(zeroCheckpointinvalidated), userInfo: nil, repeats: false)
-        
         self.route = newRoute
+        self.wayPoints = self.route?.wayPoints
         
         if let monitoredWayPoint = wayPoints!.first {
             self.monitoredWayPoint = monitoredWayPoint
             self.currentWPIndex = 0
             self.currentStep = nil
         }
-
+        
+        // when user starts moving it triggers a timer that will check whether the user entered in the first waypoint. if not then reroute
+        pointZeroCheckpointTimer = Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(zeroCheckpointinvalidated), userInfo: nil, repeats: false)
+        
+        locationManager.startUpdatingLocation()
         
     }
     @objc private func incrementTime() {
@@ -190,7 +197,8 @@ class Locator: NSObject {
         avgSpeedIncrementTimeTracker += 1
     }
     func startNavigation() {
-                
+        
+        // when user starts moving it triggers a timer that will check whether the user entered in the first waypoint. if not then reroute
         pointZeroCheckpointTimer = Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(zeroCheckpointinvalidated), userInfo: nil, repeats: false)
         timeTrackingTimer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(incrementTime), userInfo: nil, repeats: true)
         avgSpeedTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(incrementTimeForSpeedComputation), userInfo: nil, repeats: true)
@@ -255,7 +263,7 @@ class Locator: NSObject {
     func getUserLocation() -> CLLocation? {
         
         locationManager.startUpdatingLocation()
-        
+//        locationManager.requestLocation()
         let location = locationManager.location
         if let loc = location {
             delegate?.didFinduserLocation(location: loc)
@@ -320,6 +328,8 @@ extension Locator: CLLocationManagerDelegate {
     fileprivate func sendDistanceAndLocationUpdate(_ suitableForSpeedAndAltitude: Bool, _ location: CLLocation) {
         if suitableForSpeedAndAltitude {
             
+            guard let waypoints = self.wayPoints else {return}
+            
             let userInfo = ["location":location]
             NotificationCenter.default.post(name: locationNotification, object: nil, userInfo: userInfo)
             
@@ -327,7 +337,10 @@ extension Locator: CLLocationManagerDelegate {
                 
                 if let _ = currentStep?.step.distance {
                     
-                    let distance = stepDistanceTracking - distanceTracking
+                    let wpCoordinates = CLLocation(latitude: waypoints[currentWPIndex!].coordinate.latitude, longitude: waypoints[currentWPIndex!].coordinate.longitude)
+                    let distance = location.distance(from: wpCoordinates)
+                    
+//                    let distance = stepDistanceTracking - distanceTracking
                     
                     var userInfo = ["distance":distance]
                     NotificationCenter.default.post(name: distanceNotification, object: nil, userInfo: userInfo)
@@ -415,7 +428,7 @@ extension Locator: CLLocationManagerDelegate {
             
             let newCheckWP = CLLocation(latitude: newLatitude, longitude: newLongitude)
             
-            checkPoint = CLCircularRegion(center: newCheckWP.coordinate, radius: 30, identifier: "checkPoint")
+            checkPoint = CLCircularRegion(center: newCheckWP.coordinate, radius: 20, identifier: "checkPoint")
             
             delegate?.didMoveToNextWP(waypointIndex: 0, status: "", location: newCheckWP)
             
@@ -456,7 +469,9 @@ extension Locator: CLLocationManagerDelegate {
             }
         }
     }
-    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print(error)
+    }
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         
         guard let route = self.route else {return}
@@ -465,6 +480,10 @@ extension Locator: CLLocationManagerDelegate {
         let wayPoints = route.wayPoints
         
         if let location = locations.last {
+            
+
+
+
             
             checkForCheckpointValidation(location)
             
@@ -566,8 +585,8 @@ extension Locator: CLLocationManagerDelegate {
                             if contains == true{
 //                                contains = false
                                 
-                                self.monitoredWayPoint = nil
-                                reroutingCheckTimer.invalidate()
+//                                self.checkPoint = nil
+//                                reroutingCheckTimer.invalidate()
                                 
                                 self.currentStep = (i,route.steps[i+1])
                                 
