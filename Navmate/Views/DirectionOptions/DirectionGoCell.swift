@@ -19,7 +19,12 @@ class DirectionGoCell: UICollectionViewCell {
     
     
     private lazy var directionCard: UIVisualEffectView = {
-        let blur = UIBlurEffect(style: .systemUltraThinMaterialLight)
+        var blur = UIBlurEffect()
+        if traitCollection.userInterfaceStyle == .light {
+            blur = UIBlurEffect(style: .systemUltraThinMaterialLight)
+        }else{
+            blur = UIBlurEffect(style: .systemUltraThinMaterialDark)
+        }
         let view = UIVisualEffectView(effect: blur)
         view.layer.cornerRadius = K.shared.cornerRadiusCard
         view.clipsToBounds = true
@@ -57,7 +62,7 @@ class DirectionGoCell: UICollectionViewCell {
     }()
     private lazy var summaryCard: UIView = {
         let view = UIView()
-        view.backgroundColor = .white
+        view.backgroundColor = K.shared.white
         view.alpha = 0.3
         view.layer.cornerRadius = 12
         return view

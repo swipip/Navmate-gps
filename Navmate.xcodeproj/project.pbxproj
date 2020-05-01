@@ -16,6 +16,9 @@
 		491DD4DD24597EA800754338 /* GasAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491DD4DC24597EA800754338 /* GasAnnotation.swift */; };
 		491DD4DF24597F1E00754338 /* GasAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491DD4DE24597F1E00754338 /* GasAnnotationView.swift */; };
 		4920F10E245C7959005109BB /* progress.json in Resources */ = {isa = PBXBuildFile; fileRef = 4920F10D245C7959005109BB /* progress.json */; };
+		4920F110245CB332005109BB /* magnifier.json in Resources */ = {isa = PBXBuildFile; fileRef = 4920F10F245CB332005109BB /* magnifier.json */; };
+		4920F112245CB722005109BB /* magnifierWhite.json in Resources */ = {isa = PBXBuildFile; fileRef = 4920F111245CB721005109BB /* magnifierWhite.json */; };
+		4920F114245CBA46005109BB /* searcher.json in Resources */ = {isa = PBXBuildFile; fileRef = 4920F113245CBA46005109BB /* searcher.json */; };
 		4929C01824504F6D00D40931 /* gare.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 4929C01724504F6D00D40931 /* gare.gpx */; };
 		4929C01A245061A100D40931 /* lyonFast.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 4929C019245061A100D40931 /* lyonFast.gpx */; };
 		4929C01C2450772300D40931 /* lyontoAlbatrosWalk.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 4929C01B2450772200D40931 /* lyontoAlbatrosWalk.gpx */; };
@@ -94,6 +97,9 @@
 		491DD4DC24597EA800754338 /* GasAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GasAnnotation.swift; sourceTree = "<group>"; };
 		491DD4DE24597F1E00754338 /* GasAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GasAnnotationView.swift; sourceTree = "<group>"; };
 		4920F10D245C7959005109BB /* progress.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = progress.json; sourceTree = "<group>"; };
+		4920F10F245CB332005109BB /* magnifier.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = magnifier.json; sourceTree = "<group>"; };
+		4920F111245CB721005109BB /* magnifierWhite.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = magnifierWhite.json; sourceTree = "<group>"; };
+		4920F113245CBA46005109BB /* searcher.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = searcher.json; sourceTree = "<group>"; };
 		4929C01724504F6D00D40931 /* gare.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = gare.gpx; sourceTree = "<group>"; };
 		4929C019245061A100D40931 /* lyonFast.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = lyonFast.gpx; sourceTree = "<group>"; };
 		4929C01B2450772200D40931 /* lyontoAlbatrosWalk.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = lyontoAlbatrosWalk.gpx; sourceTree = "<group>"; };
@@ -190,6 +196,9 @@
 		4920F10C245C7945005109BB /* AnimationsJSON */ = {
 			isa = PBXGroup;
 			children = (
+				4920F111245CB721005109BB /* magnifierWhite.json */,
+				4920F113245CBA46005109BB /* searcher.json */,
+				4920F10F245CB332005109BB /* magnifier.json */,
 				4920F10D245C7959005109BB /* progress.json */,
 			);
 			path = AnimationsJSON;
@@ -571,11 +580,13 @@
 				49C1B0AA2452C5D2007B5808 /* lyonCavalièreCycle.gpx in Resources */,
 				49A16D5B24542FC90096F430 /* rainyNight.json in Resources */,
 				4929C01A245061A100D40931 /* lyonFast.gpx in Resources */,
+				4920F114245CBA46005109BB /* searcher.json in Resources */,
 				49A16D5E24542FC90096F430 /* foggy.json in Resources */,
 				49A16CFD2453224A0096F430 /* lyonSlow.gpx in Resources */,
 				49A16D6124542FC90096F430 /* stormShower.json in Resources */,
 				49A16D6224542FC90096F430 /* snowSunny.json in Resources */,
 				49A5D2AC244357B9002E7D53 /* Assets.xcassets in Resources */,
+				4920F112245CB722005109BB /* magnifierWhite.json in Resources */,
 				49A16D5624542FC90096F430 /* windy.json in Resources */,
 				49A16CFF2453407D0096F430 /* eglantierGuerande.gpx in Resources */,
 				4920F10E245C7959005109BB /* progress.json in Resources */,
@@ -583,6 +594,7 @@
 				49C1B0A82452262F007B5808 /* lyonAlbatrosCycle.gpx in Resources */,
 				4929C01824504F6D00D40931 /* gare.gpx in Resources */,
 				49A16D5724542FC90096F430 /* cloudyNight.json in Resources */,
+				4920F110245CB332005109BB /* magnifier.json in Resources */,
 				49A16D5C24542FC90096F430 /* partlyCloudy.json in Resources */,
 				49A16D5F24542FC90096F430 /* shower.json in Resources */,
 				49A16D5924542FC90096F430 /* mist.json in Resources */,

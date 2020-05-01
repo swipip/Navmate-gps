@@ -128,20 +128,6 @@ struct WeatherModel{
     let conditionID: Int
     var cityName: String?
     var temperature: Double?
-    
-    func check(time: NSDate) -> String? {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "HH:mm"
-        formatter.timeZone = NSTimeZone(name: "GMT") as TimeZone?
-        guard let
-            beginNight = formatter.date(from: "20:00"),
-            let beginDay = formatter.date(from: "08:00")
-            else { return nil }
-        
-        if time.compare(beginNight) == .orderedDescending { return "night" }
-        if time.compare(beginDay) == .orderedDescending { return "day"}
-        return "Evening"
-    }
 
     var conditionName: String {
         switch conditionID {
@@ -150,29 +136,35 @@ struct WeatherModel{
         case 300...321:
             return "windy"
         case 500...531:
-            let time = NSDate()
-            let day = check(time: time)
-            if day == "night" {
-                return "shower"
+            let day = WeatherManager.shared.checkForDarkmode()
+            if day == false {
+                return "rainyNight"
             }else{
                return "shower"
             }
         case 600...622:
-            return "snow"
+            let day = WeatherManager.shared.checkForDarkmode()
+            if day == false {
+                return "snowNight"
+            }else{
+               return "snow"
+            }
         case 701...781:
             return "mist"
         case 800:
-            let time = NSDate()
-            let day = check(time: time)
-            if day == "night" {
+            let day = WeatherManager.shared.checkForDarkmode()
+            if day == false {
                 return "night"
             }else{
                return "sunny"
             }
-            
-            
         case 801...804:
-            return "partlyCloudy"
+            let day = WeatherManager.shared.checkForDarkmode()
+            if day == false {
+                return "cloudyNight"
+            }else{
+               return "partlyCloudy"
+            }
         default:
             return "windy"
         }

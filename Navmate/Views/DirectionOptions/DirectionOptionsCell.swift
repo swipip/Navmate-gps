@@ -13,8 +13,12 @@ protocol DirectionOptionsCellDelegate {
 class DirectionOptionsCell: UICollectionViewCell {
     
     private lazy var directionCard: UIVisualEffectView = {
-        
-        let blur = UIBlurEffect(style: .systemUltraThinMaterialLight)
+        var blur = UIBlurEffect()
+        if traitCollection.userInterfaceStyle == .light {
+            blur = UIBlurEffect(style: .systemUltraThinMaterialLight)
+        }else{
+            blur = UIBlurEffect(style: .systemUltraThinMaterialDark)
+        }
         let view = UIVisualEffectView(effect: blur)
         view.layer.cornerRadius = 12
         view.clipsToBounds = true

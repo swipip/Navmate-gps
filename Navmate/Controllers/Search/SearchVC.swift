@@ -8,6 +8,8 @@
 
 import UIKit
 import MapKit
+import Lottie
+
 protocol SearchVCDelegate {
     func didEnterSearchField()
     func didSelectAddress(placemark: MKPointAnnotation)
@@ -22,6 +24,11 @@ class SearchVC: UIViewController {
         searchBar.backgroundImage = UIImage()
         searchBar.delegate = self
         return searchBar
+    }()
+    private lazy var magnifierAnimation: AnimationView = {
+        let animation = AnimationView()
+        animation.animation = Animation.named("searcher")
+        return animation
     }()
     private lazy var handle: UIView = {
         let view = UIView()
@@ -62,6 +69,7 @@ class SearchVC: UIViewController {
         addSearchBar()
         addHandle()
         addSearchResultsTable()
+        addAnimation()
         
     }
     deinit {
@@ -79,6 +87,26 @@ class SearchVC: UIViewController {
     func resignKeyboard() {
         self.searchField.resignFirstResponder()
         self.researchTable.alpha = 0.0
+    }
+    private func addAnimation() {
+        
+        self.view.addSubview(magnifierAnimation)
+        
+        func addConstraints(fromView: UIView, toView: UIView) {
+               
+           fromView.translatesAutoresizingMaskIntoConstraints = false
+           
+            NSLayoutConstraint.activate([fromView.centerXAnchor.constraint(equalTo: toView.centerXAnchor, constant: 0),
+                                         fromView.centerYAnchor.constraint(equalTo: toView.centerYAnchor ,constant: -50),
+                                        fromView.widthAnchor.constraint(equalToConstant: 200),
+                                        fromView.heightAnchor.constraint(equalToConstant: 200)])
+        }
+        addConstraints(fromView: magnifierAnimation, toView: self.view)
+        
+        magnifierAnimation.play(fromProgress: 0, toProgress: 1, loopMode: .loop) { (_) in
+            
+        }
+        
     }
     private func addSearchResultsTable() {
         
@@ -259,7 +287,10 @@ extension SearchVC: UITableViewDelegate, UITableViewDataSource {
 extension SearchVC: UISearchBarDelegate {
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-
+        
+        magnifierAnimation.stop()
+        magnifierAnimation.isHidden = true
+        
         searchCompleter.queryFragment = searchBar.text!
         
     }
@@ -269,6 +300,9 @@ extension SearchVC: UISearchBarDelegate {
         
     }
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        
+       
+        
         delegate?.didEnterSearchField()
         
     }
