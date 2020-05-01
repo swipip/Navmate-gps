@@ -72,7 +72,7 @@ class MonumentNavigationDetail: UIView {
     convenience init(frame: CGRect, monument: Monument) {
         self.init(frame: frame)
         
-        let location = CLLocation(latitude: monument.latitude, longitude: -monument.longitude)
+        let location = CLLocation(latitude: monument.latitude, longitude: monument.longitude)
         
         WikiManagerCoord.shared.requestInfo(location: location)
         

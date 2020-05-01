@@ -62,6 +62,7 @@
 		49C1B0A62451B00D007B5808 /* RouteRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C1B0A52451B00D007B5808 /* RouteRequest.swift */; };
 		49C1B0A82452262F007B5808 /* lyonAlbatrosCycle.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 49C1B0A72452262F007B5808 /* lyonAlbatrosCycle.gpx */; };
 		49C1B0AA2452C5D2007B5808 /* lyonCavalièreCycle.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 49C1B0A92452C5D2007B5808 /* lyonCavalièreCycle.gpx */; };
+		49DB71B2245B26FE00A143CD /* MonumentClusters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49DB71B1245B26FE00A143CD /* MonumentClusters.swift */; };
 		49E9D03A244C92BC00E79D5F /* K.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E9D039244C92BC00E79D5F /* K.swift */; };
 		49E9D03C244CB03E00E79D5F /* WikipediaManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E9D03B244CB03E00E79D5F /* WikipediaManager.swift */; };
 		49E9D03E244CBFA000E79D5F /* CustomPlainAV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E9D03D244CBFA000E79D5F /* CustomPlainAV.swift */; };
@@ -140,6 +141,7 @@
 		49C1B0A52451B00D007B5808 /* RouteRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteRequest.swift; sourceTree = "<group>"; };
 		49C1B0A72452262F007B5808 /* lyonAlbatrosCycle.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = lyonAlbatrosCycle.gpx; sourceTree = "<group>"; };
 		49C1B0A92452C5D2007B5808 /* lyonCavalièreCycle.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "lyonCavalièreCycle.gpx"; sourceTree = "<group>"; };
+		49DB71B1245B26FE00A143CD /* MonumentClusters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonumentClusters.swift; sourceTree = "<group>"; };
 		49E9D039244C92BC00E79D5F /* K.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = K.swift; sourceTree = "<group>"; };
 		49E9D03B244CB03E00E79D5F /* WikipediaManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WikipediaManager.swift; sourceTree = "<group>"; };
 		49E9D03D244CBFA000E79D5F /* CustomPlainAV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPlainAV.swift; sourceTree = "<group>"; };
@@ -401,6 +403,7 @@
 			isa = PBXGroup;
 			children = (
 				49C0888124436C3600EBEAE5 /* MonumentManager.swift */,
+				49DB71B1245B26FE00A143CD /* MonumentClusters.swift */,
 			);
 			path = Monuments;
 			sourceTree = "<group>";
@@ -626,6 +629,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				493F1F552455EE740024BF1C /* RoutingInterpret.swift in Sources */,
+				49DB71B2245B26FE00A143CD /* MonumentClusters.swift in Sources */,
 				49355832244B71D30023F848 /* RouteQueryModel.swift in Sources */,
 				49C1B0A42450B713007B5808 /* MonumentNavigationDetail.swift in Sources */,
 				49A16D66245430250096F430 /* WeatherManager.swift in Sources */,

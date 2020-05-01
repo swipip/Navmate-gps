@@ -278,7 +278,7 @@ extension SearchVC: MonumentCellDelegate {
     
     func didSelectMonument(monument: Monument) {
  
-        let placeMark = MKPlacemark(coordinate: CLLocationCoordinate2D(latitude: monument.latitude, longitude: -monument.longitude))
+        let placeMark = MKPlacemark(coordinate: CLLocationCoordinate2D(latitude: monument.latitude, longitude: monument.longitude))
         
         let annotation = MonumentAnnotation()
         annotation.title = monument.name

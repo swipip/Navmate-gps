@@ -61,48 +61,81 @@ class MonumentManager: NSObject {
         self.monuments.removeAll()
         
         fetchData { (json) in
-            for i in 0...json.count {
-                let name = json[i]["Monument"].stringValue
-                let latitude = json[i]["Lattitude"].doubleValue
-                let longitude = json[i]["Longitude"].doubleValue
-                let protection = json[i]["Protection"].stringValue
-                let town = json[i]["Commune"].stringValue
-                let address = json[i]["Adresse"].stringValue
+
+            let monumentsArray = json["areas"][0]["monuments"].arrayValue
+            
+            let latitude = monumentsArray.map({$0["Latitude"].doubleValue})
+            let longitude = monumentsArray.map({$0["Longitude"].doubleValue})
+            
+            for (i,latitude) in latitude.enumerated() {
                 
-                let monument = Monument(name: name, town: town, address: address, latitude: latitude, longitude: longitude, protection: protection)
+                let location = CLLocation(latitude: latitude, longitude: longitude[i])
                 
-                let monumentLocation = CLLocation(latitude: latitude, longitude: -longitude)
-                
-                if region.contains(monumentLocation.coordinate) {
+                if region.contains(location.coordinate) {
+                    
+                    let name = monumentsArray[i]["Monument"].stringValue
+                    
+                    let protection = monumentsArray[i]["Protection"].stringValue
+                    let town = monumentsArray[i]["Commune"].stringValue
+                    let address = monumentsArray[i]["Adresse"].stringValue
+                    
+                    
+                    let monument = Monument(name: name, town: town, address: address, latitude: latitude, longitude: longitude[i], protection: protection)
                     self.monuments.append(monument)
                 }
+                
             }
             
-            let userInfo = ["monuments":self.monuments]
-            NotificationCenter.default.post(name: self.notificationMonument, object: nil, userInfo: userInfo)
+            DispatchQueue.main.async {
+                
+                let userInfo = ["monuments":self.monuments]
+                NotificationCenter.default.post(name: self.notificationMonument, object: nil, userInfo: userInfo)
+                
+                self.delegate?.didFetchData(monuments: self.monuments)
+                
+            }
             
-            self.delegate?.didFetchData(monuments: self.monuments)
         }
     }
     private func fetchData(completion: @escaping (_ json: JSON) -> Void) {
         
-        let url = URL(string: "https://api.jsonbin.io/b/5e9338f9c740b842f2df073b")!
-        
-        Alamofire.request(url, method: .get).validate().responseJSON { response in
+        if let userLocation = Locator.shared.getUserLocation() {
             
-            switch response.result {
-            case .success(let value):
-                let json = JSON(value)
+            var urlString = ""
+            var distancetracker: Double = 100000
+            
+            var clusterDistance = [Int:Double]()
+            
+            for (_,cluster) in MonumentClusters.clusterCoordinates.enumerated() {
                 
-                DispatchQueue.main.async {
-                    completion(json)
+                let clusterLoc = CLLocation(latitude: cluster.value.first!, longitude: cluster.value.last!)
+                let distance = clusterLoc.distance(from: userLocation)
+                let key = cluster.key
+                
+                if distance < distancetracker {
+                    distancetracker = distance
+                    urlString = MonumentClusters.clusters[key]!
                 }
                 
-            case .failure(let error):
-                print(error)
             }
-            }
-        
+            
+            let url = URL(string: urlString)!
+            
+            Alamofire.request(url, method: .get).validate().responseJSON { response in
+                
+                switch response.result {
+                case .success(let value):
+                    let json = JSON(value)
+                    
+                    DispatchQueue.main.async {
+                        completion(json)
+                    }
+                    
+                case .failure(let error):
+                    print(error)
+                }
+                }
+            
+        }
     }
-    
 }
