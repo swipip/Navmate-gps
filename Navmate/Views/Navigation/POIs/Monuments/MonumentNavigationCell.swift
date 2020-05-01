@@ -55,7 +55,7 @@ class MonumentNavigationCell: ResearchCell {
         
         self.titleLabel.text = title
         self.subTitleLabel.text = subTitle
-        self.thumbNail.image = UIImage(named: imageName)
+        self.thumbNail.image = UIImage(named: MonumentManager.shared.getImageName(name: title))
         self.monument = monument
         
     }
@@ -63,7 +63,7 @@ class MonumentNavigationCell: ResearchCell {
         
         if let monument = self.monument, let currentRequest = Locator.shared.getCurrentRouteRequestInfo() {
             
-            let destination = CLLocation(latitude: monument.latitude, longitude: -monument.longitude).coordinate
+            let destination = CLLocation(latitude: monument.latitude, longitude: monument.longitude).coordinate
             
             let request = RouteRequest(destinationName: monument.name, destination: destination, destinationType: .monument, mode: currentRequest.mode, preference: currentRequest.preference, avoid: currentRequest.avoid, calculationMode: .recalculation)
             
@@ -145,7 +145,7 @@ class MonumentNavigationCell: ResearchCell {
             
             if let location = Locator.shared.getUserLocation() {
                 
-                let monumentPosition = CLLocation(latitude: monument.latitude, longitude: -monument.longitude)
+                let monumentPosition = CLLocation(latitude: monument.latitude, longitude: monument.longitude)
                 
                 let distance = monumentPosition.distance(from: location)
                 

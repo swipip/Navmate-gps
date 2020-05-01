@@ -14,7 +14,7 @@ class MonumentSearchDetailCell: UICollectionViewCell {
         let view = UIView()
         view.backgroundColor = K.shared.white
         view.layer.cornerRadius = 8
-        view.addShadow(radius: 5, opacity: 0.3, color: .gray)
+        view.addShadow(radius: 5, opacity: 0.3, color: K.shared.shadow!)
         return view
     }()
     private lazy var imageView: UIImageView = {
@@ -73,19 +73,7 @@ class MonumentSearchDetailCell: UICollectionViewCell {
         }
         let name = monument.name
         
-        if name.contains("Eglise") || name.contains("Croix") || name.contains("Chapelle") {
-            
-            self.imageView.image = UIImage(named: "church")
-            
-        }else if name.contains("Phare") {
-            imageView.image = UIImage(named: "lighthouse")
-        }else if name.contains("Château") || name.contains("Remparts")  {
-            imageView.image = UIImage(named: "castel")
-        }else if name.contains("Mosqué") {
-            imageView.image = UIImage(named: "mosque")
-        }else{
-            imageView.image = UIImage(named: "historic")
-        }
+        imageView.image = UIImage(named: MonumentManager.shared.getImageName(name: name))
         
     }
     private func addAddressLabel() {

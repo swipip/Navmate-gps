@@ -114,7 +114,7 @@ class BarChartCell: CommonPoisCell {
         for i in 0 ..< barQty {
             let bar = UIView()
             bar.layer.cornerRadius = 8
-            bar.backgroundColor = UIColor(named: "blue")
+            bar.backgroundColor = K.shared.blueBars
             
             self.addSubview(bar)
             

@@ -60,6 +60,9 @@ class WeatherManager: NSObject{
                             DispatchQueue.main.async {
                                 let userInfo = ["weather":weather.conditionName]
                                 NotificationCenter.default.post(name: self.weatherNotification, object: nil, userInfo: userInfo)
+                                
+                                print("weather: \(weather)")
+                                
 //                                self.delegate?.didUpdateWeather(weather: weather.conditionName)
                             }
                             

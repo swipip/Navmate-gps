@@ -490,6 +490,8 @@ class ViewController: UIViewController {
 extension ViewController: SearchVCDelegate {
     func didSelectedPOI(type: String) {
         
+        self.mapView.mapView.removeAnnotations(mapView.mapView.annotations)
+        
         self.animateTransitionIfNeeded(state: .collapsed, duration: 1)
         
         if let location = Locator.shared.getUserLocation() {
@@ -508,10 +510,18 @@ extension ViewController: SearchVCDelegate {
                     if let places = response?.mapItems {
                         for place in places {
                             
-                            let annotation = CustomPin(title: place.name ?? "name", subtitle: type, coordinate: place.placemark.coordinate)
+                            var annotation: MKAnnotation?
+                            switch type {
+                            case "Station service","Station":
+                                annotation = GasAnnotation(title: place.name ?? "Station", subtitle: type, coordinate: place.placemark.coordinate)
+                            default:
+                                annotation = CustomPin(title: place.name ?? "name", subtitle: type, coordinate: place.placemark.coordinate)
+                            }
+                            
+                            
 //                            annotation.title = place.name
 //                            annotation.coordinate = place.placemark.coordinate
-                            self.mapView.mapView.addAnnotation(annotation)
+                            self.mapView.mapView.addAnnotation(annotation!)
                             
                         }
                     }
@@ -535,7 +545,7 @@ extension ViewController: SearchVCDelegate {
     
     private func cleanMapView() {
         self.mapView.mapView.removeOverlays(mapView.mapView.overlays)
-        self.mapView.mapView.removeAnnotations(mapView.mapView.annotations)
+//        self.mapView.mapView.removeAnnotations(mapView.mapView.annotations)
     }
     
     func didEnterSearchField() {
