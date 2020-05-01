@@ -163,9 +163,12 @@ class Locator: NSObject {
             durationTracking = duration
         }
         
+        self.route = newRoute
+        
         if let monitoredWayPoint = wayPoints!.first {
             self.monitoredWayPoint = monitoredWayPoint
             self.currentWPIndex = 0
+            self.currentStep = nil
         }
 
         
@@ -384,7 +387,7 @@ extension Locator: CLLocationManagerDelegate {
         let monitoredWP = route.wayPoints[wpIndex]
         
         let rad = 57.295779513082323
-        let radius = 3440.4
+        let radius = 3440.4 //miles
         let latitude = monitoredWP.coordinate.latitude
         let longitude = monitoredWP.coordinate.longitude
         let pi = Double.pi
@@ -468,7 +471,9 @@ extension Locator: CLLocationManagerDelegate {
             }
             
             let region = CLCircularRegion(center: wayPoints[currentWPIndex].coordinate, radius: radius, identifier: "")
-        
+            #warning("_")
+            delegate?.didMoveToNextWP(waypointIndex: currentWPIndex, status: "entered", location: wayPoints[currentWPIndex])
+            
             if region.contains(location.coordinate) {
                 //user entering
                 if entered == false {
@@ -486,6 +491,7 @@ extension Locator: CLLocationManagerDelegate {
                             stepDistanceTracking += currentStep!.step.distance
                             if currentWPIndex == 0 {
                                 //                                self.currentWPIndex! += 1
+                                break
                             }else{
                                 checkForRerouting(location: location)
                                 if dif != 1 {
@@ -548,7 +554,11 @@ extension Locator: CLLocationManagerDelegate {
                         if currentWPIndex == exitWP {
                             if contains == true{
 //                                contains = false
-                            
+                                #warning("exiting a monitored WP should reset checkpoint")
+                                
+//                                self.monitoredWayPoint = nil
+//                                reroutingCheckTimer.invalidate()
+                                
                                 self.currentStep = (i,route.steps[i+1])
                                 
                                 sendNotification()
