@@ -482,8 +482,8 @@ extension Locator: CLLocationManagerDelegate {
             }
             
             let region = CLCircularRegion(center: wayPoints[currentWPIndex].coordinate, radius: radius, identifier: "")
-            #warning("_")
-            delegate?.didMoveToNextWP(waypointIndex: currentWPIndex, status: "entered", location: wayPoints[currentWPIndex])
+
+//            delegate?.didMoveToNextWP(waypointIndex: currentWPIndex, status: "entered", location: wayPoints[currentWPIndex])
             
             if region.contains(location.coordinate) {
                 //user entering
@@ -565,10 +565,9 @@ extension Locator: CLLocationManagerDelegate {
                         if currentWPIndex == exitWP {
                             if contains == true{
 //                                contains = false
-                                #warning("exiting a monitored WP should reset checkpoint")
                                 
-//                                self.monitoredWayPoint = nil
-//                                reroutingCheckTimer.invalidate()
+                                self.monitoredWayPoint = nil
+                                reroutingCheckTimer.invalidate()
                                 
                                 self.currentStep = (i,route.steps[i+1])
                                 
