@@ -29,6 +29,7 @@ class MonumentManager: NSObject {
     
     private var monuments = [Monument]()
     private var notificationMonument = Notification.Name(rawValue: K.shared.notificationMonuments)
+    private let notificationMonumentMap = Notification.Name(K.shared.notificationMonumentsMap)
     
     weak var delegate: MonumentManagerDelegate?
     
@@ -55,12 +56,14 @@ class MonumentManager: NSObject {
             return "historic"
         }
     }
-    
-    func getData(for region: CLCircularRegion) {
+    enum MonumentSearchOptions {
+        case regular, mapDisplay
+    }
+    func getData(for region: CLCircularRegion, withOption option: MonumentSearchOptions? = .regular ) {
         
         self.monuments.removeAll()
         
-        fetchData { (json) in
+        fetchData(region: region, option: option!) { (json) in
 
             let monumentsArray = json["areas"][0]["monuments"].arrayValue
             
@@ -87,55 +90,66 @@ class MonumentManager: NSObject {
             }
             
             DispatchQueue.main.async {
-                
-                let userInfo = ["monuments":self.monuments]
-                NotificationCenter.default.post(name: self.notificationMonument, object: nil, userInfo: userInfo)
-                
-                self.delegate?.didFetchData(monuments: self.monuments)
-                
+                if option == .regular {
+                    let userInfo = ["monuments":self.monuments]
+                    NotificationCenter.default.post(name: self.notificationMonument, object: nil, userInfo: userInfo)
+                    
+                    self.delegate?.didFetchData(monuments: self.monuments)
+                }else if option == .mapDisplay {
+                    let monumentsToSend = Array(self.monuments.shuffled().prefix(20))
+                    let userInfo = ["monumentsMap":monumentsToSend]
+                    NotificationCenter.default.post(name: self.notificationMonumentMap, object: nil, userInfo: userInfo)
+                }
             }
             
         }
     }
-    private func fetchData(completion: @escaping (_ json: JSON) -> Void) {
+    private func fetchData(region: CLCircularRegion, option: MonumentSearchOptions,completion: @escaping (_ json: JSON) -> Void) {
         
-        if let userLocation = Locator.shared.getUserLocation() {
+        var userLocation = CLLocation()
+        if option == .regular {
+            guard let location = Locator.shared.getUserLocation() else {return}
+            userLocation = location
+        }else if option == .mapDisplay {
+            userLocation = CLLocation(latitude: region.center.latitude, longitude: region.center.longitude)
+        }
+        
+        
+        
+        
+        var urlString = ""
+        var distancetracker: Double = 100000
+        
+        for (_,cluster) in MonumentClusters.clusterCoordinates.enumerated() {
             
-            var urlString = ""
-            var distancetracker: Double = 100000
+            let clusterLoc = CLLocation(latitude: cluster.value.first!, longitude: cluster.value.last!)
+            let distance = clusterLoc.distance(from: userLocation)
+            let key = cluster.key
             
-            var clusterDistance = [Int:Double]()
-            
-            for (_,cluster) in MonumentClusters.clusterCoordinates.enumerated() {
-                
-                let clusterLoc = CLLocation(latitude: cluster.value.first!, longitude: cluster.value.last!)
-                let distance = clusterLoc.distance(from: userLocation)
-                let key = cluster.key
-                
-                if distance < distancetracker {
-                    distancetracker = distance
-                    urlString = MonumentClusters.clusters[key]!
-                }
-                
+            if distance < distancetracker {
+                distancetracker = distance
+                urlString = MonumentClusters.clusters[key]!
             }
             
-            let url = URL(string: urlString)!
-            
-            Alamofire.request(url, method: .get).validate().responseJSON { response in
-                
-                switch response.result {
-                case .success(let value):
-                    let json = JSON(value)
-                    
-                    DispatchQueue.main.async {
-                        completion(json)
-                    }
-                    
-                case .failure(let error):
-                    print(error)
-                }
-                }
-            
         }
+        
+        let url = URL(string: urlString)!
+        
+        Alamofire.request(url, method: .get).validate().responseJSON { response in
+            
+            switch response.result {
+            case .success(let value):
+                let json = JSON(value)
+                
+                DispatchQueue.main.async {
+                    completion(json)
+                }
+                
+            case .failure(let error):
+                print(error)
+            }
+        }
+        
+        
     }
 }

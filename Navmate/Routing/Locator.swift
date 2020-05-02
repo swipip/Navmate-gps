@@ -649,10 +649,13 @@ extension Locator: RoutingManagerDelegate {
                 
                 delegate?.didFindWayPoints(wayPoints: route.wayPoints)
                 
-                #warning("test distance filter")
+//                #warning("test distance filter")
                 locationManager.distanceFilter = 5
                 
-                delegate?.didFindRoute(polyline: route.polylines, summary: route.summary)
+                DispatchQueue.main.async {
+                    self.delegate?.didFindRoute(polyline: route.polylines, summary: route.summary)
+                }
+                
 //                delegate?.didFindWayPoints(wayPoints: route.wayPoints)
                 
             case .recalculation:
@@ -663,10 +666,10 @@ extension Locator: RoutingManagerDelegate {
                     startRerouting()
                     reroutingRequiered = false
                 }
-                
-                let userInfo = ["routeNew":route]
-                NotificationCenter.default.post(name: routeNotification, object: nil, userInfo: userInfo)
-                
+                DispatchQueue.main.async {
+                    let userInfo = ["routeNew":route]
+                    NotificationCenter.default.post(name: self.routeNotification, object: nil, userInfo: userInfo)
+                }
             }
         }
         

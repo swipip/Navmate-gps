@@ -12,6 +12,7 @@ protocol MapVCDelegate {
     func didDrawRoute(summary: Summary, destination: CLLocation)
     func didRequestAdditionnalInfo(location: CLLocation)
     func didDrawRerouting()
+    func didSelectMonument()
 }
 class MapVC: UIViewController {
     
@@ -49,6 +50,13 @@ class MapVC: UIViewController {
         static let monument = "monument"
         static let gas = "gas"
     }
+    
+    enum MapNavigationMode {
+        case directions, exploration
+    }
+    
+    var mapMode = MapNavigationMode.directions
+    
     //MapView Constraints
     var topConstraint = NSLayoutConstraint()
     var bottomConstraint = NSLayoutConstraint()
@@ -59,6 +67,8 @@ class MapVC: UIViewController {
     private var previousLocation: CLLocation?
     private let locator = Locator.shared
     private var destination: CLLocation?
+    private var selectedMonument: MKAnnotation?
+    private var polyline: MKPolyline?
     
     private var route: Route?
     
@@ -73,7 +83,7 @@ class MapVC: UIViewController {
         
         self.addHandle()
         self.addMapView()
-        
+        addobservers()
         locator.delegate = self
         locator.checkForAuthorization()
         
@@ -81,8 +91,47 @@ class MapVC: UIViewController {
         //        if MKMapRect.contains(visibleRect)
         
     }
+    private func addobservers() {
+        
+        let name = Notification.Name(K.shared.notificationMonumentsMap)
+        NotificationCenter.default.addObserver(self, selector: #selector(didReceiveMonuments), name: name, object: nil)
+        
+    }
+    @objc private func didReceiveMonuments(_ notification:Notification) {
+        
+        if let monuments = notification.userInfo?["monumentsMap"] as? [Monument] {
+            
+            mapMode = .exploration
+            
+            self.mapView.removeAnnotations(mapView.annotations)
+            
+            for monument in monuments {
+                
+                let annotation = MonumentAnnotation()
+                annotation.title = monument.name
+                annotation.subtitle = "Monument \(monument.protection)"
+                annotation.coordinate = CLLocationCoordinate2D(latitude: monument.latitude, longitude: monument.longitude)
+                
+                mapView.addAnnotation(annotation)
+                
+            }
+            
+            
+        }
+        
+    }
     func setUpDelegate() {
         locator.delegate = self
+    }
+    func getCenterLocation() -> CLLocation {
+        
+        let point = mapView.center
+        
+        let center = mapView.convert(point, toCoordinateFrom: mapView)
+        
+        let location = CLLocation(latitude: center.latitude, longitude: center.longitude)
+        
+        return location
     }
     private func addHandle() {
         self.view.addSubview(handle)
@@ -98,20 +147,29 @@ class MapVC: UIViewController {
         }
         addConstraints(fromView: handle, toView: self.view)
     }
+    func goToSelectedMonument() {
+        
+        if let location = selectedMonument {
+            
+            for annotation in mapView.annotations {
+                if annotation.coordinate.latitude == location.coordinate.latitude &&
+                    annotation.coordinate.longitude == location.coordinate.longitude{
+                    
+                }else{
+                    mapView.removeAnnotation(annotation)
+                }
+            }
+            
+            getRoute(to: location)
+            
+        }
+        
+    }
     func getRoute(to annotation: MKAnnotation) {
         
         
         let destination = annotation.coordinate
         
-        
-            
-//            if let annotation = annotation as? MonumentAnnotation {
-//                locator.getDirections(from: location.coordinate, to: destination, mode: "driving-car")
-//                self.destination = CLLocation(latitude: destination.latitude, longitude: destination.longitude)
-//            }
-
-
-            
             let request = RouteRequest(destinationName: "Destination",
                                            destination: destination,
                                            destinationType: .regular,
@@ -121,16 +179,11 @@ class MapVC: UIViewController {
                                            calculationMode: .initial)
             
             locator.getRoute(request: request)
-            
-//            locator.getDirections(from: location.coordinate, to: destination, mode: "driving-car")
+        
             self.destination = CLLocation(latitude: destination.latitude, longitude: destination.longitude)
 
-        
-        
     }
     func updateRoute(mode: String,preference: String, avoid: [String],to destination: CLLocation) {
-        
-        
         
         let request = RouteRequest(destinationName: "Destination", destination: destination.coordinate, destinationType: .regular, mode: mode, preference: preference, avoid: avoid, calculationMode: .initial)
         
@@ -272,14 +325,31 @@ class MapVC: UIViewController {
 extension MapVC: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         
+        self.mapView.removeOverlays(mapView.overlays)
+        
         guard !(view.annotation is MKUserLocation) else {return}
         guard let annotation = view.annotation else {return}
         
-        self.getRoute(to: annotation)
+        switch mapMode {
+        case .exploration:
+            
+            if let selectedMonument = view.annotation {
+                self.selectedMonument = selectedMonument
+            }
+            
+            delegate?.didSelectMonument()
+        case .directions:
+            self.getRoute(to: annotation)
+        }
+        
+        
         
     }
     func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
-        
+        if let polyline = self.polyline {
+            self.mapView.addOverlays([polyline])
+            self.polyline = nil
+        }
     }
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         
@@ -288,6 +358,9 @@ extension MapVC: MKMapViewDelegate {
             route.strokeColor = .systemOrange
             route.lineWidth = 10
             route.miterLimit = 8
+            
+            
+            
             return route
         }else if overlay is MKCircle {
             let circle = MKCircleRenderer(circle: overlay as! MKCircle)
@@ -389,14 +462,14 @@ extension MapVC: LocatorDelegate {
     }
     func didFindRoute(polyline: [MKPolyline], summary: Summary) {
         
-        DispatchQueue.main.async {
-            self.mapView.setVisibleMapRect(polyline[0].boundingMapRect, edgePadding: UIEdgeInsets(top: 40, left: 40, bottom: 300, right: 40), animated: true)
-            self.mapView.addOverlays([polyline[0]])
-            if let destination = self.destination {
-                self.delegate?.didDrawRoute(summary: summary, destination: destination)
-            }
+        
+        self.mapView.setVisibleMapRect(polyline[0].boundingMapRect, edgePadding: UIEdgeInsets(top: 50, left: 50, bottom: 300, right: 50), animated: true)
+        self.polyline = polyline[0]
+        
+        if let destination = self.destination {
+            self.delegate?.didDrawRoute(summary: summary, destination: destination)
         }
-            
+        
     }
     func didChangeAuthorizationStatus() {
         mapView.showsUserLocation = true

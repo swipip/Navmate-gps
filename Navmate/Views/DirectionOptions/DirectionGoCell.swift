@@ -122,7 +122,6 @@ class DirectionGoCell: UICollectionViewCell {
         if let weather = notification.userInfo?["weather"] as? String {
             
             animation.animation = Animation.named(weather)
-            print("\(#function) \(weather)")
             animation.play(fromProgress: 0, toProgress: 1, loopMode: .loop) { (_) in
 
             }

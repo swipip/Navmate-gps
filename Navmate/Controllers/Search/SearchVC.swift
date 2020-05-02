@@ -97,9 +97,9 @@ class SearchVC: UIViewController {
            fromView.translatesAutoresizingMaskIntoConstraints = false
            
             NSLayoutConstraint.activate([fromView.centerXAnchor.constraint(equalTo: toView.centerXAnchor, constant: 0),
-                                         fromView.centerYAnchor.constraint(equalTo: toView.centerYAnchor ,constant: -50),
-                                        fromView.widthAnchor.constraint(equalToConstant: 200),
-                                        fromView.heightAnchor.constraint(equalToConstant: 200)])
+                                         fromView.centerYAnchor.constraint(equalTo: toView.centerYAnchor ,constant: -20),
+                                        fromView.widthAnchor.constraint(equalToConstant: 150),
+                                        fromView.heightAnchor.constraint(equalToConstant: 150)])
         }
         addConstraints(fromView: magnifierAnimation, toView: self.view)
         

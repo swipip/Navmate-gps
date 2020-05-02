@@ -25,25 +25,20 @@ class ViewController: UIViewController {
     }()
     
     private var navigationModeOn = false
-    
     private var searchVCConstraints: (leading: NSLayoutConstraint,width: NSLayoutConstraint,top: NSLayoutConstraint)!
     
     private lazy var selectableAreaMapVC: UIView = {
        let view = UIView()
         view.backgroundColor = .clear
-        
         let panGesture = UIPanGestureRecognizer(target: self, action: #selector(panHandler(_:)))
         view.addGestureRecognizer(panGesture)
-        
         return view
     }()
     private lazy var selectableAreaSearchVC: UIView = {
        let view = UIView()
         view.backgroundColor = .clear
-        
         let panGesture = UIPanGestureRecognizer(target: self, action: #selector(panHandler(_:)))
         view.addGestureRecognizer(panGesture)
-        
         return view
     }()
     private lazy var locationButton: UIButton = {
@@ -55,6 +50,27 @@ class ViewController: UIViewController {
         button.addTarget(self, action: #selector(locationButtonPressed(_ :)), for: .touchUpInside)
         return button
     }()
+    private lazy var monumentsButton: UIButton = {
+        let button = UIButton()
+        button.layer.cornerRadius = K.shared.cornerRadiusImageThumbNailCell
+        button.setImage(UIImage(systemName: "map"), for: .normal)
+        button.tintColor = K.shared.brown
+        button.backgroundColor = K.shared.white
+        button.addTarget(self, action: #selector(showNearbyPlaces(_:)), for: .touchUpInside)
+        return button
+    }()
+    private var showMonuments = false
+    private lazy var goButton: UIButton = {
+        let button = UIButton()
+        button.backgroundColor = K.shared.blue
+        button.setTitle("Itinéraire!", for: .normal)
+        button.isHidden = true
+        button.alpha = 0.0
+        button.layer.cornerRadius = 8
+        button.addTarget(self, action: #selector(goButtonPressed(_:)), for: .touchUpInside)
+        return button
+    }()
+    private var goButtonWidthConstraint: NSLayoutConstraint!
     private lazy var dismissNavButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .systemRed
@@ -71,6 +87,7 @@ class ViewController: UIViewController {
         child.delegate = self
         return child
     }()
+    
     private var navigationVC: NavigationVC!
     //MARK: - Animations Variables
     private var animators = [UIViewPropertyAnimator]()
@@ -114,6 +131,8 @@ class ViewController: UIViewController {
         addSelectableHandleMap()
         addLocationButton()
         addDismissNavButton()
+        addMonumentsButton()
+        addGoButton()
         
         let launch = LaunchView()
         launch.frame = self.view.bounds
@@ -129,6 +148,79 @@ class ViewController: UIViewController {
         }
     }
     //MARK: - UI Construction
+    private func addGoButton() {
+        
+        self.view.addSubview(goButton)
+        
+        func addConstraints(fromView: UIView, toView: UIView) {
+               
+           fromView.translatesAutoresizingMaskIntoConstraints = false
+           
+            NSLayoutConstraint.activate([fromView.centerXAnchor.constraint(equalTo: toView.centerXAnchor, constant: 0),
+                                        fromView.heightAnchor.constraint(equalToConstant: 40),
+                                        fromView.bottomAnchor.constraint(equalTo: toView.topAnchor,constant: -20)])
+        }
+        addConstraints(fromView: goButton, toView: self.searchVC.view!)
+        
+        goButtonWidthConstraint = NSLayoutConstraint(item: goButton, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .width, multiplier: 1, constant: 0)
+        
+        self.view.addConstraint(goButtonWidthConstraint)
+        
+    }
+    @objc private func goButtonPressed(_ sender:UIButton!) {
+        
+        mapView.goToSelectedMonument()
+        mapView.mapMode = .directions
+        
+        monumentsButton.setImage(UIImage(systemName: "map"), for: .normal)
+        
+        animateGoButton(on: false)
+        
+        
+    }
+    private func addMonumentsButton() {
+        
+        self.view.addSubview(monumentsButton)
+        
+        func addConstraints(fromView: UIView, toView: UIView) {
+            
+            fromView.translatesAutoresizingMaskIntoConstraints = false
+            
+            NSLayoutConstraint.activate([fromView.leadingAnchor.constraint(equalTo: toView.leadingAnchor, constant: 0),
+                                         fromView.widthAnchor.constraint(equalToConstant: 40),
+                                         fromView.bottomAnchor.constraint(equalTo: toView.topAnchor, constant: -10),
+                                         fromView.heightAnchor.constraint(equalToConstant: 40)])
+        }
+        addConstraints(fromView: monumentsButton, toView: locationButton)
+        
+    }
+    @objc private func showNearbyPlaces(_ sender: UIButton!) {
+        
+        showMonuments.toggle()
+        
+        if showMonuments {
+            
+            sender.setImage(UIImage(systemName: "map.fill"), for: .normal)
+            
+            let location = mapView.getCenterLocation()
+            
+            let region = CLCircularRegion(center: location.coordinate, radius: 20000, identifier: "monumentsNearby")
+            MonumentManager.shared.getData(for: region,withOption: .mapDisplay)
+        }else{
+            
+            sender.setImage(UIImage(systemName: "map"), for: .normal)
+            
+            animateGoButton(on: false)
+            
+            mapView.mapMode = .directions
+            
+            mapView.mapView.removeAnnotations(mapView.mapView.annotations)
+            
+        }
+        
+
+        
+    }
     private func addDismissNavButton() {
         self.view.addSubview(dismissNavButton)
         
@@ -147,6 +239,7 @@ class ViewController: UIViewController {
         
         self.animateTransitionIfNeededMap(state: .total, duration: 1)
         
+        monumentsButton.isHidden = false
         
         navigationModeOn = false
 
@@ -176,7 +269,7 @@ class ViewController: UIViewController {
         self.addChild(directionCardVC)
         directionCardVC.willMove(toParent: self)
         let directionCardVCView = directionCardVC.view!
-        directionCardVCView.alpha = 1
+        directionCardVCView.alpha = 0
         self.view.addSubview(directionCardVCView)
         
         func addConstraints(fromView: UIView, toView: UIView) {
@@ -189,6 +282,11 @@ class ViewController: UIViewController {
                                         fromView.bottomAnchor.constraint(equalTo: locationButton.topAnchor,constant: -10)])
         }
         addConstraints(fromView: directionCardVCView, toView: self.view)
+        
+        self.view.layoutIfNeeded()
+        
+        directionCardVCView.animateAlpha()
+        
     }
     @objc private func locationButtonPressed(_ sender: UIButton!) {
         
@@ -565,6 +663,28 @@ extension ViewController: SearchVCDelegate {
  
 }
 extension ViewController: MapVCDelegate {
+    fileprivate func animateGoButton(on: Bool? = true) {
+        
+        if on! {goButton.isHidden = false}
+        
+        let width:CGFloat = on! ? 150 : 0
+        let alpha:CGFloat = on! ? 1 : 0
+        
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.2, options: .curveEaseInOut, animations: {
+            self.goButtonWidthConstraint.constant = width
+            self.goButton.alpha = alpha
+            self.view.layoutIfNeeded()
+        }) { (_) in
+            if on == false {self.goButton.isHidden = true}
+        }
+    }
+    
+    func didSelectMonument() {
+        
+        animateGoButton()
+        
+    }
+    
     func didDrawRerouting() {
         
         self.animateTransitionIfNeededMap(state: .midWay, duration: 0.3)
@@ -580,9 +700,21 @@ extension ViewController: MapVCDelegate {
         
         self.directionCardVC.view.animateAlpha(on: false)
         
+        
+        for subView in self.view.subviews {
+            if subView == mapView.view {
+                
+            }else{
+                subView.animateAlpha(on: false)
+            }
+        }
+        
     }
     
     func didDrawRoute(summary: Summary,destination: CLLocation) {
+        
+        monumentsButton.isHidden = true
+        
         self.addDirectionCard()
         self.animateTransitionIfNeeded(state: .hidden, duration: 0.6)
         self.directionCardVC.updateValues(summary: summary, destination: destination)
@@ -600,6 +732,8 @@ extension ViewController: DirectionVCDelegate {
     func didEngagedNavigation() {
         
         navigationModeOn = true
+        
+        monumentsButton.isHidden = true
         
         navigationVC = NavigationVC()
         navigationVC.willMove(toParent: self)
@@ -641,6 +775,7 @@ extension ViewController: DirectionVCDelegate {
     }
     
     func didDismissNavigation() {
+        monumentsButton.isHidden = false
         self.cleanMapView()
         self.removeDirectionCard()
         self.animateTransitionIfNeeded(state: .collapsed, duration: 0.6)
@@ -648,8 +783,21 @@ extension ViewController: DirectionVCDelegate {
     
 }
 extension ViewController: WikiMapDetailVCDelegate {
+    fileprivate func animateSubViewsAlphas() {
+        for subView in self.view.subviews {
+            if subView == mapView.view || subView == dismissNavButton{
+                
+            }else{
+                subView.animateAlpha(on: true)
+            }
+        }
+    }
+    
     func didDismiss() {
         directionCardVC.view.animateAlpha()
+        
+        animateSubViewsAlphas()
+        
     }
     
     func didRequestMoreInfo(urlString: String) {
@@ -660,6 +808,8 @@ extension ViewController: WikiMapDetailVCDelegate {
         wikiDetail.urlToOpen(urlString: urlString)
         
         directionCardVC.view.animateAlpha()
+        
+        animateSubViewsAlphas()
         
     }
     

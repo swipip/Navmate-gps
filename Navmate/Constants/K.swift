@@ -51,5 +51,6 @@ class K {
     let notificationAvgSpeed = "avgSpeed"
     let notificationTotalTime = "totalTime"
     let notificationWeather = "weather"
+    let notificationMonumentsMap = "monumentsMap"
     
 }
