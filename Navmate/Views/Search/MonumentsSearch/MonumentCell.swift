@@ -25,14 +25,25 @@ class MonumentCell: UITableViewCell {
         collection.register(MonumentSearchDetailCell.self, forCellWithReuseIdentifier: "cellID")
         return collection
     }()
-    
+    private lazy var reloadImage: UIImageView = {
+        let image = UIImageView()
+        image.image = UIImage(systemName: "arrow.counterclockwise")
+        image.contentMode = .scaleAspectFill
+        image.isHidden = true
+        image.alpha = 0.0
+        image.tintColor = K.shared.black
+        return image
+    }()
     private var monuments = [Monument]()
     var delegate: MonumentCellDelegate?
+    private var notifOccured = false
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         self.addCollectionView()
+        
+        addReloadImage()
         
         if let location = Locator.shared.getUserLocation() {
             let region = CLCircularRegion(center: location.coordinate, radius: 20000, identifier: "")
@@ -45,7 +56,22 @@ class MonumentCell: UITableViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+    private func addReloadImage() {
+        
+        self.addSubview(reloadImage)
+        
+        func addConstraints(fromView: UIView, toView: UIView) {
+               
+           fromView.translatesAutoresizingMaskIntoConstraints = false
+           
+            NSLayoutConstraint.activate([fromView.leadingAnchor.constraint(equalTo: toView.leadingAnchor, constant: 20),
+                                         fromView.widthAnchor.constraint(equalToConstant: 40),
+                                        fromView.centerYAnchor.constraint(equalTo: toView.centerYAnchor, constant: 0),
+                                        fromView.heightAnchor.constraint(equalToConstant: 40)])
+        }
+        addConstraints(fromView: reloadImage, toView: self)
+        
+    }
     func addCollectionView() {
         
         self.addSubview(collectionView)
@@ -72,6 +98,9 @@ class MonumentCell: UITableViewCell {
 }
 extension MonumentCell: MonumentManagerDelegate {
     func didFetchData(monuments: [Monument]) {
+        
+        self.monuments.removeAll()
+        
         for monument in monuments.shuffled() {
             
             self.monuments.append(monument)
@@ -112,6 +141,34 @@ extension MonumentCell: UICollectionViewDelegate, UICollectionViewDataSource, UI
         return size
         
     }
-    
 
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if let collection = scrollView as? UICollectionView {
+            
+            reloadImage.isHidden = false
+            
+            reloadImage.alpha = -collection.contentOffset.x / 55
+            
+            if collection.contentOffset.x < -60 {
+                
+                if notifOccured == false {
+                    let notif = UISelectionFeedbackGenerator()
+                    notif.selectionChanged()
+                    notifOccured = true
+                }
+
+            }
+            
+        }
+    }
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if notifOccured {
+            if let location = Locator.shared.getUserLocation() {
+                let region = CLCircularRegion(center: location.coordinate, radius: 20000, identifier: "")
+                MonumentManager.shared.getData(for: region)
+            }
+            reloadImage.isHidden = true
+        }
+        notifOccured = false
+    }
 }

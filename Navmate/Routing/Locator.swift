@@ -262,8 +262,8 @@ class Locator: NSObject {
     }
     func getUserLocation() -> CLLocation? {
         
-        locationManager.startUpdatingLocation()
-//        locationManager.requestLocation()
+//        locationManager.startUpdatingLocation()
+        locationManager.requestLocation()
         let location = locationManager.location
         if let loc = location {
             delegate?.didFinduserLocation(location: loc)
@@ -365,9 +365,9 @@ extension Locator: CLLocationManagerDelegate {
             
             if let previousLocation = self.previousLocation {
                 if timeTrackingRegion.contains(previousLocation.coordinate) {
-                    timeTrackingTimer.invalidate()
+//                    timeTrackingTimer.invalidate()
                 }else{
-                    timeTrackingTimer.fire()
+//                    timeTrackingTimer.fire()
                     
                     if let timeTotal = self.route?.summary.duration {
 //                        print("duration: \(incrementDurationTracking)")
@@ -480,11 +480,7 @@ extension Locator: CLLocationManagerDelegate {
         let wayPoints = route.wayPoints
         
         if let location = locations.last {
-            
 
-
-
-            
             checkForCheckpointValidation(location)
             
             let suitableForSpeedAndAltitude = filterLocation(location)
@@ -523,7 +519,8 @@ extension Locator: CLLocationManagerDelegate {
                                 pointZeroCheckpointTimer.invalidate()
                                 break
                             }else{
-                                checkForRerouting(location: location)
+                                #warning("Rerouting line below")
+//                                checkForRerouting(location: location)
                                 if dif != 1 {
                                     if step.type == 7 || step.type == 8{
                                         
@@ -612,7 +609,9 @@ extension Locator: CLLocationManagerDelegate {
                     
                     left = true
                     entered = false
-                    self.currentWPIndex! = currentStep!.step.wayPoints.last!
+                    if let _ = self.currentWPIndex{
+                        self.currentWPIndex = currentStep?.step.wayPoints.last!
+                    }
                    
 //                    delegate?.didMoveToNextWP(waypointIndex: self.currentWPIndex!, status: "entered", location: wayPoints[self.currentWPIndex!])
                 }
@@ -651,7 +650,7 @@ extension Locator: RoutingManagerDelegate {
                 delegate?.didFindWayPoints(wayPoints: route.wayPoints)
                 
                 #warning("test distance filter")
-                locationManager.distanceFilter = 4
+                locationManager.distanceFilter = 5
                 
                 delegate?.didFindRoute(polyline: route.polylines, summary: route.summary)
 //                delegate?.didFindWayPoints(wayPoints: route.wayPoints)

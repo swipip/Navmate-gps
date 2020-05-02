@@ -223,7 +223,13 @@ class MonumentNavigationDetail: UIView {
             summaryViewBG.alpha = 1.0
 
             UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseInOut, animations: {
-                self.summaryViewBG.effect = UIBlurEffect(style: .systemUltraThinMaterialDark)
+                var blur = UIBlurEffect()
+                if self.traitCollection.userInterfaceStyle == .light {
+                    blur = UIBlurEffect(style: .systemUltraThinMaterialLight)
+                }else{
+                    blur = UIBlurEffect(style: .systemUltraThinMaterialDark)
+                }
+                self.summaryViewBG.effect = blur
                 self.timeLabel.alpha = 1.0
                 self.distanceLabel.alpha = 1.0
             }) { (_) in
@@ -252,7 +258,13 @@ class MonumentNavigationDetail: UIView {
     private func animateDisplay() {
         
         UIView.animate(withDuration: 0.3) {
-            self.effectView.effect = UIBlurEffect(style: .light)
+            var blur = UIBlurEffect()
+            if self.traitCollection.userInterfaceStyle == .light {
+                blur = UIBlurEffect(style: .systemUltraThinMaterialLight)
+            }else{
+                blur = UIBlurEffect(style: .systemUltraThinMaterialDark)
+            }
+            self.effectView.effect = blur
         }
         
     }

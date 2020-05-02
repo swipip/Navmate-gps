@@ -14,7 +14,12 @@ class WikiDetailVC: UIViewController {
     private lazy var webView = WKWebView()
     
     private lazy var blurView: UIVisualEffectView = {
-        let blur = UIBlurEffect(style: .light)
+        var blur = UIBlurEffect()
+        if traitCollection.userInterfaceStyle == .light {
+            blur = UIBlurEffect(style: .systemUltraThinMaterialLight)
+        }else{
+            blur = UIBlurEffect(style: .systemUltraThinMaterialDark)
+        }
         let visualEffect = UIVisualEffectView(effect: blur)
         visualEffect.layer.cornerRadius = 12
         visualEffect.clipsToBounds = true

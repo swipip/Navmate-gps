@@ -33,6 +33,7 @@ class K {
     let white = UIColor(named: "white")
     let shadow = UIColor(named: "shadow")
     let blueBars = UIColor(named: "blueBar")
+    let black = UIColor(named: "black")
     
     // Notification Keys
     let notificationSpeed = "speed"
