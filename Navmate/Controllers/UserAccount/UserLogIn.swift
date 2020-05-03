@@ -11,19 +11,47 @@ import AuthenticationServices
 
 class UserLogIn: UIViewController {
 
+    private lazy var backgroundImage: UIImageView = {
+        let view = UIImageView()
+        view.image = UIImage(named: "logInBack")
+        view.contentMode = .scaleAspectFill
+        view.frame = self.view.bounds
+        return view
+    }()
+    
+    private lazy var backButton: UIButton = {
+        let button = UIButton()
+        button.backgroundColor = .clear
+        let config = UIImage.SymbolConfiguration(pointSize: 30, weight: .medium)
+        button.setImage(UIImage(systemName: "chevron.left",withConfiguration: config), for: .normal)
+        button.tintColor = .white
+        button.addTarget(self, action: #selector(backPressed(_:)), for: .touchUpInside)
+        return button
+    }()
     private lazy var welcomeText: UILabel = {
         let label = UILabel()
-        label.text = "Pour profiter d'une expérience complète de Navmate créez votre compte!"
+        label.text = "Bienvenue"
         label.numberOfLines = 0
-        label.textAlignment = .center
-        label.font = UIFont.systemFont(ofSize: 17, weight: .medium)
+        label.textAlignment = .left
+        label.textColor = .white
+        label.font = UIFont.systemFont(ofSize: 35, weight: .medium)
+        return label
+    }()
+    private lazy var actionLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Connexion"
+        label.numberOfLines = 0
+        label.textAlignment = .left
+        label.textColor = K.shared.blueGrayFont
+        label.font = UIFont.systemFont(ofSize: 25, weight: .medium)
         return label
     }()
     private lazy var optionLabel: UILabel = {
         let label = UILabel()
-        label.text = "Ou enregistrez vous avec:"
+        label.text = " "
         label.numberOfLines = 0
-        label.textAlignment = .center
+        label.textColor = K.shared.blueGrayFont
+        label.textAlignment = .left
         label.textColor = UIColor.gray
         return label
     }()
@@ -31,52 +59,44 @@ class UserLogIn: UIViewController {
         let button = UIButton()
         let image = UIImage(named: "appleLogo")
         button.setImage(image, for: .normal)
-        button.layer.cornerRadius = K.shared.cornerRadiusImageThumbNailCell
+        button.layer.cornerRadius = 25
         button.clipsToBounds = true
         button.layer.masksToBounds = true
         return button
     }()
-    
-    private lazy var connexionBG: UIView = {
-        let view = UIView()
-        view.backgroundColor = .clear
-        view.layer.borderColor = K.shared.blueBars!.cgColor
-        view.layer.borderWidth = 1
-        view.layer.cornerRadius = K.shared.cornerRadiusCard
-        return view
-    }()
     private lazy var connectButton: UIButton = {
         let button = UIButton()
-        button.backgroundColor = K.shared.blue
-        button.setTitle("Connexion", for: .normal)
-        button.layer.cornerRadius = 8
+        button.backgroundColor = K.shared.blueGrayFont
+        button.setImage(UIImage(systemName: "arrow.right"), for: .normal)
+        button.layer.cornerRadius = 30
+        button.tintColor = .white
         button.addTarget(self, action: #selector(connect(_:)), for: .touchUpInside)
         return button
     }()
     private lazy var emailTextField: UITextField = {
         let textField = UITextField()
         textField.delegate = self
+        textField.font = UIFont.systemFont(ofSize: 25, weight: .regular)
         textField.placeholder = "e-mail"
         textField.autocapitalizationType = .none
-        textField.textColor = K.shared.blueBars
-        textField.tintColor = K.shared.blueBars
-        textField.textAlignment = .center
+        textField.textColor = K.shared.blueGrayFont
+        textField.tintColor = K.shared.blueGrayFont
+        textField.textAlignment = .left
         return textField
     }()
     private lazy var passwordTextField: UITextField = {
         let textField = UITextField()
         textField.delegate = self
+        textField.font = UIFont.systemFont(ofSize: 25, weight: .regular)
         textField.placeholder = "mot de passe"
-        textField.textAlignment = .center
-        textField.tintColor = K.shared.blueBars
-        textField.textColor = K.shared.blueBars
+        textField.textAlignment = .left
+        textField.tintColor = K.shared.blueGrayFont
+        textField.textColor = K.shared.blueGrayFont
         textField.isSecureTextEntry = true
         return textField
     }()
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationController?.navigationBar.prefersLargeTitles = true
-        self.title = "Connexion"
         
         if let mode = WeatherManager.shared.checkForDarkmode() {
             if mode == false {
@@ -86,36 +106,38 @@ class UserLogIn: UIViewController {
         
         self.view.backgroundColor = K.shared.white
         
-        addConnexionBG()
-        addLine()
-        addEmailTextField()
-        addPasswordTextField()
+        self.view.addSubview(backgroundImage)
+        
+        addBackButton()
         addButton()
+        addPasswordTextField()
+        addEmailTextField()
+        addLine(to: passwordTextField)
+        addLine(to: emailTextField)
+        addActionLabel()
         addOptionLabel()
         addAppleButton()
         addWelcomeLabel()
         
     }
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        //        self.navigationController?.navigationBar.back
-        self.navigationController?.navigationBar.isHidden = false
-        
+    @objc private func backPressed(_ sender:UIButton!){
+        self.navigationController?.popToRootViewController(animated: true)
     }
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
+    private func addBackButton() {
         
-        self.navigationController?.navigationBar.isHidden = true
+        self.view.addSubview(backButton)
         
-    }
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        
-        if previousTraitCollection?.userInterfaceStyle == UIUserInterfaceStyle.light {
-            self.navigationController?.navigationBar.largeTitleTextAttributes         = [NSAttributedString.Key.foregroundColor: K.shared.white as Any]
-            self.navigationController?.navigationBar.tintColor                        = K.shared.white
+        func addConstraints(fromView: UIView, toView: UIView) {
+               
+           fromView.translatesAutoresizingMaskIntoConstraints = false
+           
+            NSLayoutConstraint.activate([fromView.leadingAnchor.constraint(equalTo: toView.leadingAnchor, constant: 0),
+                                         fromView.widthAnchor.constraint(equalToConstant: 50),
+                                        fromView.topAnchor.constraint(equalTo: toView.topAnchor, constant: 50),
+                                        fromView.heightAnchor.constraint(equalToConstant: 50)])
         }
+        addConstraints(fromView: backButton, toView: self.view)
         
-        connexionBG.layer.borderColor = K.shared.blueBars!.cgColor
     }
     @objc private func connect(_ sender:UIButton!){
         
@@ -132,11 +154,10 @@ class UserLogIn: UIViewController {
                
            fromView.translatesAutoresizingMaskIntoConstraints = false
            
-            NSLayoutConstraint.activate([fromView.leadingAnchor.constraint(equalTo: toView.leadingAnchor, constant: 20),
-                                         fromView.trailingAnchor.constraint(equalTo: toView.trailingAnchor ,constant: -20),
-                                        fromView.topAnchor.constraint(equalTo: toView.bottomAnchor,constant: 40)])
+            NSLayoutConstraint.activate([fromView.centerXAnchor.constraint(equalTo: toView.centerXAnchor, constant: 0),
+                                        fromView.topAnchor.constraint(equalTo: actionLabel.bottomAnchor,constant: 30)])
         }
-        addConstraints(fromView: optionLabel, toView: self.connectButton)
+        addConstraints(fromView: optionLabel, toView: self.backgroundImage)
         
     }
     private func addWelcomeLabel() {
@@ -147,11 +168,24 @@ class UserLogIn: UIViewController {
                
            fromView.translatesAutoresizingMaskIntoConstraints = false
            
-           NSLayoutConstraint.activate([fromView.leadingAnchor.constraint(equalTo: toView.leadingAnchor, constant: 40),
-                                        fromView.trailingAnchor.constraint(equalTo: toView.trailingAnchor, constant: -40),
-                                        fromView.bottomAnchor.constraint(equalTo: self.connexionBG.topAnchor,constant: -30)])
+           NSLayoutConstraint.activate([fromView.leadingAnchor.constraint(equalTo: toView.leadingAnchor, constant: 20),
+                                        fromView.bottomAnchor.constraint(equalTo: self.view.topAnchor,constant: 220)])
         }
-        addConstraints(fromView: welcomeText, toView: self.view)
+        addConstraints(fromView: welcomeText, toView: self.backgroundImage)
+        
+    }
+    private func addActionLabel() {
+        
+        self.view.addSubview(actionLabel)
+        
+        func addConstraints(fromView: UIView, toView: UIView) {
+               
+           fromView.translatesAutoresizingMaskIntoConstraints = false
+           
+            NSLayoutConstraint.activate([fromView.leadingAnchor.constraint(equalTo: toView.leadingAnchor, constant: 20),
+                                        fromView.centerYAnchor.constraint(equalTo: connectButton.centerYAnchor, constant: 0)])
+        }
+        addConstraints(fromView: actionLabel, toView: self.backgroundImage)
         
     }
     private func addButton() {
@@ -162,12 +196,12 @@ class UserLogIn: UIViewController {
                
            fromView.translatesAutoresizingMaskIntoConstraints = false
            
-            NSLayoutConstraint.activate([fromView.leadingAnchor.constraint(equalTo: toView.leadingAnchor, constant: 40),
-                                         fromView.trailingAnchor.constraint(equalTo: toView.trailingAnchor ,constant: -40),
-                                         fromView.topAnchor.constraint(equalTo: self.connexionBG.bottomAnchor, constant: 30),
-                                        fromView.heightAnchor.constraint(equalToConstant: 40)])
+            NSLayoutConstraint.activate([fromView.widthAnchor.constraint(equalToConstant: 60),
+                                         fromView.trailingAnchor.constraint(equalTo: toView.trailingAnchor ,constant: -20),
+                                         fromView.topAnchor.constraint(equalTo: toView.bottomAnchor, constant: -250),
+                                        fromView.heightAnchor.constraint(equalToConstant: 60)])
         }
-        addConstraints(fromView: connectButton, toView: self.view)
+        addConstraints(fromView: connectButton, toView: self.backgroundImage)
         
     }
     private func addAppleButton() {
@@ -180,10 +214,10 @@ class UserLogIn: UIViewController {
            
             NSLayoutConstraint.activate([fromView.centerXAnchor.constraint(equalTo: toView.centerXAnchor, constant: 0),
                                          fromView.widthAnchor.constraint(equalToConstant: 50),
-                                        fromView.topAnchor.constraint(equalTo: optionLabel.bottomAnchor, constant: 40),
+                                        fromView.topAnchor.constraint(equalTo: toView.bottomAnchor, constant: 20),
                                         fromView.heightAnchor.constraint(equalToConstant: 50)])
         }
-        addConstraints(fromView: appleButton, toView: self.view)
+        addConstraints(fromView: appleButton, toView: self.optionLabel)
         
     }
     private func addPasswordTextField() {
@@ -194,12 +228,12 @@ class UserLogIn: UIViewController {
                
            fromView.translatesAutoresizingMaskIntoConstraints = false
            
-            NSLayoutConstraint.activate([fromView.leadingAnchor.constraint(equalTo: toView.leadingAnchor, constant: 10),
-                                         fromView.trailingAnchor.constraint(equalTo: toView.trailingAnchor ,constant: -10),
-                                        fromView.bottomAnchor.constraint(equalTo: toView.bottomAnchor, constant: -5),
-                                        fromView.heightAnchor.constraint(equalToConstant: 30)])
+            NSLayoutConstraint.activate([fromView.leadingAnchor.constraint(equalTo: toView.leadingAnchor, constant: 25),
+                                         fromView.trailingAnchor.constraint(equalTo: toView.trailingAnchor ,constant: -20),
+                                        fromView.bottomAnchor.constraint(equalTo: connectButton.topAnchor, constant: -40),
+                                        fromView.heightAnchor.constraint(equalToConstant: 50)])
         }
-        addConstraints(fromView: passwordTextField, toView: self.connexionBG)
+        addConstraints(fromView: passwordTextField, toView: self.backgroundImage)
         
     }
     private func addEmailTextField() {
@@ -210,34 +244,18 @@ class UserLogIn: UIViewController {
                
            fromView.translatesAutoresizingMaskIntoConstraints = false
            
-            NSLayoutConstraint.activate([fromView.leadingAnchor.constraint(equalTo: toView.leadingAnchor, constant: 10),
-                                         fromView.trailingAnchor.constraint(equalTo: toView.trailingAnchor ,constant: -10),
-                                        fromView.topAnchor.constraint(equalTo: toView.topAnchor, constant: 5),
-                                        fromView.heightAnchor.constraint(equalToConstant: 30)])
+            NSLayoutConstraint.activate([fromView.leadingAnchor.constraint(equalTo: toView.leadingAnchor, constant: 25),
+                                         fromView.trailingAnchor.constraint(equalTo: toView.trailingAnchor ,constant: -20),
+                                         fromView.bottomAnchor.constraint(equalTo: self.passwordTextField.topAnchor, constant: -40),
+                                        fromView.heightAnchor.constraint(equalToConstant: 50)])
         }
-        addConstraints(fromView: emailTextField, toView: self.connexionBG)
+        addConstraints(fromView: emailTextField, toView: self.backgroundImage)
         
     }
-    private func addConnexionBG() {
-        
-        self.view.addSubview(connexionBG)
-        
-        func addConstraints(fromView: UIView, toView: UIView) {
-               
-           fromView.translatesAutoresizingMaskIntoConstraints = false
-           
-            NSLayoutConstraint.activate([fromView.leadingAnchor.constraint(equalTo: toView.leadingAnchor, constant: 40),
-                                         fromView.trailingAnchor.constraint(equalTo: toView.trailingAnchor ,constant: -40),
-                                         fromView.topAnchor.constraint(equalTo: toView.layoutMarginsGuide.topAnchor, constant: 120),
-                                        fromView.heightAnchor.constraint(equalToConstant: 80)])
-        }
-        addConstraints(fromView: connexionBG, toView: self.view)
-        
-    }
-    private func addLine() {
+    private func addLine(to view: UIView) {
         
         let line = UIView()
-        line.backgroundColor = K.shared.blueBars
+        line.backgroundColor = .systemGray5
         
         self.view.addSubview(line)
         
@@ -245,12 +263,12 @@ class UserLogIn: UIViewController {
                
            fromView.translatesAutoresizingMaskIntoConstraints = false
            
-            NSLayoutConstraint.activate([fromView.leadingAnchor.constraint(equalTo: toView.leadingAnchor, constant: 0),
-                                         fromView.trailingAnchor.constraint(equalTo: toView.trailingAnchor ,constant: 0),
-                                        fromView.centerYAnchor.constraint(equalTo: toView.centerYAnchor, constant: 0),
+            NSLayoutConstraint.activate([fromView.leadingAnchor.constraint(equalTo: toView.leadingAnchor, constant: 10),
+                                         fromView.trailingAnchor.constraint(equalTo: toView.trailingAnchor ,constant: -10),
+                                        fromView.topAnchor.constraint(equalTo: toView.bottomAnchor, constant: 10),
                                         fromView.heightAnchor.constraint(equalToConstant: 1)])
         }
-        addConstraints(fromView: line, toView: self.connexionBG)
+        addConstraints(fromView: line, toView: view)
         
     }
 }
@@ -259,6 +277,36 @@ extension UserLogIn: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         
         textField.resignFirstResponder()
+        
+        return true
+    }
+    
+    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        UIView.animate(withDuration: 0.7, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.2, options: .curveEaseInOut, animations: {
+            self.backgroundImage.frame.origin.y += 160
+            self.welcomeText.alpha = 1.0
+            self.appleButton.alpha = 1.0
+            self.optionLabel.alpha = 1.0
+            self.view.layoutIfNeeded()
+        }) { (_) in
+            
+        }
+        
+        return true
+    }
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        
+        UIView.animate(withDuration: 0.7, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.2, options: .curveEaseInOut, animations: {
+            self.backgroundImage.frame.origin.y -= 160
+            self.welcomeText.alpha = 0.0
+            self.appleButton.alpha = 0.0
+            self.optionLabel.alpha = 0.0
+            self.view.layoutIfNeeded()
+        }) { (_) in
+            
+        }
+        
         
         return true
     }

@@ -12,10 +12,12 @@ class UserRecordCell: CommonPoisCell {
     
     private lazy var cardCover: UIImageView =  {
         let view = UIImageView()
-        view.backgroundColor = K.shared.white
+        view.image = UIImage(named: "cardBack")
         view.layer.cornerRadius = K.shared.cornerRadiusCard
         view.clipsToBounds = true
-        view.image = UIImage(named: "cardBack")
+        view.layer.masksToBounds = true
+        view.contentMode = .scaleAspectFill
+        
         return view
     }()
 

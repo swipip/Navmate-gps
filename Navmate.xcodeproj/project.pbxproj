@@ -40,6 +40,7 @@
 		493F1F532455E6690024BF1C /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493F1F522455E6690024BF1C /* NotificationManager.swift */; };
 		493F1F552455EE740024BF1C /* RoutingInterpret.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493F1F542455EE740024BF1C /* RoutingInterpret.swift */; };
 		493F1F57245768A20024BF1C /* LaunchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493F1F56245768A20024BF1C /* LaunchView.swift */; };
+		499A7226245F117D00C435D7 /* UserAchievementCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499A7225245F117D00C435D7 /* UserAchievementCell.swift */; };
 		49A16CF9245316600096F430 /* lyonploermel.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 49A16CF8245316600096F430 /* lyonploermel.gpx */; };
 		49A16CFD2453224A0096F430 /* lyonSlow.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 49A16CFC2453224A0096F430 /* lyonSlow.gpx */; };
 		49A16CFF2453407D0096F430 /* eglantierGuerande.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 49A16CFE2453407D0096F430 /* eglantierGuerande.gpx */; };
@@ -137,6 +138,7 @@
 		493F1F522455E6690024BF1C /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
 		493F1F542455EE740024BF1C /* RoutingInterpret.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutingInterpret.swift; sourceTree = "<group>"; };
 		493F1F56245768A20024BF1C /* LaunchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchView.swift; sourceTree = "<group>"; };
+		499A7225245F117D00C435D7 /* UserAchievementCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAchievementCell.swift; sourceTree = "<group>"; };
 		49A16CF8245316600096F430 /* lyonploermel.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = lyonploermel.gpx; sourceTree = "<group>"; };
 		49A16CFC2453224A0096F430 /* lyonSlow.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = lyonSlow.gpx; sourceTree = "<group>"; };
 		49A16CFE2453407D0096F430 /* eglantierGuerande.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = eglantierGuerande.gpx; sourceTree = "<group>"; };
@@ -252,6 +254,7 @@
 		4920F138245EFF7B005109BB /* User */ = {
 			isa = PBXGroup;
 			children = (
+				499A7225245F117D00C435D7 /* UserAchievementCell.swift */,
 				4920F139245EFF94005109BB /* UserRecordCell.swift */,
 			);
 			path = User;
@@ -761,6 +764,7 @@
 				4900D2AD2449DE910065752F /* Route.swift in Sources */,
 				4920F117245DCDFE005109BB /* UserLogIn.swift in Sources */,
 				49E9D03E244CBFA000E79D5F /* CustomPlainAV.swift in Sources */,
+				499A7226245F117D00C435D7 /* UserAchievementCell.swift in Sources */,
 				4929C01F2450831F00D40931 /* AvgMetricsCell.swift in Sources */,
 				49E9D075244DEBAE00E79D5F /* NavigationMetricsVC.swift in Sources */,
 				4920F13A245EFF94005109BB /* UserRecordCell.swift in Sources */,

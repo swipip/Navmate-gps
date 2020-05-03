@@ -10,17 +10,40 @@ import UIKit
 
 class UserAccountPage: UIViewController {
 
-    private lazy var collectionView: UICollectionView = {
-        let layout = SnappingCollectionViewLayoutWithOffset()
-        layout.scrollDirection = .horizontal
-        let collection = UICollectionView(frame: CGRect(x: 0, y: 0, width: 0, height: 0), collectionViewLayout: layout)
-        collection.delegate = self
-        collection.backgroundColor = K.shared.white
-        collection.dataSource = self
-        collection.decelerationRate = .fast
-        collection.showsHorizontalScrollIndicator = false
-        collection.register(UserRecordCell.self, forCellWithReuseIdentifier: "cellID")
-        return collection
+    private lazy var backButton: UIButton = {
+        let button = UIButton()
+        button.backgroundColor = .clear
+        let config = UIImage.SymbolConfiguration(pointSize: 30, weight: .medium)
+        button.setImage(UIImage(systemName: "chevron.left",withConfiguration: config), for: .normal)
+        button.tintColor = .white
+        button.addTarget(self, action: #selector(backPressed(_:)), for: .touchUpInside)
+        return button
+    }()
+    private lazy var backView: UIView = {
+        let view = UIView()
+        view.backgroundColor = K.shared.white
+        view.roundCorners([.topLeft], radius: 30)
+        view.addShadow(radius: 15, opacity: 0.3, color: K.shared.shadow!)
+        return view
+    }()
+    private lazy var titleLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Mon Compte"
+        label.numberOfLines = 0
+        label.textAlignment = .left
+        label.textColor = .white
+        label.font = UIFont.systemFont(ofSize: 35, weight: .medium)
+        return label
+    }()
+    private lazy var tableView: UITableView = {
+        let table = UITableView()
+        table.dataSource = self
+        table.delegate = self
+        table.backgroundColor = .clear
+        table.separatorStyle = .none
+        table.register(UserAchievementCell.self, forCellReuseIdentifier: "cellID")
+        table.register(UITableViewCell.self, forCellReuseIdentifier: "cellID2")
+        return table
     }()
     
     override func viewDidLoad() {
@@ -32,41 +55,52 @@ class UserAccountPage: UIViewController {
             }
         }
         
-        self.view.backgroundColor = K.shared.white
+        self.view.backgroundColor = K.shared.blue
         
         self.title = "Votre Compte"
-
-        addCollection()
+        
+        addBackGround()
+        addTitle()
+        addTable()
+        addBackButton()
         
     }
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+    @objc private func backPressed(_ sender:UIButton!){
+        self.navigationController?.popToRootViewController(animated: true)
+    }
+    private func addBackButton() {
         
-        if previousTraitCollection?.userInterfaceStyle == UIUserInterfaceStyle.light {
-            self.navigationController?.navigationBar.largeTitleTextAttributes         = [NSAttributedString.Key.foregroundColor: K.shared.white as Any]
-            self.navigationController?.navigationBar.tintColor                        = K.shared.white
+        self.view.addSubview(backButton)
+        
+        func addConstraints(fromView: UIView, toView: UIView) {
+               
+           fromView.translatesAutoresizingMaskIntoConstraints = false
+           
+            NSLayoutConstraint.activate([fromView.leadingAnchor.constraint(equalTo: toView.leadingAnchor, constant: 0),
+                                         fromView.widthAnchor.constraint(equalToConstant: 50),
+                                        fromView.bottomAnchor.constraint(equalTo: titleLabel.topAnchor, constant: -5),
+                                        fromView.heightAnchor.constraint(equalToConstant: 50)])
         }
-
-    }
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        //        self.navigationController?.but
-        self.navigationController?.navigationBar.isHidden = false
-        
-        self.navigationController?.navigationBar.largeTitleTextAttributes         = [NSAttributedString.Key.foregroundColor: K.shared.blueBars as Any]
-               self.navigationController?.navigationBar.tintColor                        = K.shared.blueBars
-        
-
-    }
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-        self.navigationController?.navigationBar.isHidden = true
+        addConstraints(fromView: backButton, toView: self.view)
         
     }
-    private func addCollection() {
+    private func addTitle() {
         
-        self.view.addSubview(collectionView)
+        self.view.addSubview(titleLabel)
+        
+        func addConstraints(fromView: UIView, toView: UIView) {
+               
+           fromView.translatesAutoresizingMaskIntoConstraints = false
+           
+            NSLayoutConstraint.activate([fromView.leadingAnchor.constraint(equalTo: toView.leadingAnchor, constant: 20),
+                                        fromView.bottomAnchor.constraint(equalTo: toView.topAnchor, constant: -15)])
+        }
+        addConstraints(fromView: titleLabel, toView: self.backView)
+        
+    }
+    private func addBackGround() {
+        
+        self.view.addSubview(backView)
         
         func addConstraints(fromView: UIView, toView: UIView) {
                
@@ -74,32 +108,99 @@ class UserAccountPage: UIViewController {
            
             NSLayoutConstraint.activate([fromView.leadingAnchor.constraint(equalTo: toView.leadingAnchor, constant: 0),
                                          fromView.trailingAnchor.constraint(equalTo: toView.trailingAnchor ,constant: 0),
-                                         fromView.topAnchor.constraint(equalTo: toView.layoutMarginsGuide.topAnchor, constant: 0),
-                                        fromView.heightAnchor.constraint(equalToConstant: 300)])
+                                        fromView.topAnchor.constraint(equalTo: toView.topAnchor, constant: 150),
+                                        fromView.bottomAnchor.constraint(equalTo: toView.bottomAnchor,constant: 0)])
         }
-        addConstraints(fromView: collectionView, toView: self.view)
+        addConstraints(fromView: backView, toView: self.view)
         
     }
-    
-
+    private func addTable() {
+        
+        self.view.addSubview(tableView)
+        
+        func addConstraints(fromView: UIView, toView: UIView) {
+               
+           fromView.translatesAutoresizingMaskIntoConstraints = false
+           
+            NSLayoutConstraint.activate([fromView.leadingAnchor.constraint(equalTo: toView.leadingAnchor, constant: 0),
+                                         fromView.trailingAnchor.constraint(equalTo: toView.trailingAnchor ,constant: 0),
+                                         fromView.topAnchor.constraint(equalTo: toView.layoutMarginsGuide.topAnchor, constant: 10),
+                                        fromView.bottomAnchor.constraint(equalTo: toView.bottomAnchor,constant: 0)])
+        }
+        addConstraints(fromView: tableView, toView: self.backView)
+        
+    }
 }
-extension UserAccountPage: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 4
+extension UserAccountPage: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 1
+    }
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 2
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cellID", for: indexPath) as! UserRecordCell
+        let index = indexPath.section
+        if index == 0 {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "cellID", for: indexPath) as! UserAchievementCell
+            
+            return cell
+        }else{
+            let cell = tableView.dequeueReusableCell(withIdentifier: "cellID2", for: indexPath)
+            
+            return cell
+        }
         
-        return cell
+        
         
     }
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
-        let size = CGSize(width: self.view.frame.width, height: 200)
+        let titles = ["Mes Aventures","Réglages"]
         
-        return size
+        let headerView = UIView()
+        headerView.backgroundColor = .clear
+        
+        let label = UILabel()
+        label.text = titles[section]
+        label.font = UIFont.systemFont(ofSize: 25,weight: .medium)
+
+        headerView.addSubview(label)
+        
+        func addConstraints(fromView: UIView, toView: UIView) {
+               
+           fromView.translatesAutoresizingMaskIntoConstraints = false
+           
+           NSLayoutConstraint.activate([fromView.leadingAnchor.constraint(equalTo: toView.leadingAnchor, constant: 20),
+                                        fromView.centerYAnchor.constraint(equalTo: toView.centerYAnchor, constant: 0)])
+        }
+        addConstraints(fromView: label, toView: headerView)
+        
+        return headerView
+        
     }
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if indexPath.section == 0 {
+            return 250
+        }else{
+            return 60
+        }
+    }
+
     
+}
+extension UIView {
+    func roundCorners(_ corners: UIRectCorner, radius: CGFloat) {
+        if #available(iOS 11.0, *) {
+            clipsToBounds = true
+            layer.cornerRadius = radius
+            layer.maskedCorners = CACornerMask(rawValue: corners.rawValue)
+        } else {
+            let path = UIBezierPath(roundedRect: bounds, byRoundingCorners: corners, cornerRadii: CGSize(width: radius, height: radius))
+            let mask = CAShapeLayer()
+            mask.path = path.cgPath
+            layer.mask = mask
+        }
+    }
 }
