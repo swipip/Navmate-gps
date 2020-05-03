@@ -11,7 +11,31 @@ import AuthenticationServices
 
 class UserLogIn: UIViewController {
 
-    private var appleButton = ASAuthorizationAppleIDButton()
+    private lazy var welcomeText: UILabel = {
+        let label = UILabel()
+        label.text = "Pour profiter d'une expérience complète de Navmate créez votre compte!"
+        label.numberOfLines = 0
+        label.textAlignment = .center
+        label.font = UIFont.systemFont(ofSize: 17, weight: .medium)
+        return label
+    }()
+    private lazy var optionLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Ou enregistrez vous avec:"
+        label.numberOfLines = 0
+        label.textAlignment = .center
+        label.textColor = UIColor.gray
+        return label
+    }()
+    private var appleButton: UIButton = {
+        let button = UIButton()
+        let image = UIImage(named: "appleLogo")
+        button.setImage(image, for: .normal)
+        button.layer.cornerRadius = K.shared.cornerRadiusImageThumbNailCell
+        button.clipsToBounds = true
+        button.layer.masksToBounds = true
+        return button
+    }()
     
     private lazy var connexionBG: UIView = {
         let view = UIView()
@@ -66,8 +90,10 @@ class UserLogIn: UIViewController {
         addLine()
         addEmailTextField()
         addPasswordTextField()
-        addAppleButton()
         addButton()
+        addOptionLabel()
+        addAppleButton()
+        addWelcomeLabel()
         
     }
     override func viewWillAppear(_ animated: Bool) {
@@ -98,6 +124,36 @@ class UserLogIn: UIViewController {
         self.navigationController?.pushViewController(userAccount, animated: true)
         
     }
+    private func addOptionLabel() {
+        
+        self.view.addSubview(optionLabel)
+        
+        func addConstraints(fromView: UIView, toView: UIView) {
+               
+           fromView.translatesAutoresizingMaskIntoConstraints = false
+           
+            NSLayoutConstraint.activate([fromView.leadingAnchor.constraint(equalTo: toView.leadingAnchor, constant: 20),
+                                         fromView.trailingAnchor.constraint(equalTo: toView.trailingAnchor ,constant: -20),
+                                        fromView.topAnchor.constraint(equalTo: toView.bottomAnchor,constant: 40)])
+        }
+        addConstraints(fromView: optionLabel, toView: self.connectButton)
+        
+    }
+    private func addWelcomeLabel() {
+        
+        self.view.addSubview(welcomeText)
+        
+        func addConstraints(fromView: UIView, toView: UIView) {
+               
+           fromView.translatesAutoresizingMaskIntoConstraints = false
+           
+           NSLayoutConstraint.activate([fromView.leadingAnchor.constraint(equalTo: toView.leadingAnchor, constant: 40),
+                                        fromView.trailingAnchor.constraint(equalTo: toView.trailingAnchor, constant: -40),
+                                        fromView.bottomAnchor.constraint(equalTo: self.connexionBG.topAnchor,constant: -30)])
+        }
+        addConstraints(fromView: welcomeText, toView: self.view)
+        
+    }
     private func addButton() {
         
         self.view.addSubview(connectButton)
@@ -108,26 +164,24 @@ class UserLogIn: UIViewController {
            
             NSLayoutConstraint.activate([fromView.leadingAnchor.constraint(equalTo: toView.leadingAnchor, constant: 40),
                                          fromView.trailingAnchor.constraint(equalTo: toView.trailingAnchor ,constant: -40),
-                                        fromView.topAnchor.constraint(equalTo: appleButton.bottomAnchor, constant: 40),
+                                         fromView.topAnchor.constraint(equalTo: self.connexionBG.bottomAnchor, constant: 30),
                                         fromView.heightAnchor.constraint(equalToConstant: 40)])
         }
         addConstraints(fromView: connectButton, toView: self.view)
         
     }
     private func addAppleButton() {
-        
-        appleButton.cornerRadius = 8
-        
+
         self.view.addSubview(appleButton)
         
         func addConstraints(fromView: UIView, toView: UIView) {
                
            fromView.translatesAutoresizingMaskIntoConstraints = false
            
-            NSLayoutConstraint.activate([fromView.leadingAnchor.constraint(equalTo: toView.leadingAnchor, constant: 40),
-                                         fromView.trailingAnchor.constraint(equalTo: toView.trailingAnchor ,constant: -40),
-                                        fromView.topAnchor.constraint(equalTo: connexionBG.bottomAnchor, constant: 40),
-                                        fromView.heightAnchor.constraint(equalToConstant: 40)])
+            NSLayoutConstraint.activate([fromView.centerXAnchor.constraint(equalTo: toView.centerXAnchor, constant: 0),
+                                         fromView.widthAnchor.constraint(equalToConstant: 50),
+                                        fromView.topAnchor.constraint(equalTo: optionLabel.bottomAnchor, constant: 40),
+                                        fromView.heightAnchor.constraint(equalToConstant: 50)])
         }
         addConstraints(fromView: appleButton, toView: self.view)
         
@@ -174,7 +228,7 @@ class UserLogIn: UIViewController {
            
             NSLayoutConstraint.activate([fromView.leadingAnchor.constraint(equalTo: toView.leadingAnchor, constant: 40),
                                          fromView.trailingAnchor.constraint(equalTo: toView.trailingAnchor ,constant: -40),
-                                         fromView.topAnchor.constraint(equalTo: toView.layoutMarginsGuide.topAnchor, constant: 80),
+                                         fromView.topAnchor.constraint(equalTo: toView.layoutMarginsGuide.topAnchor, constant: 120),
                                         fromView.heightAnchor.constraint(equalToConstant: 80)])
         }
         addConstraints(fromView: connexionBG, toView: self.view)

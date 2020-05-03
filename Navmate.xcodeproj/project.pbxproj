@@ -21,8 +21,8 @@
 		4920F114245CBA46005109BB /* searcher.json in Resources */ = {isa = PBXBuildFile; fileRef = 4920F113245CBA46005109BB /* searcher.json */; };
 		4920F117245DCDFE005109BB /* UserLogIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4920F116245DCDFE005109BB /* UserLogIn.swift */; };
 		4920F119245DE321005109BB /* UserAccountPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4920F118245DE321005109BB /* UserAccountPage.swift */; };
-		4920F11B245DE7E8005109BB /* userAchievmentsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4920F11A245DE7E8005109BB /* userAchievmentsCell.swift */; };
 		4920F131245EB115005109BB /* NavmateUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4920F130245EB115005109BB /* NavmateUITests.swift */; };
+		4920F13A245EFF94005109BB /* UserRecordCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4920F139245EFF94005109BB /* UserRecordCell.swift */; };
 		4929C01824504F6D00D40931 /* gare.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 4929C01724504F6D00D40931 /* gare.gpx */; };
 		4929C01A245061A100D40931 /* lyonFast.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 4929C019245061A100D40931 /* lyonFast.gpx */; };
 		4929C01C2450772300D40931 /* lyontoAlbatrosWalk.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 4929C01B2450772200D40931 /* lyontoAlbatrosWalk.gpx */; };
@@ -116,10 +116,10 @@
 		4920F113245CBA46005109BB /* searcher.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = searcher.json; sourceTree = "<group>"; };
 		4920F116245DCDFE005109BB /* UserLogIn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserLogIn.swift; sourceTree = "<group>"; };
 		4920F118245DE321005109BB /* UserAccountPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAccountPage.swift; sourceTree = "<group>"; };
-		4920F11A245DE7E8005109BB /* userAchievmentsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = userAchievmentsCell.swift; sourceTree = "<group>"; };
 		4920F12E245EB115005109BB /* NavmateUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NavmateUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4920F130245EB115005109BB /* NavmateUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavmateUITests.swift; sourceTree = "<group>"; };
 		4920F132245EB115005109BB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4920F139245EFF94005109BB /* UserRecordCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRecordCell.swift; sourceTree = "<group>"; };
 		4929C01724504F6D00D40931 /* gare.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = gare.gpx; sourceTree = "<group>"; };
 		4929C019245061A100D40931 /* lyonFast.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = lyonFast.gpx; sourceTree = "<group>"; };
 		4929C01B2450772200D40931 /* lyontoAlbatrosWalk.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = lyontoAlbatrosWalk.gpx; sourceTree = "<group>"; };
@@ -236,7 +236,6 @@
 			children = (
 				4920F116245DCDFE005109BB /* UserLogIn.swift */,
 				4920F118245DE321005109BB /* UserAccountPage.swift */,
-				4920F11A245DE7E8005109BB /* userAchievmentsCell.swift */,
 			);
 			path = UserAccount;
 			sourceTree = "<group>";
@@ -248,6 +247,14 @@
 				4920F132245EB115005109BB /* Info.plist */,
 			);
 			path = NavmateUITests;
+			sourceTree = "<group>";
+		};
+		4920F138245EFF7B005109BB /* User */ = {
+			isa = PBXGroup;
+			children = (
+				4920F139245EFF94005109BB /* UserRecordCell.swift */,
+			);
+			path = User;
 			sourceTree = "<group>";
 		};
 		4929C01D245082F500D40931 /* Stats metrics */ = {
@@ -294,6 +301,7 @@
 				49F903EA245040D5004B7831 /* Annotations */,
 				49355833244B76A90023F848 /* Search */,
 				4935582A244B5BAD0023F848 /* DirectionOptions */,
+				4920F138245EFF7B005109BB /* User */,
 				49F903E9245040B7004B7831 /* Navigation */,
 			);
 			path = Views;
@@ -751,11 +759,11 @@
 				49E9D03C244CB03E00E79D5F /* WikipediaManager.swift in Sources */,
 				49E9D07E244DEC6700E79D5F /* PoisCell.swift in Sources */,
 				4900D2AD2449DE910065752F /* Route.swift in Sources */,
-				4920F11B245DE7E8005109BB /* userAchievmentsCell.swift in Sources */,
 				4920F117245DCDFE005109BB /* UserLogIn.swift in Sources */,
 				49E9D03E244CBFA000E79D5F /* CustomPlainAV.swift in Sources */,
 				4929C01F2450831F00D40931 /* AvgMetricsCell.swift in Sources */,
 				49E9D075244DEBAE00E79D5F /* NavigationMetricsVC.swift in Sources */,
+				4920F13A245EFF94005109BB /* UserRecordCell.swift in Sources */,
 				49C0F41A2450AB450016212D /* MonumentNavigationCell.swift in Sources */,
 				49F903E1244F9B61004B7831 /* CommonPoisCell.swift in Sources */,
 				491DD4DF24597F1E00754338 /* GasAnnotationView.swift in Sources */,

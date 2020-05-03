@@ -19,7 +19,7 @@ class UserAccountPage: UIViewController {
         collection.dataSource = self
         collection.decelerationRate = .fast
         collection.showsHorizontalScrollIndicator = false
-        collection.register(UserAchievmentsCell.self, forCellWithReuseIdentifier: "cellID")
+        collection.register(UserRecordCell.self, forCellWithReuseIdentifier: "cellID")
         return collection
     }()
     
@@ -90,7 +90,7 @@ extension UserAccountPage: UICollectionViewDelegate, UICollectionViewDataSource,
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cellID", for: indexPath) as! UserAchievmentsCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cellID", for: indexPath) as! UserRecordCell
         
         return cell
         

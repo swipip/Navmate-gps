@@ -14,7 +14,7 @@ class CommonPoisCell: UICollectionViewCell {
         let view = UIView()
         view.backgroundColor = .white
         view.addShadow(radius: 5, opacity: 0.2, color: K.shared.shadow!)
-        view.layer.cornerRadius = 8
+        view.layer.cornerRadius = K.shared.cornerRadiusCard
         return view
     }()
     

@@ -23,6 +23,18 @@ class WikiMapDetailVC: UIViewController {
         animation.animation = Animation.named("progress")
         return animation
     }()
+    private lazy var addToCollectionButton: UIButton = {
+        let button = UIButton()
+        button.backgroundColor = K.shared.blue
+        button.setImage(UIImage(systemName: "plus"), for: .normal)
+        button.setImage(UIImage(), for: .highlighted)
+        button.setTitle("", for: .normal)
+        button.setTitle("Ajouter à ma liste", for: .highlighted)
+        button.tintColor = .white
+        button.layer.cornerRadius = 20
+        return button
+    }()
+    private var collectionButtonWidth: NSLayoutConstraint!
     private lazy var blurView: UIVisualEffectView = {
         var blur = UIBlurEffect()
         if traitCollection.userInterfaceStyle == .light {
@@ -124,9 +136,32 @@ class WikiMapDetailVC: UIViewController {
             self.addKnowMoreButton()
             if self.didFind == false {
                self.addAnimation()
+            }else{
+                self.addAddCollectionButton()
+                self.view.layoutIfNeeded()
             }
             
         }
+    }
+    private func addAddCollectionButton() {
+        
+        self.view.addSubview(addToCollectionButton)
+        
+        func addConstraints(fromView: UIView, toView: UIView) {
+               
+           fromView.translatesAutoresizingMaskIntoConstraints = false
+           
+            NSLayoutConstraint.activate([fromView.trailingAnchor.constraint(equalTo: toView.trailingAnchor ,constant: -10),
+                                        fromView.topAnchor.constraint(equalTo: toView.topAnchor, constant: 10),
+                                        fromView.heightAnchor.constraint(equalToConstant: 40)])
+        }
+        addConstraints(fromView: addToCollectionButton, toView: self.imageThumb)
+        
+        collectionButtonWidth = NSLayoutConstraint(item: addToCollectionButton, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .width, multiplier: 1, constant: 40)
+        
+        self.view.addConstraint(collectionButtonWidth)
+        self.view.layoutIfNeeded()
+        
     }
     @objc private func buttonPressed(_ sender:UIButton!) {
         
