@@ -24,11 +24,16 @@ class WikiMapDetailVC: UIViewController {
         return animation
     }()
     private lazy var blurView: UIVisualEffectView = {
-        let blur = UIBlurEffect(style: .light)
-        let visualEffect = UIVisualEffectView(effect: blur)
-        visualEffect.layer.cornerRadius = 12
-        visualEffect.clipsToBounds = true
-        return visualEffect
+        var blur = UIBlurEffect()
+        if traitCollection.userInterfaceStyle == .light {
+            blur = UIBlurEffect(style: .systemUltraThinMaterialLight)
+        }else{
+            blur = UIBlurEffect(style: .systemUltraThinMaterialDark)
+        }
+        let view = UIVisualEffectView(effect: blur)
+        view.layer.cornerRadius = 12
+        view.clipsToBounds = true
+        return view
     }()
     private lazy var cardTitle: UILabel = {
         let label = UILabel()
@@ -87,8 +92,14 @@ class WikiMapDetailVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        if let mode = WeatherManager.shared.checkForDarkmode() {
+            if mode == false {
+                overrideUserInterfaceStyle = .dark
+            }
+        }
+        
         self.addVisualBackground()
-
+        
     }
     func getInfo(monumentLocation location: CLLocation) {
         

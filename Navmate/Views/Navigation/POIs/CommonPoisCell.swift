@@ -13,7 +13,7 @@ class CommonPoisCell: UICollectionViewCell {
     lazy var cardBG: UIView = {
         let view = UIView()
         view.backgroundColor = .white
-        view.addShadow(radius: 5, opacity: 0.5, color: K.shared.shadow!)
+        view.addShadow(radius: 5, opacity: 0.2, color: K.shared.shadow!)
         view.layer.cornerRadius = 8
         return view
     }()

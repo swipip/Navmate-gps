@@ -19,6 +19,10 @@
 		4920F110245CB332005109BB /* magnifier.json in Resources */ = {isa = PBXBuildFile; fileRef = 4920F10F245CB332005109BB /* magnifier.json */; };
 		4920F112245CB722005109BB /* magnifierWhite.json in Resources */ = {isa = PBXBuildFile; fileRef = 4920F111245CB721005109BB /* magnifierWhite.json */; };
 		4920F114245CBA46005109BB /* searcher.json in Resources */ = {isa = PBXBuildFile; fileRef = 4920F113245CBA46005109BB /* searcher.json */; };
+		4920F117245DCDFE005109BB /* UserLogIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4920F116245DCDFE005109BB /* UserLogIn.swift */; };
+		4920F119245DE321005109BB /* UserAccountPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4920F118245DE321005109BB /* UserAccountPage.swift */; };
+		4920F11B245DE7E8005109BB /* userAchievmentsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4920F11A245DE7E8005109BB /* userAchievmentsCell.swift */; };
+		4920F131245EB115005109BB /* NavmateUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4920F130245EB115005109BB /* NavmateUITests.swift */; };
 		4929C01824504F6D00D40931 /* gare.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 4929C01724504F6D00D40931 /* gare.gpx */; };
 		4929C01A245061A100D40931 /* lyonFast.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 4929C019245061A100D40931 /* lyonFast.gpx */; };
 		4929C01C2450772300D40931 /* lyontoAlbatrosWalk.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 4929C01B2450772200D40931 /* lyontoAlbatrosWalk.gpx */; };
@@ -86,6 +90,16 @@
 		ECA2330156F51584A04976D1 /* Pods_Navmate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A02C9004A13744DAE10D7093 /* Pods_Navmate.framework */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		4920F133245EB115005109BB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 49A5D297244357B6002E7D53 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 49A5D29E244357B6002E7D53;
+			remoteInfo = Navmate;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		19B8211BA190B80914D432E6 /* Pods-Navmate.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Navmate.release.xcconfig"; path = "Target Support Files/Pods-Navmate/Pods-Navmate.release.xcconfig"; sourceTree = "<group>"; };
 		4900D283244858F50065752F /* SearchVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchVC.swift; sourceTree = "<group>"; };
@@ -100,6 +114,12 @@
 		4920F10F245CB332005109BB /* magnifier.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = magnifier.json; sourceTree = "<group>"; };
 		4920F111245CB721005109BB /* magnifierWhite.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = magnifierWhite.json; sourceTree = "<group>"; };
 		4920F113245CBA46005109BB /* searcher.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = searcher.json; sourceTree = "<group>"; };
+		4920F116245DCDFE005109BB /* UserLogIn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserLogIn.swift; sourceTree = "<group>"; };
+		4920F118245DE321005109BB /* UserAccountPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAccountPage.swift; sourceTree = "<group>"; };
+		4920F11A245DE7E8005109BB /* userAchievmentsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = userAchievmentsCell.swift; sourceTree = "<group>"; };
+		4920F12E245EB115005109BB /* NavmateUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NavmateUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		4920F130245EB115005109BB /* NavmateUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavmateUITests.swift; sourceTree = "<group>"; };
+		4920F132245EB115005109BB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4929C01724504F6D00D40931 /* gare.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = gare.gpx; sourceTree = "<group>"; };
 		4929C019245061A100D40931 /* lyonFast.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = lyonFast.gpx; sourceTree = "<group>"; };
 		4929C01B2450772200D40931 /* lyontoAlbatrosWalk.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = lyontoAlbatrosWalk.gpx; sourceTree = "<group>"; };
@@ -171,6 +191,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		4920F12B245EB115005109BB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		49A5D29C244357B6002E7D53 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -202,6 +229,25 @@
 				4920F10D245C7959005109BB /* progress.json */,
 			);
 			path = AnimationsJSON;
+			sourceTree = "<group>";
+		};
+		4920F115245DCDD5005109BB /* UserAccount */ = {
+			isa = PBXGroup;
+			children = (
+				4920F116245DCDFE005109BB /* UserLogIn.swift */,
+				4920F118245DE321005109BB /* UserAccountPage.swift */,
+				4920F11A245DE7E8005109BB /* userAchievmentsCell.swift */,
+			);
+			path = UserAccount;
+			sourceTree = "<group>";
+		};
+		4920F12F245EB115005109BB /* NavmateUITests */ = {
+			isa = PBXGroup;
+			children = (
+				4920F130245EB115005109BB /* NavmateUITests.swift */,
+				4920F132245EB115005109BB /* Info.plist */,
+			);
+			path = NavmateUITests;
 			sourceTree = "<group>";
 		};
 		4929C01D245082F500D40931 /* Stats metrics */ = {
@@ -310,6 +356,7 @@
 				4929C019245061A100D40931 /* lyonFast.gpx */,
 				49C1B0A72452262F007B5808 /* lyonAlbatrosCycle.gpx */,
 				49A5D2A1244357B6002E7D53 /* Navmate */,
+				4920F12F245EB115005109BB /* NavmateUITests */,
 				49A5D2A0244357B6002E7D53 /* Products */,
 				76EB0CE726034E6F25289FDE /* Pods */,
 				6240A07AFBDF64D06E6250E4 /* Frameworks */,
@@ -320,6 +367,7 @@
 			isa = PBXGroup;
 			children = (
 				49A5D29F244357B6002E7D53 /* Navmate.app */,
+				4920F12E245EB115005109BB /* NavmateUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -346,6 +394,7 @@
 				49E9D083244DECFA00E79D5F /* Navigation */,
 				4906C822244ED2D700D23F3E /* Wikipédia */,
 				49F903E72450409C004B7831 /* Search */,
+				4920F115245DCDD5005109BB /* UserAccount */,
 				49F903E8245040A9004B7831 /* Map */,
 			);
 			path = Controllers;
@@ -514,6 +563,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		4920F12D245EB115005109BB /* NavmateUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4920F137245EB115005109BB /* Build configuration list for PBXNativeTarget "NavmateUITests" */;
+			buildPhases = (
+				4920F12A245EB115005109BB /* Sources */,
+				4920F12B245EB115005109BB /* Frameworks */,
+				4920F12C245EB115005109BB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4920F134245EB115005109BB /* PBXTargetDependency */,
+			);
+			name = NavmateUITests;
+			productName = NavmateUITests;
+			productReference = 4920F12E245EB115005109BB /* NavmateUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 		49A5D29E244357B6002E7D53 /* Navmate */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 49A5D2B3244357B9002E7D53 /* Build configuration list for PBXNativeTarget "Navmate" */;
@@ -543,6 +610,10 @@
 				LastUpgradeCheck = 1130;
 				ORGANIZATIONNAME = "Gautier Billard";
 				TargetAttributes = {
+					4920F12D245EB115005109BB = {
+						CreatedOnToolsVersion = 11.3;
+						TestTargetID = 49A5D29E244357B6002E7D53;
+					};
 					49A5D29E244357B6002E7D53 = {
 						CreatedOnToolsVersion = 11.3;
 					};
@@ -562,11 +633,19 @@
 			projectRoot = "";
 			targets = (
 				49A5D29E244357B6002E7D53 /* Navmate */,
+				4920F12D245EB115005109BB /* NavmateUITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		4920F12C245EB115005109BB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		49A5D29D244357B6002E7D53 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -648,6 +727,14 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		4920F12A245EB115005109BB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4920F131245EB115005109BB /* NavmateUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		49A5D29B244357B6002E7D53 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -664,6 +751,8 @@
 				49E9D03C244CB03E00E79D5F /* WikipediaManager.swift in Sources */,
 				49E9D07E244DEC6700E79D5F /* PoisCell.swift in Sources */,
 				4900D2AD2449DE910065752F /* Route.swift in Sources */,
+				4920F11B245DE7E8005109BB /* userAchievmentsCell.swift in Sources */,
+				4920F117245DCDFE005109BB /* UserLogIn.swift in Sources */,
 				49E9D03E244CBFA000E79D5F /* CustomPlainAV.swift in Sources */,
 				4929C01F2450831F00D40931 /* AvgMetricsCell.swift in Sources */,
 				49E9D075244DEBAE00E79D5F /* NavigationMetricsVC.swift in Sources */,
@@ -692,6 +781,7 @@
 				49E9D03A244C92BC00E79D5F /* K.swift in Sources */,
 				4900D2AE2449DE910065752F /* Locator.swift in Sources */,
 				49E9D071244DD07F00E79D5F /* WikiMapDetailVC.swift in Sources */,
+				4920F119245DE321005109BB /* UserAccountPage.swift in Sources */,
 				49A5D2A3244357B6002E7D53 /* AppDelegate.swift in Sources */,
 				49C0888224436C3600EBEAE5 /* MonumentManager.swift in Sources */,
 				49A5D2A5244357B6002E7D53 /* SceneDelegate.swift in Sources */,
@@ -702,6 +792,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		4920F134245EB115005109BB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 49A5D29E244357B6002E7D53 /* Navmate */;
+			targetProxy = 4920F133245EB115005109BB /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		49A5D2AD244357B9002E7D53 /* LaunchScreen.storyboard */ = {
@@ -715,6 +813,44 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		4920F135245EB115005109BB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 3ZK349YW98;
+				INFOPLIST_FILE = NavmateUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.gautierbillard.NavmateUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Navmate;
+			};
+			name = Debug;
+		};
+		4920F136245EB115005109BB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 3ZK349YW98;
+				INFOPLIST_FILE = NavmateUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.gautierbillard.NavmateUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Navmate;
+			};
+			name = Release;
+		};
 		49A5D2B1244357B9002E7D53 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -870,6 +1006,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		4920F137245EB115005109BB /* Build configuration list for PBXNativeTarget "NavmateUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4920F135245EB115005109BB /* Debug */,
+				4920F136245EB115005109BB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		49A5D29A244357B6002E7D53 /* Build configuration list for PBXProject "Navmate" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

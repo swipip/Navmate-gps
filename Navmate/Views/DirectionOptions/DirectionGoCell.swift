@@ -102,7 +102,6 @@ class DirectionGoCell: UICollectionViewCell {
         addTimeLabel()
         addDistanceLabel()
         addDirectionName()
-        addWeatherView()
         addObservers()
     }
     required init?(coder: NSCoder) {
@@ -120,6 +119,8 @@ class DirectionGoCell: UICollectionViewCell {
     }
     @objc private func didFindWeather(_ notification:Notification) {
         if let weather = notification.userInfo?["weather"] as? String {
+            
+            addWeatherView()
             
             animation.animation = Animation.named(weather)
             animation.play(fromProgress: 0, toProgress: 1, loopMode: .loop) { (_) in

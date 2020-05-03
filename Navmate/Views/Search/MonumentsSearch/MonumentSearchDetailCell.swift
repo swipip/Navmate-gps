@@ -14,7 +14,7 @@ class MonumentSearchDetailCell: UICollectionViewCell {
         let view = UIView()
         view.backgroundColor = K.shared.white
         view.layer.cornerRadius = 8
-        view.addShadow(radius: 5, opacity: 0.3, color: K.shared.shadow!)
+        view.addShadow(radius: 5, opacity: 0.2, color: K.shared.shadow!)
         return view
     }()
     private lazy var imageView: UIImageView = {

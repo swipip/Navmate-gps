@@ -82,12 +82,23 @@ class ViewController: UIViewController {
         button.addTarget(self, action: #selector(dismissNavPressed(_:)), for: .touchUpInside)
         return button
     }()
+    private lazy var userAccountButton: UIButton = {
+        let button = UIButton()
+        button.layer.cornerRadius = K.shared.cornerRadiusImageThumbNailCell
+        button.setImage(UIImage(systemName: "person.circle"), for: .normal)
+        button.tintColor = K.shared.brown
+        button.backgroundColor = K.shared.white
+        button.addTarget(self, action: #selector(userAccountPressed(_:)), for: .touchUpInside)
+        return button
+    }()
     private lazy var directionCardVC: DirectionVC = {
         let child = DirectionVC()
         child.delegate = self
         return child
     }()
-    
+    deinit {
+        print("deinit")
+    }
     private var navigationVC: NavigationVC!
     //MARK: - Animations Variables
     private var animators = [UIViewPropertyAnimator]()
@@ -133,6 +144,7 @@ class ViewController: UIViewController {
         addDismissNavButton()
         addMonumentsButton()
         addGoButton()
+        addUserAccountButton()
         
         let launch = LaunchView()
         launch.frame = self.view.bounds
@@ -148,6 +160,29 @@ class ViewController: UIViewController {
         }
     }
     //MARK: - UI Construction
+    private func addUserAccountButton() {
+        
+        self.view.addSubview(userAccountButton)
+        
+        func addConstraints(fromView: UIView, toView: UIView) {
+               
+           fromView.translatesAutoresizingMaskIntoConstraints = false
+           
+            NSLayoutConstraint.activate([fromView.leadingAnchor.constraint(equalTo: toView.leadingAnchor, constant: 20),
+                                         fromView.widthAnchor.constraint(equalToConstant: 40),
+                                        fromView.bottomAnchor.constraint(equalTo: toView.topAnchor, constant: -20),
+                                        fromView.heightAnchor.constraint(equalToConstant: 40)])
+        }
+        addConstraints(fromView: userAccountButton, toView: self.searchVC.view!)
+        
+    }
+    @objc private func userAccountPressed(_ sender:UIButton!){
+        
+        let userVC = UserLogIn()
+        
+        self.navigationController?.pushViewController(userVC, animated: true)
+        
+    }
     private func addGoButton() {
         
         self.view.addSubview(goButton)
@@ -240,14 +275,12 @@ class ViewController: UIViewController {
         self.animateTransitionIfNeededMap(state: .total, duration: 1)
         
         monumentsButton.isHidden = false
+        userAccountButton.isHidden = false
         
         navigationModeOn = false
 
         self.animators.removeAll()
         animateTransitionIfNeeded(state: .collapsed, duration: 0.6)
-        
-//        self.addSearchVC()
-//        self.addSelectableHandle()
         
         self.mapView.mapView.removeOverlays(self.mapView.mapView.overlays)
         self.mapView.animateMapView(on: false)
@@ -714,6 +747,7 @@ extension ViewController: MapVCDelegate {
     func didDrawRoute(summary: Summary,destination: CLLocation) {
         
         monumentsButton.isHidden = true
+        userAccountButton.isHidden = true
         
         self.addDirectionCard()
         self.animateTransitionIfNeeded(state: .hidden, duration: 0.6)
@@ -734,6 +768,7 @@ extension ViewController: DirectionVCDelegate {
         navigationModeOn = true
         
         monumentsButton.isHidden = true
+        userAccountButton.isHidden = true
         
         navigationVC = NavigationVC()
         navigationVC.willMove(toParent: self)
@@ -776,6 +811,7 @@ extension ViewController: DirectionVCDelegate {
     
     func didDismissNavigation() {
         monumentsButton.isHidden = false
+        userAccountButton.isHidden = false
         self.cleanMapView()
         self.removeDirectionCard()
         self.animateTransitionIfNeeded(state: .collapsed, duration: 0.6)

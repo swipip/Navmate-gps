@@ -34,6 +34,7 @@ class WeatherManager: NSObject{
             let date = Date()
             
             if date > hours.sunrise && date < hours.sunset {
+//                #warning("set back to true")
                 return true
             }else{
                 return false

@@ -39,9 +39,12 @@ class WikiDetailVC: UIViewController {
         self.addTitle()
         
     }
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
+    override func viewWillAppear(_ animated: Bool) {
+        if let mode = WeatherManager.shared.checkForDarkmode() {
+            if mode == false {
+                overrideUserInterfaceStyle = .dark
+            }
+        }
     }
     private func addTitle() {
         self.view.addSubview(cardTitle)
