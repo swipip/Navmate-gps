@@ -13,5 +13,7 @@ pod 'Alamofire', '~> 4.0'
 pod 'Polyline', '~> 4.0'
 pod 'lottie-ios'
 pod 'Solar'
+pod 'Firebase/Auth'
+pod 'Firebase/Firestore'
 
 end

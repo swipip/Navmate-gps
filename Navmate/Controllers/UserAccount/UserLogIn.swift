@@ -37,6 +37,7 @@ class UserLogIn: UIViewController {
         label.font = UIFont.systemFont(ofSize: 35, weight: .medium)
         return label
     }()
+    private var bottomConstraint: NSLayoutConstraint!
     private lazy var actionLabel: UILabel = {
         let label = UILabel()
         label.text = "Connexion"
@@ -67,9 +68,10 @@ class UserLogIn: UIViewController {
     private lazy var connectButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = K.shared.blueGrayFont
-        button.setImage(UIImage(systemName: "arrow.right"), for: .normal)
+        let config = UIImage.SymbolConfiguration(pointSize: 25, weight: .medium)
+        button.setImage(UIImage(systemName: "arrow.right",withConfiguration: config), for: .normal)
         button.layer.cornerRadius = 30
-        button.tintColor = .white
+        button.tintColor = K.shared.white
         button.addTarget(self, action: #selector(connect(_:)), for: .touchUpInside)
         return button
     }()
@@ -119,6 +121,19 @@ class UserLogIn: UIViewController {
         addAppleButton()
         addWelcomeLabel()
         
+        let loged = userDefaults.bool(forKey: K.shared.userLogedin)
+        
+        if loged {
+            navigateToMainPage()
+        }
+        
+        if let email = userDefaults.value(forKey: K.shared.userEmail) as? String {
+            emailTextField.text = email
+        }else{
+            actionLabel.text = "Créez votre compte"
+        }
+        
+        
     }
     @objc private func backPressed(_ sender:UIButton!){
         self.navigationController?.popToRootViewController(animated: true)
@@ -139,12 +154,36 @@ class UserLogIn: UIViewController {
         addConstraints(fromView: backButton, toView: self.view)
         
     }
+    fileprivate func animateError() {
+        UIView.animate(withDuration: 0.5, animations: {
+            self.connectButton.backgroundColor = .systemRed
+        }) { (_) in
+            UIView.animate(withDuration: 0.5, animations: {
+                self.connectButton.backgroundColor = K.shared.blueGrayFont
+            }, completion: nil)
+        }
+    }
+    
     @objc private func connect(_ sender:UIButton!){
         
+        if let email = emailTextField.text, let password = passwordTextField.text {
+            AuthManager.shared.authenticate(with: email, and: password) { (error) in
+                if let _ = error {
+                    self.animateError()
+                }else{
+                    
+                    userDefaults.set(true, forKey: K.shared.userLogedin)
+                    userDefaults.set("\(email)", forKey: K.shared.userEmail)
+                    
+                    self.navigateToMainPage()
+                }
+
+            }
+        }
+    }
+    private func navigateToMainPage() {
         let userAccount = UserAccountPage()
-        
         self.navigationController?.pushViewController(userAccount, animated: true)
-        
     }
     private func addOptionLabel() {
         
@@ -168,9 +207,13 @@ class UserLogIn: UIViewController {
                
            fromView.translatesAutoresizingMaskIntoConstraints = false
            
-           NSLayoutConstraint.activate([fromView.leadingAnchor.constraint(equalTo: toView.leadingAnchor, constant: 20),
-                                        fromView.bottomAnchor.constraint(equalTo: self.view.topAnchor,constant: 220)])
+           NSLayoutConstraint.activate([fromView.leadingAnchor.constraint(equalTo: toView.leadingAnchor, constant: 20)])
         }
+        
+        bottomConstraint = NSLayoutConstraint(item: welcomeText, attribute: .top, relatedBy: .equal, toItem: self.backgroundImage, attribute: .top, multiplier: 1, constant: 170)
+        
+        self.view.addConstraint(bottomConstraint)
+        
         addConstraints(fromView: welcomeText, toView: self.backgroundImage)
         
     }
@@ -282,10 +325,16 @@ extension UserLogIn: UITextFieldDelegate {
     }
     
     func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
+        if textField == passwordTextField {
+            self.bottomConstraint.constant = 170
+        }
+        if textField == emailTextField {
+            
+        }
         textField.resignFirstResponder()
         UIView.animate(withDuration: 0.7, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.2, options: .curveEaseInOut, animations: {
-            self.backgroundImage.frame.origin.y += 160
-            self.welcomeText.alpha = 1.0
+            self.backgroundImage.frame.origin.y += 170
+            
             self.appleButton.alpha = 1.0
             self.optionLabel.alpha = 1.0
             self.view.layoutIfNeeded()
@@ -298,8 +347,8 @@ extension UserLogIn: UITextFieldDelegate {
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         
         UIView.animate(withDuration: 0.7, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.2, options: .curveEaseInOut, animations: {
-            self.backgroundImage.frame.origin.y -= 160
-            self.welcomeText.alpha = 0.0
+            self.backgroundImage.frame.origin.y -= 170
+            self.bottomConstraint.constant = 100
             self.appleButton.alpha = 0.0
             self.optionLabel.alpha = 0.0
             self.view.layoutIfNeeded()

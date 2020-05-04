@@ -34,6 +34,9 @@ class K {
     let shadow = UIColor(named: "shadow")
     let blueBars = UIColor(named: "blueBar")
     let black = UIColor(named: "black")
+    //UserDefaults
+    let userLogedin = "userLogedin"
+    let userEmail = "userEmail"
     
     // Notification Keys
     let notificationSpeed = "speed"

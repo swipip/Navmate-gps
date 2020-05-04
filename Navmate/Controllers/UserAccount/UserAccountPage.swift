@@ -23,7 +23,7 @@ class UserAccountPage: UIViewController {
         let view = UIView()
         view.backgroundColor = K.shared.white
         view.roundCorners([.topLeft], radius: 30)
-        view.addShadow(radius: 15, opacity: 0.3, color: K.shared.shadow!)
+        view.addShadow(radius: 15, opacity: 0.5, color: K.shared.shadow!)
         return view
     }()
     private lazy var titleLabel: UILabel = {
@@ -42,7 +42,7 @@ class UserAccountPage: UIViewController {
         table.backgroundColor = .clear
         table.separatorStyle = .none
         table.register(UserAchievementCell.self, forCellReuseIdentifier: "cellID")
-        table.register(UITableViewCell.self, forCellReuseIdentifier: "cellID2")
+        table.register(UserSettingsCell.self, forCellReuseIdentifier: "cellID2")
         return table
     }()
     
@@ -147,8 +147,10 @@ extension UserAccountPage: UITableViewDelegate, UITableViewDataSource {
             
             return cell
         }else{
-            let cell = tableView.dequeueReusableCell(withIdentifier: "cellID2", for: indexPath)
-            
+            let cell = tableView.dequeueReusableCell(withIdentifier: "cellID2", for: indexPath) as! UserSettingsCell
+            cell.backgroundColor = K.shared.white
+            cell.updateData(imageName: "logout",title: "Se déconnecter")
+            cell.delegate = self
             return cell
         }
         
@@ -184,16 +186,25 @@ extension UserAccountPage: UITableViewDelegate, UITableViewDataSource {
         if indexPath.section == 0 {
             return 250
         }else{
-            return 60
+            return 70
         }
     }
 
     
 }
+extension UserAccountPage: UserSettingsCellDelegate {
+    
+    func didConfirm() {
+        AuthManager.shared.logOut {
+            navigationController?.popToRootViewController(animated: true)
+        }
+    }
+    
+}
 extension UIView {
     func roundCorners(_ corners: UIRectCorner, radius: CGFloat) {
         if #available(iOS 11.0, *) {
-            clipsToBounds = true
+//            clipsToBounds = true
             layer.cornerRadius = radius
             layer.maskedCorners = CACornerMask(rawValue: corners.rawValue)
         } else {

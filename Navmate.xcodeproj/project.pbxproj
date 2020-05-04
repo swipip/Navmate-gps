@@ -13,6 +13,8 @@
 		4900D2AD2449DE910065752F /* Route.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4900D2AA2449DE910065752F /* Route.swift */; };
 		4900D2AE2449DE910065752F /* Locator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4900D2AB2449DE910065752F /* Locator.swift */; };
 		4906C821244ED2CD00D23F3E /* WikiDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4906C820244ED2CD00D23F3E /* WikiDetailVC.swift */; };
+		4907230D245F43EB00AB0E6F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4907230C245F43EB00AB0E6F /* GoogleService-Info.plist */; };
+		4907230F245F603500AB0E6F /* userSettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4907230E245F603500AB0E6F /* userSettingsCell.swift */; };
 		491DD4DD24597EA800754338 /* GasAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491DD4DC24597EA800754338 /* GasAnnotation.swift */; };
 		491DD4DF24597F1E00754338 /* GasAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491DD4DE24597F1E00754338 /* GasAnnotationView.swift */; };
 		4920F10E245C7959005109BB /* progress.json in Resources */ = {isa = PBXBuildFile; fileRef = 4920F10D245C7959005109BB /* progress.json */; };
@@ -41,6 +43,7 @@
 		493F1F552455EE740024BF1C /* RoutingInterpret.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493F1F542455EE740024BF1C /* RoutingInterpret.swift */; };
 		493F1F57245768A20024BF1C /* LaunchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493F1F56245768A20024BF1C /* LaunchView.swift */; };
 		499A7226245F117D00C435D7 /* UserAchievementCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499A7225245F117D00C435D7 /* UserAchievementCell.swift */; };
+		499A722C245F3CFE00C435D7 /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499A722B245F3CFE00C435D7 /* AuthManager.swift */; };
 		49A16CF9245316600096F430 /* lyonploermel.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 49A16CF8245316600096F430 /* lyonploermel.gpx */; };
 		49A16CFD2453224A0096F430 /* lyonSlow.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 49A16CFC2453224A0096F430 /* lyonSlow.gpx */; };
 		49A16CFF2453407D0096F430 /* eglantierGuerande.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 49A16CFE2453407D0096F430 /* eglantierGuerande.gpx */; };
@@ -109,6 +112,8 @@
 		4900D2AA2449DE910065752F /* Route.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Route.swift; sourceTree = "<group>"; };
 		4900D2AB2449DE910065752F /* Locator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Locator.swift; sourceTree = "<group>"; };
 		4906C820244ED2CD00D23F3E /* WikiDetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WikiDetailVC.swift; sourceTree = "<group>"; };
+		4907230C245F43EB00AB0E6F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		4907230E245F603500AB0E6F /* userSettingsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = userSettingsCell.swift; sourceTree = "<group>"; };
 		491DD4DC24597EA800754338 /* GasAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GasAnnotation.swift; sourceTree = "<group>"; };
 		491DD4DE24597F1E00754338 /* GasAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GasAnnotationView.swift; sourceTree = "<group>"; };
 		4920F10D245C7959005109BB /* progress.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = progress.json; sourceTree = "<group>"; };
@@ -139,6 +144,7 @@
 		493F1F542455EE740024BF1C /* RoutingInterpret.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutingInterpret.swift; sourceTree = "<group>"; };
 		493F1F56245768A20024BF1C /* LaunchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchView.swift; sourceTree = "<group>"; };
 		499A7225245F117D00C435D7 /* UserAchievementCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAchievementCell.swift; sourceTree = "<group>"; };
+		499A722B245F3CFE00C435D7 /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
 		49A16CF8245316600096F430 /* lyonploermel.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = lyonploermel.gpx; sourceTree = "<group>"; };
 		49A16CFC2453224A0096F430 /* lyonSlow.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = lyonSlow.gpx; sourceTree = "<group>"; };
 		49A16CFE2453407D0096F430 /* eglantierGuerande.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = eglantierGuerande.gpx; sourceTree = "<group>"; };
@@ -256,6 +262,7 @@
 			children = (
 				499A7225245F117D00C435D7 /* UserAchievementCell.swift */,
 				4920F139245EFF94005109BB /* UserRecordCell.swift */,
+				4907230E245F603500AB0E6F /* userSettingsCell.swift */,
 			);
 			path = User;
 			sourceTree = "<group>";
@@ -319,9 +326,33 @@
 				49F903E324504021004B7831 /* Monuments */,
 				49E9D066244DC23900E79D5F /* Wikipedia */,
 				49F903E22450400D004B7831 /* Routing */,
+				499A722A245F3CE300C435D7 /* Firebase */,
 				49F903E424504032004B7831 /* Constants */,
 			);
 			name = Model;
+			sourceTree = "<group>";
+		};
+		499A7227245F3BB400C435D7 /* GPX */ = {
+			isa = PBXGroup;
+			children = (
+				4929C01B2450772200D40931 /* lyontoAlbatrosWalk.gpx */,
+				49A16CFE2453407D0096F430 /* eglantierGuerande.gpx */,
+				4929C01724504F6D00D40931 /* gare.gpx */,
+				49A16CF8245316600096F430 /* lyonploermel.gpx */,
+				49C1B0A92452C5D2007B5808 /* lyonCavalièreCycle.gpx */,
+				49A16CFC2453224A0096F430 /* lyonSlow.gpx */,
+				4929C019245061A100D40931 /* lyonFast.gpx */,
+				49C1B0A72452262F007B5808 /* lyonAlbatrosCycle.gpx */,
+			);
+			name = GPX;
+			sourceTree = "<group>";
+		};
+		499A722A245F3CE300C435D7 /* Firebase */ = {
+			isa = PBXGroup;
+			children = (
+				499A722B245F3CFE00C435D7 /* AuthManager.swift */,
+			);
+			path = Firebase;
 			sourceTree = "<group>";
 		};
 		49A16D6324542FCF0096F430 /* Weather Animation */ = {
@@ -358,14 +389,7 @@
 		49A5D296244357B6002E7D53 = {
 			isa = PBXGroup;
 			children = (
-				4929C01B2450772200D40931 /* lyontoAlbatrosWalk.gpx */,
-				49A16CFE2453407D0096F430 /* eglantierGuerande.gpx */,
-				4929C01724504F6D00D40931 /* gare.gpx */,
-				49A16CF8245316600096F430 /* lyonploermel.gpx */,
-				49C1B0A92452C5D2007B5808 /* lyonCavalièreCycle.gpx */,
-				49A16CFC2453224A0096F430 /* lyonSlow.gpx */,
-				4929C019245061A100D40931 /* lyonFast.gpx */,
-				49C1B0A72452262F007B5808 /* lyonAlbatrosCycle.gpx */,
+				499A7227245F3BB400C435D7 /* GPX */,
 				49A5D2A1244357B6002E7D53 /* Navmate */,
 				4920F12F245EB115005109BB /* NavmateUITests */,
 				49A5D2A0244357B6002E7D53 /* Products */,
@@ -386,6 +410,7 @@
 		49A5D2A1244357B6002E7D53 /* Navmate */ = {
 			isa = PBXGroup;
 			children = (
+				4907230C245F43EB00AB0E6F /* GoogleService-Info.plist */,
 				49A5D2A2244357B6002E7D53 /* AppDelegate.swift */,
 				49A5D2A4244357B6002E7D53 /* SceneDelegate.swift */,
 				493652142443AF4200120DAC /* Model */,
@@ -678,6 +703,7 @@
 				49A5D2AC244357B9002E7D53 /* Assets.xcassets in Resources */,
 				4920F112245CB722005109BB /* magnifierWhite.json in Resources */,
 				49A16D5624542FC90096F430 /* windy.json in Resources */,
+				4907230D245F43EB00AB0E6F /* GoogleService-Info.plist in Resources */,
 				49A16CFF2453407D0096F430 /* eglantierGuerande.gpx in Resources */,
 				4920F10E245C7959005109BB /* progress.json in Resources */,
 				49A16D5824542FC90096F430 /* snow.json in Resources */,
@@ -751,12 +777,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				493F1F552455EE740024BF1C /* RoutingInterpret.swift in Sources */,
+				4907230F245F603500AB0E6F /* userSettingsCell.swift in Sources */,
 				49DB71B2245B26FE00A143CD /* MonumentClusters.swift in Sources */,
 				49355832244B71D30023F848 /* RouteQueryModel.swift in Sources */,
 				49C1B0A42450B713007B5808 /* MonumentNavigationDetail.swift in Sources */,
 				49A16D66245430250096F430 /* WeatherManager.swift in Sources */,
 				49E9D077244DEBE700E79D5F /* NavigationMetricsCell.swift in Sources */,
 				4900D284244858F50065752F /* SearchVC.swift in Sources */,
+				499A722C245F3CFE00C435D7 /* AuthManager.swift in Sources */,
 				493F1F57245768A20024BF1C /* LaunchView.swift in Sources */,
 				49A5D2A7244357B6002E7D53 /* ViewController.swift in Sources */,
 				49E9D03C244CB03E00E79D5F /* WikipediaManager.swift in Sources */,

@@ -101,6 +101,12 @@ class MapVC: UIViewController {
         
         if let monuments = notification.userInfo?["monumentsMap"] as? [Monument] {
             
+            let point = mapView.convert(mapView.center, toCoordinateFrom: mapView)
+            
+            let region = MKCoordinateRegion(center: point, latitudinalMeters: 25000, longitudinalMeters: 25000)
+            
+            mapView.setRegion(region, animated: true)
+            
             mapMode = .exploration
             
             self.mapView.removeAnnotations(mapView.annotations)
@@ -115,10 +121,7 @@ class MapVC: UIViewController {
                 mapView.addAnnotation(annotation)
                 
             }
-            
-            
         }
-        
     }
     func setUpDelegate() {
         locator.delegate = self
