@@ -133,23 +133,23 @@ class MonumentManager: NSObject {
             
         }
         
-        let url = URL(string: urlString)!
-        
-        Alamofire.request(url, method: .get).validate().responseJSON { response in
+        if let url = URL(string: urlString) {
             
-            switch response.result {
-            case .success(let value):
-                let json = JSON(value)
+            Alamofire.request(url, method: .get).validate().responseJSON { response in
                 
-                DispatchQueue.main.async {
-                    completion(json)
+                switch response.result {
+                case .success(let value):
+                    let json = JSON(value)
+                    
+                    DispatchQueue.main.async {
+                        completion(json)
+                    }
+                    
+                case .failure(let error):
+                    print(error)
                 }
-                
-            case .failure(let error):
-                print(error)
             }
         }
-        
         
     }
 }

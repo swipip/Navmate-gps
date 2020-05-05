@@ -20,7 +20,7 @@ class AuthManager: NSObject {
         userDefaults.set(false, forKey: K.shared.userLogedin)
         completion()
     }
-    func checkIfUserExist(email: String) {
+    func checkUserExist(email: String) {
         
     }
     func authenticate(with email: String, and passWord: String, completion: @escaping (Error?) -> Void) {

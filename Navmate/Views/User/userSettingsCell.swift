@@ -7,7 +7,7 @@
 //
 
 import UIKit
-protocol UserSettingsCellDelegate {
+protocol UserSettingsCellDelegate: class {
     func didConfirm()
 }
 class UserSettingsCell: UITableViewCell {
@@ -45,7 +45,7 @@ class UserSettingsCell: UITableViewCell {
     
     private var confirmationDisplaying = false
     
-    var delegate: UserSettingsCellDelegate?
+    weak var delegate: UserSettingsCellDelegate?
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)

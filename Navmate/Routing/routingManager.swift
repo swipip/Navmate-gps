@@ -13,14 +13,14 @@ import Polyline
 import MapKit
 
 
-protocol RoutingManagerDelegate {
+protocol RoutingManagerDelegate: class {
     func didFindRoute(route: Route)
     func didnotFindRoute()
 }
 
 class RoutingManager {
     
-    var delegate: RoutingManagerDelegate?
+    weak var delegate: RoutingManagerDelegate?
     var jsonData: Data?
     
     func createRoute(geometry: String ,instructions: [String],steps: [Step],summary: Summary) {

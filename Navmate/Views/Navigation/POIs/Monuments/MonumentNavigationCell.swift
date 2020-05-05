@@ -8,7 +8,7 @@
 
 import UIKit
 import CoreLocation
-protocol MonumentNavigationCellDelegate {
+protocol MonumentNavigationCellDelegate: class {
     func didPressSeeMore(monument: Monument)
 }
 class MonumentNavigationCell: ResearchCell {
@@ -40,7 +40,7 @@ class MonumentNavigationCell: ResearchCell {
     }()
     
     var monument: Monument?
-    var delegate: MonumentNavigationCellDelegate?
+    weak var delegate: MonumentNavigationCellDelegate?
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)

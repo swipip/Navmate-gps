@@ -135,6 +135,9 @@ class UserLogIn: UIViewController {
         
         
     }
+    deinit {
+//        print("login denitialized")
+    }
     @objc private func backPressed(_ sender:UIButton!){
         self.navigationController?.popToRootViewController(animated: true)
     }
@@ -167,15 +170,15 @@ class UserLogIn: UIViewController {
     @objc private func connect(_ sender:UIButton!){
         
         if let email = emailTextField.text, let password = passwordTextField.text {
-            AuthManager.shared.authenticate(with: email, and: password) { (error) in
+            AuthManager.shared.authenticate(with: email, and: password) { [weak self] (error) in
                 if let _ = error {
-                    self.animateError()
+                    self?.animateError()
                 }else{
                     
                     userDefaults.set(true, forKey: K.shared.userLogedin)
                     userDefaults.set("\(email)", forKey: K.shared.userEmail)
                     
-                    self.navigateToMainPage()
+                    self?.navigateToMainPage()
                 }
 
             }

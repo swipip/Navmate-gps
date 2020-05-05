@@ -186,7 +186,7 @@ extension UserAccountPage: UITableViewDelegate, UITableViewDataSource {
         if indexPath.section == 0 {
             return 250
         }else{
-            return 70
+            return 100
         }
     }
 

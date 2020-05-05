@@ -10,7 +10,7 @@ import UIKit
 import MapKit
 import Lottie
 
-protocol SearchVCDelegate {
+protocol SearchVCDelegate: class {
     func didEnterSearchField()
     func didSelectAddress(placemark: MKPointAnnotation)
     func didSelectedPOI(type: String)
@@ -57,7 +57,7 @@ class SearchVC: UIViewController {
     private var searchCompletionResults:[MKLocalSearchCompletion]?
     private var searchQueryResults:[MKPlacemark]?
     private let searchCompleter = MKLocalSearchCompleter()
-    var delegate: SearchVCDelegate?
+    weak var delegate: SearchVCDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()

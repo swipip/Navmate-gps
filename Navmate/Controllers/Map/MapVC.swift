@@ -8,7 +8,7 @@
 
 import UIKit
 import MapKit
-protocol MapVCDelegate {
+protocol MapVCDelegate: class {
     func didDrawRoute(summary: Summary, destination: CLLocation)
     func didRequestAdditionnalInfo(location: CLLocation)
     func didDrawRerouting()
@@ -74,7 +74,7 @@ class MapVC: UIViewController {
     
     var circleColor = UIColor.red
     
-    var delegate: MapVCDelegate?
+    weak var delegate: MapVCDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()

@@ -7,7 +7,7 @@
 //
 
 import UIKit
-protocol DirectionOptionsCellDelegate {
+protocol DirectionOptionsCellDelegate: class {
     func didChooseOptions(mode: String,preference: String, avoid: [String])
 }
 class DirectionOptionsCell: UICollectionViewCell {
@@ -74,7 +74,7 @@ class DirectionOptionsCell: UICollectionViewCell {
     }()
     
     //data
-    var delegate: DirectionOptionsCellDelegate?
+    weak var delegate: DirectionOptionsCellDelegate?
     
     override init(frame: CGRect) {
         super.init(frame: frame)

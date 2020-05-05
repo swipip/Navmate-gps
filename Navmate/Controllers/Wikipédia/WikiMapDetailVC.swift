@@ -11,7 +11,7 @@ import CoreLocation
 import SafariServices
 import Lottie
 
-protocol WikiMapDetailVCDelegate {
+protocol WikiMapDetailVCDelegate: class {
     func didDismiss()
     func didRequestMoreInfo(urlString: String)
 }
@@ -97,7 +97,7 @@ class WikiMapDetailVC: UIViewController {
     
     var location: CLLocationCoordinate2D?
     var urlString: String?
-    var delegate: WikiMapDetailVCDelegate?
+    weak var delegate: WikiMapDetailVCDelegate?
     
     var didFind = false
     
@@ -135,7 +135,7 @@ class WikiMapDetailVC: UIViewController {
             self.addButton()
             self.addKnowMoreButton()
             if self.didFind == false {
-               self.addAnimation()
+//               self.addAnimation()
             }else{
                 self.addAddCollectionButton()
                 self.view.layoutIfNeeded()
@@ -324,6 +324,8 @@ extension WikiMapDetailVC: WikiManagerDelegate {
         }
         addConstraints(fromView: label, toView: self.blurView)
         
+        loadingAnimation.removeFromSuperview()
+        
     }
     
     func didFindData(wiki: WikiObject) {
@@ -340,6 +342,7 @@ extension WikiMapDetailVC: WikiManagerDelegate {
         loadingAnimation.removeFromSuperview()
         
     }
+    
 }
 extension UIView {
     func animateAlpha(on: Bool? = true) {

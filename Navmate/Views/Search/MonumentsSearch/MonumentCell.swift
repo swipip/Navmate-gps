@@ -8,7 +8,7 @@
 
 import UIKit
 import CoreLocation
-protocol MonumentCellDelegate {
+protocol MonumentCellDelegate: class {
     func didSelectMonument(monument: Monument)
 }
 class MonumentCell: UITableViewCell {
@@ -35,7 +35,7 @@ class MonumentCell: UITableViewCell {
         return image
     }()
     private var monuments = [Monument]()
-    var delegate: MonumentCellDelegate?
+    weak var delegate: MonumentCellDelegate?
     private var notifOccured = false
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
