@@ -47,6 +47,13 @@ class POIsCell: UICollectionViewCell {
         self.addLabel()
         self.addTableView()
         self.addObservers()
+        
+        if let mode = WeatherManager.shared.checkForDarkmode() {
+            if mode == false {
+                overrideUserInterfaceStyle = .dark
+            }
+        }
+        
         #warning("remove below for last part")
         if let location = Locator.shared.getUserLocation() {
             

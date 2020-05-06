@@ -10,7 +10,7 @@ import UIKit
 import CoreLocation
 import Lottie
 
-protocol DirectionGoCellDelegate {
+protocol DirectionGoCellDelegate: class {
     func didDismissNavigation()
     func didEngagedNavigation()
 }
@@ -81,7 +81,7 @@ class DirectionGoCell: UICollectionViewCell {
     }()
     private var animation = AnimationView()
     //MARK: - Data
-    var delegate: DirectionGoCellDelegate?
+    weak var delegate: DirectionGoCellDelegate?
     private var summary: Summary?
     
     //MARK: - View loading

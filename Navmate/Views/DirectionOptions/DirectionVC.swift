@@ -9,7 +9,7 @@
 import UIKit
 import CoreLocation
 
-protocol DirectionVCDelegate {
+protocol DirectionVCDelegate: class {
     func didEngagedNavigation()
     func didDismissNavigation()
     func didChooseOptions(mode: String, preference: String, avoid: [String],destination: CLLocation)
@@ -30,7 +30,7 @@ class DirectionVC: UIViewController {
         return collection
     }()
 
-    var delegate: DirectionVCDelegate?
+    weak var delegate: DirectionVCDelegate?
     
     var summary: Summary?
     var destination: CLLocation?
@@ -42,6 +42,9 @@ class DirectionVC: UIViewController {
         
         addCollectionView()
         
+    }
+    deinit {
+        print("deinit")
     }
     func updateValues(summary: Summary, destination: CLLocation) {
         

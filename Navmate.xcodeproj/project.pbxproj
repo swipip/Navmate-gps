@@ -91,6 +91,7 @@
 		49E9D080244DEC7300E79D5F /* BarChartCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E9D07F244DEC7300E79D5F /* BarChartCell.swift */; };
 		49F903DF244F9B0D004B7831 /* TripAverageMetricsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F903DE244F9B0D004B7831 /* TripAverageMetricsCell.swift */; };
 		49F903E1244F9B61004B7831 /* CommonPoisCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F903E0244F9B61004B7831 /* CommonPoisCell.swift */; };
+		49FEACCA246348770095858E /* WikiMapDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49FEACC9246348770095858E /* WikiMapDetailViewModel.swift */; };
 		ECA2330156F51584A04976D1 /* Pods_Navmate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A02C9004A13744DAE10D7093 /* Pods_Navmate.framework */; };
 /* End PBXBuildFile section */
 
@@ -194,6 +195,7 @@
 		49E9D07F244DEC7300E79D5F /* BarChartCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarChartCell.swift; sourceTree = "<group>"; };
 		49F903DE244F9B0D004B7831 /* TripAverageMetricsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripAverageMetricsCell.swift; sourceTree = "<group>"; };
 		49F903E0244F9B61004B7831 /* CommonPoisCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonPoisCell.swift; sourceTree = "<group>"; };
+		49FEACC9246348770095858E /* WikiMapDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WikiMapDetailViewModel.swift; sourceTree = "<group>"; };
 		6F29DEDA1BE51580029A3904 /* Pods-Navmate.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Navmate.debug.xcconfig"; path = "Target Support Files/Pods-Navmate/Pods-Navmate.debug.xcconfig"; sourceTree = "<group>"; };
 		A02C9004A13744DAE10D7093 /* Pods_Navmate.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Navmate.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -222,6 +224,7 @@
 			isa = PBXGroup;
 			children = (
 				49E9D070244DD07F00E79D5F /* WikiMapDetailVC.swift */,
+				49FEACC9246348770095858E /* WikiMapDetailViewModel.swift */,
 				4906C820244ED2CD00D23F3E /* WikiDetailVC.swift */,
 			);
 			name = "Wikipédia";
@@ -814,6 +817,7 @@
 				491DD4DD24597EA800754338 /* GasAnnotation.swift in Sources */,
 				4900D2AC2449DE910065752F /* routingManager.swift in Sources */,
 				49E9D080244DEC7300E79D5F /* BarChartCell.swift in Sources */,
+				49FEACCA246348770095858E /* WikiMapDetailViewModel.swift in Sources */,
 				4935582C244B5BF70023F848 /* DirectionGoCell.swift in Sources */,
 				49E9D073244DEB4200E79D5F /* NavigationVC.swift in Sources */,
 				49C1B0A62451B00D007B5808 /* RouteRequest.swift in Sources */,

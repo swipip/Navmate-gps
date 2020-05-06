@@ -15,15 +15,14 @@ protocol WikiMapDetailVCDelegate: class {
     func didDismiss()
     func didRequestMoreInfo(urlString: String)
 }
-
 class WikiMapDetailVC: UIViewController {
 
-    private lazy var loadingAnimation: AnimationView = {
+    lazy var loadingAnimation: AnimationView = {
         let animation = AnimationView()
         animation.animation = Animation.named("progress")
         return animation
     }()
-    private lazy var addToCollectionButton: UIButton = {
+    lazy var addToCollectionButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = K.shared.blue
         button.setImage(UIImage(systemName: "plus"), for: .normal)
@@ -47,14 +46,14 @@ class WikiMapDetailVC: UIViewController {
         view.clipsToBounds = true
         return view
     }()
-    private lazy var cardTitle: UILabel = {
+    lazy var cardTitle: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: K.shared.cardTitleFontSize)
         label.text = ""
         label.alpha = 0.0
         return label
     }()
-    private lazy var imageThumb: UIImageView = {
+    lazy var imageThumb: UIImageView = {
         let image = UIImageView()
         image.image = UIImage()
         image.contentMode = .scaleAspectFill
@@ -64,7 +63,7 @@ class WikiMapDetailVC: UIViewController {
         image.alpha = 0
         return image
     }()
-    private lazy var extract: UITextView = {
+    lazy var extract: UITextView = {
         let textView = UITextView()
         textView.isEditable = false
         textView.backgroundColor = .clear
@@ -101,6 +100,8 @@ class WikiMapDetailVC: UIViewController {
     
     var didFind = false
     
+    var wikiDetailViewModel: WikiMapDetailViewModel?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -113,10 +114,12 @@ class WikiMapDetailVC: UIViewController {
         self.addVisualBackground()
         
     }
+    deinit {
+//        print("deinit")
+    }
     func getInfo(monumentLocation location: CLLocation) {
         
-        WikiManagerCoord.shared.requestInfo(location: location)
-        WikiManager.shared.delegate = self
+        wikiDetailViewModel = WikiMapDetailViewModel(location: location, view: self)
         
     }
     override func viewDidAppear(_ animated: Bool) {
@@ -298,15 +301,7 @@ class WikiMapDetailVC: UIViewController {
         addConstraints(fromView: blurView, toView: self.view)
         
     }
-
-
-
-}
-extension WikiMapDetailVC: WikiManagerDelegate {
-    
-    func didNotFindData() {
-        
-        
+    func addNotFoundLabel() {
         let label = UILabel()
         label.text = "La page Wikipédia n'existe pas pour ce lieu"
         label.numberOfLines = 0
@@ -315,34 +310,16 @@ extension WikiMapDetailVC: WikiManagerDelegate {
         
         
         func addConstraints(fromView: UIView, toView: UIView) {
-               
-           fromView.translatesAutoresizingMaskIntoConstraints = false
-           
-           NSLayoutConstraint.activate([fromView.leadingAnchor.constraint(equalTo: toView.leadingAnchor, constant: 20),
-                                        fromView.trailingAnchor.constraint(equalTo: toView.trailingAnchor, constant: -20),
-                                        fromView.centerYAnchor.constraint(equalTo: toView.centerYAnchor, constant: 0)])
+            
+            fromView.translatesAutoresizingMaskIntoConstraints = false
+            
+            NSLayoutConstraint.activate([fromView.leadingAnchor.constraint(equalTo: toView.leadingAnchor, constant: 20),
+                                         fromView.trailingAnchor.constraint(equalTo: toView.trailingAnchor, constant: -20),
+                                         fromView.centerYAnchor.constraint(equalTo: toView.centerYAnchor, constant: 0)])
         }
         addConstraints(fromView: label, toView: self.blurView)
-        
-        loadingAnimation.removeFromSuperview()
-        
     }
-    
-    func didFindData(wiki: WikiObject) {
-        if let image =  wiki.image {
-            self.imageThumb.image = image
-        }
-        self.cardTitle.text = wiki.title
-        self.extract.text = wiki.description
-        self.urlString = wiki.url
-        
-        didFind = true
-        
-        loadingAnimation.stop()
-        loadingAnimation.removeFromSuperview()
-        
-    }
-    
+
 }
 extension UIView {
     func animateAlpha(on: Bool? = true) {

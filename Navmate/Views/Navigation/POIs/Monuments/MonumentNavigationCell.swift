@@ -50,6 +50,12 @@ class MonumentNavigationCell: ResearchCell {
         self.addNameLabel()
         self.addDistanceLabel()
         
+        if let mode = WeatherManager.shared.checkForDarkmode() {
+            if mode == false {
+                overrideUserInterfaceStyle = .dark
+            }
+        }
+        
     }
     func passDataToCell(title: String, subTitle: String, imageName: String, monument: Monument) {
         

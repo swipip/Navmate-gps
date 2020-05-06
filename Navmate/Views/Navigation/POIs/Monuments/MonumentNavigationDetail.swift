@@ -87,6 +87,12 @@ class MonumentNavigationDetail: UIView {
         self.addDismissButton()
         self.addObservers()
         
+        if let mode = WeatherManager.shared.checkForDarkmode() {
+            if mode == false {
+                overrideUserInterfaceStyle = .dark
+            }
+        }
+        
     }
     @objc private func goButtonPressed(_ sender:UIButton!) {
         
