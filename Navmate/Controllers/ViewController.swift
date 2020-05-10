@@ -91,15 +91,15 @@ class ViewController: UIViewController {
         button.addTarget(self, action: #selector(userAccountPressed(_:)), for: .touchUpInside)
         return button
     }()
-    private lazy var directionCardVC: DirectionVC = {
-        let child = DirectionVC()
-        child.delegate = self
-        return child
-    }()
-    deinit {
-        print("deinit")
-    }
-    private var navigationVC: NavigationVC!
+    private var directionCardVC: DirectionVC?
+//    private lazy var directionCardVC: DirectionVC = {
+//        let child = DirectionVC()
+//        child.delegate = self
+//        return child
+//    }()
+    
+    private var navigationVC: NavigationVC?
+    
     //MARK: - Animations Variables
     private var animators = [UIViewPropertyAnimator]()
     var animationProgressWhenInterrupted:CGFloat = 0
@@ -288,10 +288,12 @@ class ViewController: UIViewController {
         
         Locator.shared.stopNavigation()
         
-        self.navigationVC.view.animateAlpha(on: false)
-        self.navigationVC.view.removeFromSuperview()
-        self.navigationVC.removeFromParent()
-        self.navigationVC.willMove(toParent: nil)
+        self.navigationVC?.view.animateAlpha(on: false)
+        self.navigationVC?.view.removeFromSuperview()
+        self.navigationVC?.removeFromParent()
+        self.navigationVC?.willMove(toParent: nil)
+        
+        self.navigationVC = nil
         
         self.dismissNavButton.isEnabled = false
         self.dismissNavButton.animateAlpha(on: false)
@@ -299,26 +301,32 @@ class ViewController: UIViewController {
     }
     private func addDirectionCard() {
         
-        self.addChild(directionCardVC)
-        directionCardVC.willMove(toParent: self)
-        let directionCardVCView = directionCardVC.view!
-        directionCardVCView.alpha = 0
-        self.view.addSubview(directionCardVCView)
-        
-        func addConstraints(fromView: UIView, toView: UIView) {
+        directionCardVC = DirectionVC()
+        if let directionCard = directionCardVC {
+            directionCard.delegate = self
+            
+            self.addChild(directionCard)
+            directionCard.willMove(toParent: self)
+            let directionCardVCView = directionCard.view!
+            directionCardVCView.alpha = 0
+            self.view.addSubview(directionCardVCView)
+            
+            func addConstraints(fromView: UIView, toView: UIView) {
+                   
+               fromView.translatesAutoresizingMaskIntoConstraints = false
                
-           fromView.translatesAutoresizingMaskIntoConstraints = false
-           
-           NSLayoutConstraint.activate([fromView.leadingAnchor.constraint(equalTo: toView.leadingAnchor, constant: 0),
-                                        fromView.trailingAnchor.constraint(equalTo: toView.trailingAnchor, constant: 0),
-                                        fromView.heightAnchor.constraint(equalToConstant: 250),
-                                        fromView.bottomAnchor.constraint(equalTo: locationButton.topAnchor,constant: -10)])
+               NSLayoutConstraint.activate([fromView.leadingAnchor.constraint(equalTo: toView.leadingAnchor, constant: 0),
+                                            fromView.trailingAnchor.constraint(equalTo: toView.trailingAnchor, constant: 0),
+                                            fromView.heightAnchor.constraint(equalToConstant: 250),
+                                            fromView.bottomAnchor.constraint(equalTo: locationButton.topAnchor,constant: -10)])
+            }
+            addConstraints(fromView: directionCardVCView, toView: self.view)
+            
+            self.view.layoutIfNeeded()
+            
+            directionCardVCView.animateAlpha()
         }
-        addConstraints(fromView: directionCardVCView, toView: self.view)
-        
-        self.view.layoutIfNeeded()
-        
-        directionCardVCView.animateAlpha()
+
         
     }
     @objc private func locationButtonPressed(_ sender: UIButton!) {
@@ -731,7 +739,7 @@ extension ViewController: MapVCDelegate {
         vc.modalPresentationStyle = .overCurrentContext
         self.present(vc, animated: false, completion: nil)
         
-        self.directionCardVC.view.animateAlpha(on: false)
+        self.directionCardVC?.view.animateAlpha(on: false)
         
         
         for subView in self.view.subviews {
@@ -749,9 +757,14 @@ extension ViewController: MapVCDelegate {
         monumentsButton.isHidden = true
         userAccountButton.isHidden = true
         
-        self.addDirectionCard()
-        self.animateTransitionIfNeeded(state: .hidden, duration: 0.6)
-        self.directionCardVC.updateValues(summary: summary, destination: destination)
+        if let directionCardVC = directionCardVC{
+            self.animateTransitionIfNeeded(state: .hidden, duration: 0.6)
+            directionCardVC.updateValues(summary: summary, destination: destination)
+        }else{
+            self.addDirectionCard()
+            self.animateTransitionIfNeeded(state: .hidden, duration: 0.6)
+            directionCardVC?.updateValues(summary: summary, destination: destination)
+        }
         
     }
 }
@@ -771,13 +784,14 @@ extension ViewController: DirectionVCDelegate {
         userAccountButton.isHidden = true
         
         navigationVC = NavigationVC()
-        navigationVC.willMove(toParent: self)
-        self.addChild(navigationVC)
+        navigationVC?.willMove(toParent: self)
+        self.addChild(navigationVC!)
         
-        let view = navigationVC.view!
-        view.frame = self.view.bounds
-        self.view.insertSubview(view, at: 0)
-        
+        if let view = navigationVC?.view {
+            view.frame = self.view.bounds
+            self.view.insertSubview(view, at: 0)
+        }
+
         self.view.layoutIfNeeded()
         
         self.dismissNavButton.animateAlpha()
@@ -797,14 +811,15 @@ extension ViewController: DirectionVCDelegate {
     
     func removeDirectionCard() {
         
-        let view = directionCardVC.view!
-        
-        UIView.animate(withDuration: 0.5, animations: {
-            view.alpha = 0
-        }) { (_) in
-            self.directionCardVC.willMove(toParent: nil)
-            self.directionCardVC.removeFromParent()
-            view.removeFromSuperview()
+        if let view = directionCardVC?.view {
+            UIView.animate(withDuration: 0.5, animations: {
+                view.alpha = 0
+            }) { (_) in
+                self.directionCardVC?.willMove(toParent: nil)
+                self.directionCardVC?.removeFromParent()
+                view.removeFromSuperview()
+                self.directionCardVC = nil
+            }
         }
         
     }
@@ -830,7 +845,7 @@ extension ViewController: WikiMapDetailVCDelegate {
     }
     
     func didDismiss() {
-        directionCardVC.view.animateAlpha()
+        directionCardVC?.view.animateAlpha()
         
         animateSubViewsAlphas()
         
@@ -843,7 +858,7 @@ extension ViewController: WikiMapDetailVCDelegate {
         
         wikiDetail.urlToOpen(urlString: urlString)
         
-        directionCardVC.view.animateAlpha()
+        directionCardVC?.view.animateAlpha()
         
         animateSubViewsAlphas()
         

@@ -96,6 +96,7 @@ class WikiMapDetailVC: UIViewController {
     
     var location: CLLocationCoordinate2D?
     var urlString: String?
+    
     weak var delegate: WikiMapDetailVCDelegate?
     
     var didFind = false

@@ -76,6 +76,7 @@ class DirectionGoCell: UICollectionViewCell {
     private lazy var directionName: UILabel = {
         let label = UILabel()
         label.text = "-"
+        label.textAlignment = .left
         label.font = UIFont.systemFont(ofSize: K.shared.cardTitleFontSize, weight: .medium)
         return label
     }()
@@ -91,10 +92,6 @@ class DirectionGoCell: UICollectionViewCell {
         self.backgroundColor = .clear
         
         addDirectionCard()
-        
-    }
-    override func layoutSubviews() {
-        super.layoutSubviews()
         addGoButton()
         addDismissButton()
         addCardTitle()
@@ -103,6 +100,18 @@ class DirectionGoCell: UICollectionViewCell {
         addDistanceLabel()
         addDirectionName()
         addObservers()
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+//        addGoButton()
+//        addDismissButton()
+//        addCardTitle()
+//        addSummaryCard()
+//        addTimeLabel()
+//        addDistanceLabel()
+//        addDirectionName()
+//        addObservers()
     }
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -121,7 +130,7 @@ class DirectionGoCell: UICollectionViewCell {
         if let weather = notification.userInfo?["weather"] as? String {
             
             addWeatherView()
-            
+            self.bringSubviewToFront(animation)
             animation.animation = Animation.named(weather)
             animation.play(fromProgress: 0, toProgress: 1, loopMode: .loop) { (_) in
 
@@ -178,7 +187,7 @@ class DirectionGoCell: UICollectionViewCell {
            fromView.translatesAutoresizingMaskIntoConstraints = false
            
            NSLayoutConstraint.activate([fromView.leadingAnchor.constraint(equalTo: toView.trailingAnchor, constant: 0),
-                                        fromView.trailingAnchor.constraint(equalTo: self.summaryCard.trailingAnchor, constant: 0),
+//                                        fromView.trailingAnchor.constraint(equalTo: self.summaryCard.trailingAnchor, constant: 0),
                                         fromView.topAnchor.constraint(equalTo: toView.topAnchor, constant: 0)])
         }
         addConstraints(fromView: directionName, toView: directionTitle)
@@ -252,7 +261,7 @@ class DirectionGoCell: UICollectionViewCell {
         
         func addConstraints(fromView: UIView, toView: UIView) {
               
-            let width = (directionCard.frame.size.width - CGFloat(10 * 3)) / 2
+            let width = (contentView.frame.size.width - CGFloat(10 * 3)-20) / 2
             
            fromView.translatesAutoresizingMaskIntoConstraints = false
            
@@ -269,7 +278,7 @@ class DirectionGoCell: UICollectionViewCell {
         
         func addConstraints(fromView: UIView, toView: UIView) {
               
-            let width:CGFloat = (directionCard.frame.size.width - CGFloat(10 * 3)) / 2
+            let width:CGFloat = (contentView.frame.size.width - CGFloat(10 * 3)-20) / 2
             
            fromView.translatesAutoresizingMaskIntoConstraints = false
            

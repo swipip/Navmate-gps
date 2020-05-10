@@ -10,7 +10,7 @@ import UIKit
 import CoreLocation
 import MapKit
 
-protocol NavigationVCDelegate {
+protocol NavigationVCDelegate: class {
     func didStartNewRoute(destination: MKAnnotation)
 }
 class NavigationVC: UIViewController {
@@ -50,7 +50,7 @@ class NavigationVC: UIViewController {
     
     var newRoute: Route?
     
-    var delegate: NavigationVCDelegate?
+    weak var delegate: NavigationVCDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -67,6 +67,13 @@ class NavigationVC: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         Locator.shared.startNavigation()
+    }
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        NotificationCenter.default.removeObserver(self)
+    }
+    deinit {
+        print("deinit")
     }
     private func addObserver() {
         

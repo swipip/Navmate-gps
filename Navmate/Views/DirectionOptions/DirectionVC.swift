@@ -44,7 +44,7 @@ class DirectionVC: UIViewController {
         
     }
     deinit {
-        print("deinit")
+//        print("deinit")
     }
     func updateValues(summary: Summary, destination: CLLocation) {
         

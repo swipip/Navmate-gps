@@ -42,9 +42,9 @@ class RoutingManager {
             
             let route = Route(polylines: polylines, wayPoints: wayPoints, steps: steps, summary: summary)
             
-            DispatchQueue.main.async {
+//            DispatchQueue.main.async {
                 self.delegate?.didFindRoute(route: route)
-            }
+//            }
             
             
         }
@@ -133,10 +133,10 @@ class RoutingManager {
         let encoder = JSONEncoder()
         do {
             let json = try encoder.encode(query)
-
-//            let jsonString = NSString(data: json as Data, encoding: String.Encoding.utf8.rawValue)! as String
-//
-//            print(jsonString)
+            
+            //            let jsonString = NSString(data: json as Data, encoding: String.Encoding.utf8.rawValue)! as String
+            //
+            //            print(jsonString)
             
             return json
         }catch{
@@ -156,19 +156,19 @@ class RoutingManager {
             request.httpBody = jsonData
             
             let task = URLSession.shared.dataTask(with: request) { data, response, error in
-              if let response = response, let data = data {
-            //    print(response)
-//                print(String(data: data, encoding: .utf8) ?? "")
-                
-                DispatchQueue.main.async {
+                if let _ = response, let data = data {
+                    //    print(response)
+                    //                print(String(data: data, encoding: .utf8) ?? "")
+                    
+                    
                     completion(data)
+                    
+                    
+                } else {
+                    print(error ?? "")
                 }
-                
-              } else {
-                print(error ?? "")
-              }
             }
-
+            
             task.resume()
             
         }

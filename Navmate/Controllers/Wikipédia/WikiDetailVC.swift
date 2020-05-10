@@ -39,6 +39,9 @@ class WikiDetailVC: UIViewController {
         self.addTitle()
         
     }
+    deinit {
+//        print("deinit")
+    }
     override func viewWillAppear(_ animated: Bool) {
         if let mode = WeatherManager.shared.checkForDarkmode() {
             if mode == false {
