@@ -38,6 +38,16 @@
                ReferencedContainer = "container:Navmate.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "49D82516246857C800A11554"
+               BuildableName = "NavmateTests.xctest"
+               BlueprintName = "NavmateTests"
+               ReferencedContainer = "container:Navmate.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
