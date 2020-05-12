@@ -32,6 +32,8 @@ class AvgMetricsCell: UITableViewCell {
         return label
     }()
     
+    var maxSpeed = 0.0
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
@@ -83,7 +85,12 @@ class AvgMetricsCell: UITableViewCell {
         
         if let speed = notification.userInfo?["speed"] as? Double {
             
-            metricValue.text = "\(Int(speed * 3.6)) Kmh"
+            if speed > maxSpeed {
+                maxSpeed = speed
+                metricValue.text = "\(Int(speed * 3.6)) Kmh"
+            }else{
+                
+            }
             
         }
         if let avgSpeed = notification.userInfo?["avgSpeed"] as? Double {

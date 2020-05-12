@@ -96,6 +96,13 @@ class Locator: NSObject {
     //On the go rerouting
     private var pointZeroCheckpointTimer = Timer()
     private var didCheckforZero = false
+    private var distanceFromNextWP = 0.0 {
+        didSet {
+            if oldValue < distanceFromNextWP && distanceFromNextWP > 40 && abs(oldValue - distanceFromNextWP) < 10 {
+                recalculateRoute()
+            }
+        }
+    }
     
     private override init() {
         super.init()
@@ -112,6 +119,7 @@ class Locator: NSObject {
         
     }
     private func clearVariableFornewRoute() {
+        distanceFromNextWP = 0.0
         pointZeroCheckpointTimer.invalidate()
         reroutingCheckTimer.invalidate()
         entered = false
@@ -146,7 +154,6 @@ class Locator: NSObject {
 //        reroute
         didCheckforZero = false
         pointZeroCheckpointTimer.invalidate()
-        checkPointTimerExpirated()
     }
     func secondsToHoursMinutesSeconds (seconds : Int) -> (timeString: String,hours:Int,minutes: Int,seconds: Int) {
         
@@ -410,36 +417,13 @@ extension Locator: CLLocationManagerDelegate {
         
         let monitoredWP = route.wayPoints[wpIndex]
         
-        let rad = 57.295779513082323
-        let radius = 3440.4 //miles
-        let latitude = monitoredWP.coordinate.latitude
-        let longitude = monitoredWP.coordinate.longitude
-        let pi = Double.pi
-        
-        if let type = currentStep?.step.type {
-            
-            let bearing = RoutingInterpret.shared.typeAngle[type]! + location.course
-            print(bearing)
-            let distance = 0.04
-            
-            let newLatitude = (rad * asin(((sin(((latitude * pi) / 180)) * cos((distance / radius))) + ((cos(((latitude * pi) / 180)) * sin((distance / 3440.06))) * cos(((bearing * pi) / 180))))))
-            let newLongitude = (longitude + (rad * atan2(((sin(((bearing * pi) / 180)) * sin((distance / 3440.06))) * cos(((latitude * pi) / 180))), (cos((distance / 3440.06)) - (sin(((latitude * pi) / 180)) * sin(((latitude * pi) / 180)))))))
-            
-            
-            let newCheckWP = CLLocation(latitude: newLatitude, longitude: newLongitude)
-            
-            checkPoint = CLCircularRegion(center: newCheckWP.coordinate, radius: 20, identifier: "checkPoint")
-            
-            delegate?.didMoveToNextWP(waypointIndex: 0, status: "", location: newCheckWP)
-            
-            reroutingCheckTimer = Timer.scheduledTimer(timeInterval: 45, target: self, selector: #selector(checkPointTimerExpirated), userInfo: nil, repeats: false)
-            
-        }
+        //Check for distance
+        let nextWP = CLLocation(latitude: monitoredWP.coordinate.latitude, longitude: monitoredWP.coordinate.longitude)
+        distanceFromNextWP = location.distance(from: nextWP)
+        print(distanceFromNextWP)
         
     }
-    @objc private func checkPointTimerExpirated() {
-        
-//        print("\(#function) user did not entered checkpoint")
+    private func recalculateRoute() {
         
         //Reroute user from current location
         reroutingCheckTimer.invalidate()
@@ -481,7 +465,7 @@ extension Locator: CLLocationManagerDelegate {
         
         if let location = locations.last {
 
-            checkForCheckpointValidation(location)
+            checkForRerouting(location: location)
             
             let suitableForSpeedAndAltitude = filterLocation(location)
             
@@ -519,8 +503,6 @@ extension Locator: CLLocationManagerDelegate {
                                 pointZeroCheckpointTimer.invalidate()
                                 break
                             }else{
-                                #warning("Rerouting line below")
-//                                checkForRerouting(location: location)
                                 if dif != 1 {
                                     if step.type == 7 || step.type == 8{
                                         
@@ -580,10 +562,6 @@ extension Locator: CLLocationManagerDelegate {
                         
                         if currentWPIndex == exitWP {
                             if contains == true{
-//                                contains = false
-                                
-//                                self.checkPoint = nil
-//                                reroutingCheckTimer.invalidate()
                                 
                                 self.currentStep = (i,route.steps[i+1])
                                 

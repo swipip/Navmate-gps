@@ -728,7 +728,7 @@ extension ViewController: MapVCDelegate {
     
     func didDrawRerouting() {
         
-        self.animateTransitionIfNeededMap(state: .midWay, duration: 0.3)
+//        self.animateTransitionIfNeededMap(state: .midWay, duration: 0.3)
         
     }
     

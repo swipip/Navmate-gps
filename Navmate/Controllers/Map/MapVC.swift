@@ -348,11 +348,15 @@ extension MapVC: MKMapViewDelegate {
         
         
     }
-    func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
+    private func addPolyline() {
         if let polyline = self.polyline {
             self.mapView.addOverlays([polyline])
             self.polyline = nil
         }
+    }
+    
+    func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
+        addPolyline()
     }
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         
@@ -361,9 +365,6 @@ extension MapVC: MKMapViewDelegate {
             route.strokeColor = .systemOrange
             route.lineWidth = 10
             route.miterLimit = 8
-            
-            
-            
             return route
         }else if overlay is MKCircle {
             let circle = MKCircleRenderer(circle: overlay as! MKCircle)
@@ -465,9 +466,14 @@ extension MapVC: LocatorDelegate {
     }
     func didFindRoute(polyline: [MKPolyline], summary: Summary) {
         
-        
+        let rect = polyline[0].boundingMapRect
+
         self.mapView.setVisibleMapRect(polyline[0].boundingMapRect, edgePadding: UIEdgeInsets(top: 50, left: 50, bottom: 300, right: 50), animated: true)
         self.polyline = polyline[0]
+        
+        if mapView.visibleMapRect.contains(rect) {
+            addPolyline()
+        }
         
         if let destination = self.destination {
             self.delegate?.didDrawRoute(summary: summary, destination: destination)

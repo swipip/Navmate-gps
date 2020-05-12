@@ -42,9 +42,9 @@ class RoutingManager {
             
             let route = Route(polylines: polylines, wayPoints: wayPoints, steps: steps, summary: summary)
             
-//            DispatchQueue.main.async {
+            DispatchQueue.main.async {
                 self.delegate?.didFindRoute(route: route)
-//            }
+            }
             
             
         }
