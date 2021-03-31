@@ -15,6 +15,7 @@
 		4906C821244ED2CD00D23F3E /* WikiDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4906C820244ED2CD00D23F3E /* WikiDetailVC.swift */; };
 		4907230D245F43EB00AB0E6F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4907230C245F43EB00AB0E6F /* GoogleService-Info.plist */; };
 		4907230F245F603500AB0E6F /* userSettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4907230E245F603500AB0E6F /* userSettingsCell.swift */; };
+		490B4DB5251FA4F000EDC136 /* Keys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 490B4DB4251FA4F000EDC136 /* Keys.swift */; };
 		491DD4DD24597EA800754338 /* GasAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491DD4DC24597EA800754338 /* GasAnnotation.swift */; };
 		491DD4DF24597F1E00754338 /* GasAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491DD4DE24597F1E00754338 /* GasAnnotationView.swift */; };
 		4920F10E245C7959005109BB /* progress.json in Resources */ = {isa = PBXBuildFile; fileRef = 4920F10D245C7959005109BB /* progress.json */; };
@@ -29,7 +30,6 @@
 		4929C01A245061A100D40931 /* lyonFast.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 4929C019245061A100D40931 /* lyonFast.gpx */; };
 		4929C01C2450772300D40931 /* lyontoAlbatrosWalk.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 4929C01B2450772200D40931 /* lyontoAlbatrosWalk.gpx */; };
 		4929C01F2450831F00D40931 /* AvgMetricsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4929C01E2450831F00D40931 /* AvgMetricsCell.swift */; };
-		49355829244B37410023F848 /* Keys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49355828244B37410023F848 /* Keys.swift */; };
 		4935582C244B5BF70023F848 /* DirectionGoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4935582B244B5BF70023F848 /* DirectionGoCell.swift */; };
 		4935582E244B5CF40023F848 /* DirectionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4935582D244B5CF40023F848 /* DirectionVC.swift */; };
 		49355830244B5F0B0023F848 /* DirectionOptionsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4935582F244B5F0B0023F848 /* DirectionOptionsCell.swift */; };
@@ -123,6 +123,7 @@
 		4906C820244ED2CD00D23F3E /* WikiDetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WikiDetailVC.swift; sourceTree = "<group>"; };
 		4907230C245F43EB00AB0E6F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		4907230E245F603500AB0E6F /* userSettingsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = userSettingsCell.swift; sourceTree = "<group>"; };
+		490B4DB4251FA4F000EDC136 /* Keys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keys.swift; sourceTree = "<group>"; };
 		491DD4DC24597EA800754338 /* GasAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GasAnnotation.swift; sourceTree = "<group>"; };
 		491DD4DE24597F1E00754338 /* GasAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GasAnnotationView.swift; sourceTree = "<group>"; };
 		4920F10D245C7959005109BB /* progress.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = progress.json; sourceTree = "<group>"; };
@@ -139,7 +140,6 @@
 		4929C019245061A100D40931 /* lyonFast.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = lyonFast.gpx; sourceTree = "<group>"; };
 		4929C01B2450772200D40931 /* lyontoAlbatrosWalk.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = lyontoAlbatrosWalk.gpx; sourceTree = "<group>"; };
 		4929C01E2450831F00D40931 /* AvgMetricsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvgMetricsCell.swift; sourceTree = "<group>"; };
-		49355828244B37410023F848 /* Keys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keys.swift; sourceTree = "<group>"; };
 		4935582B244B5BF70023F848 /* DirectionGoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectionGoCell.swift; sourceTree = "<group>"; };
 		4935582D244B5CF40023F848 /* DirectionVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectionVC.swift; sourceTree = "<group>"; };
 		4935582F244B5F0B0023F848 /* DirectionOptionsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectionOptionsCell.swift; sourceTree = "<group>"; };
@@ -342,13 +342,13 @@
 			isa = PBXGroup;
 			children = (
 				4920F10C245C7945005109BB /* AnimationsJSON */,
-				49355828244B37410023F848 /* Keys.swift */,
 				49A16D6424542FE20096F430 /* Weather */,
 				49F903E324504021004B7831 /* Monuments */,
 				49E9D066244DC23900E79D5F /* Wikipedia */,
 				49F903E22450400D004B7831 /* Routing */,
 				499A722A245F3CE300C435D7 /* Firebase */,
 				49F903E424504032004B7831 /* Constants */,
+				490B4DB4251FA4F000EDC136 /* Keys.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -861,7 +861,6 @@
 				49C0F41A2450AB450016212D /* MonumentNavigationCell.swift in Sources */,
 				49F903E1244F9B61004B7831 /* CommonPoisCell.swift in Sources */,
 				491DD4DF24597F1E00754338 /* GasAnnotationView.swift in Sources */,
-				49355829244B37410023F848 /* Keys.swift in Sources */,
 				49F903DF244F9B0D004B7831 /* TripAverageMetricsCell.swift in Sources */,
 				49E9D068244DC26300E79D5F /* WikiManagerCoord.swift in Sources */,
 				493652132443AA9000120DAC /* CustomPin.swift in Sources */,
@@ -880,6 +879,7 @@
 				4935582C244B5BF70023F848 /* DirectionGoCell.swift in Sources */,
 				49E9D073244DEB4200E79D5F /* NavigationVC.swift in Sources */,
 				49C1B0A62451B00D007B5808 /* RouteRequest.swift in Sources */,
+				490B4DB5251FA4F000EDC136 /* Keys.swift in Sources */,
 				49E9D06E244DC93100E79D5F /* MonumentAnnotationView.swift in Sources */,
 				49E9D03A244C92BC00E79D5F /* K.swift in Sources */,
 				4900D2AE2449DE910065752F /* Locator.swift in Sources */,
